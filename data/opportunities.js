@@ -1,7 +1,4 @@
-// ============================================
 // OPPORTUNITIES DATA
-// ============================================
-
 export const opportunities = [
   {
     id: "opp_001",
@@ -522,9 +519,7 @@ export const opportunities = [
   },
 ];
 
-// ============================================
 // CATEGORIES DATA
-// ============================================
 export const categories = [
   {
     id: "cat_001",
@@ -612,9 +607,7 @@ export const categories = [
   },
 ];
 
-// ============================================
 // LOCATIONS DATA
-// ============================================
 export const locations = [
   { id: "loc_001", name: "Online", slug: "online" },
   { id: "loc_002", name: "Kabul", slug: "kabul" },
@@ -637,10 +630,7 @@ export const locations = [
   { id: "loc_019", name: "Kapisa", slug: "kapisa" },
   { id: "loc_020", name: "Panjshir", slug: "panjshir" },
 ];
-
-// ============================================
 // TESTIMONIALS DATA
-// ============================================
 export const testimonials = [
   {
     id: "test_001",
