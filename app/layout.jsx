@@ -1,8 +1,11 @@
-﻿import { Plus_Jakarta_Sans, Sora } from "next/font/google";
+﻿"use client";
+
+import { Plus_Jakarta_Sans, Sora } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "react-hot-toast";
+import Navbar from "../components/layout/Navbar.jsx";
 import "./globals.css";
-import { cn } from "../lib/utils.js";
+
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
@@ -17,41 +20,6 @@ const sora = Sora({
   display: "swap",
 });
 
-export const metadata = {
-  title: {
-    template: "%s | KaarYab Afghanistan",
-    default: "KaarYab Afghanistan - Find Jobs, Scholarships & Opportunities",
-  },
-  description:
-    "Discover jobs, internships, scholarships, remote work, and skill-building opportunities across Afghanistan. Free platform for Afghan youth.",
-  keywords: [
-    "Afghanistan jobs",
-    "scholarships Afghanistan",
-    "internships Kabul",
-    "remote work Afghanistan",
-  ],
-  authors: [{ name: "KaarYab Team" }],
-  creator: "KaarYab Afghanistan",
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: "https://kaaryab.af",
-    title: "KaarYab Afghanistan - Opportunity Finder Platform",
-    description:
-      "Find jobs, scholarships, internships, and remote work opportunities across Afghanistan.",
-    siteName: "KaarYab Afghanistan",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "KaarYab Afghanistan",
-    description: "Find opportunities across Afghanistan",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
-
 export default function RootLayout({ children }) {
   return (
     <html
@@ -61,27 +29,19 @@ export default function RootLayout({ children }) {
     >
       <body
         suppressHydrationWarning={true}
-        className={`
-          ${plusJakarta.className}
-          bg-gray-50 dark:bg-dark-bg
-          text-gray-900 dark:text-dark-text
-          transition-colors duration-300
-          antialiased
-        `}
+        className={`${plusJakarta.className} bg-gray-50 dark:bg-dark-bg text-gray-900 dark:text-dark-text transition-colors duration-300 antialiased`}
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange={false}
         >
-          {/* Demo Data Banner */}
-          <div className="bg-yellow-500 text-gray-900 text-center py-2 px-4 text-sm font-medium">
-            ⚠️ This platform uses demo data for educational purposes only
-          </div>
+          {/* Navbar */}
+          <Navbar />
 
-          {/* Main Content */}
-          {children}
+          {/* Page Content */}
+          <main className="min-h-screen">{children}</main>
 
           {/* Toast Notifications */}
           <Toaster

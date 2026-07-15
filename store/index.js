@@ -3,7 +3,9 @@ import { persist } from "zustand/middleware";
 import { generateId } from "../lib/utils.js";
 import { STORAGE_KEYS } from "../lib/constants.js";
 
+// ============================================
 // SAVED OPPORTUNITIES STORE
+// ============================================
 export const useSavedStore = create(
   persist(
     (set, get) => ({
@@ -51,7 +53,9 @@ export const useSavedStore = create(
   ),
 );
 
+// ============================================
 // USER OPPORTUNITIES STORE
+// ============================================
 export const useOpportunitiesStore = create(
   persist(
     (set, get) => ({
@@ -103,7 +107,9 @@ export const useOpportunitiesStore = create(
   ),
 );
 
+// ============================================
 // FILTERS STORE
+// ============================================
 export const useFiltersStore = create((set, get) => ({
   search: "",
   category: "All",
@@ -148,7 +154,9 @@ export const useFiltersStore = create((set, get) => ({
   },
 }));
 
+// ============================================
 // UI STORE
+// ============================================
 export const useUIStore = create((set) => ({
   isMenuOpen: false,
   isFilterOpen: false,
@@ -164,7 +172,9 @@ export const useUIStore = create((set) => ({
   setScrolled: (scrolled) => set({ scrolled }),
 }));
 
+// ============================================
 // CV STORE
+// ============================================
 export const useCVStore = create(
   persist(
     (set) => ({
