@@ -4,6 +4,7 @@ import { Plus_Jakarta_Sans, Sora } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "react-hot-toast";
 import Navbar from "../components/layout/Navbar.jsx";
+import Footer from "../components/layout/Footer.jsx";
 import "./globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -42,6 +43,9 @@ export default function RootLayout({ children }) {
 
           {/* Page Content */}
           <main className="min-h-screen">{children}</main>
+
+          {/* Footer */}
+          <Footer />
 
           {/* Toast Notifications */}
           <Toaster
