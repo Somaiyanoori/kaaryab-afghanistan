@@ -10,8 +10,6 @@ import ThemeToggle from "../shared/ThemeToggle.jsx";
 import MobileNav from "./MobileNav.jsx";
 import { useSavedStore } from "../../store/index.js";
 import { cn } from "../../lib/utils.js";
-
-// Desktop navigation items
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
   { label: "Opportunities", href: "/opportunities" },
@@ -29,12 +27,10 @@ export default function Navbar() {
 
   const savedCount = useSavedStore((state) => state.getSavedCount());
 
-  // Prevent hydration mismatch
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Handle scroll behavior
   const handleScroll = useCallback(() => {
     setScrolled(window.scrollY > 80);
   }, []);
@@ -44,7 +40,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [pathname]);
@@ -61,28 +56,26 @@ export default function Navbar() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
         className={cn(
-          "fixed top-0 left-0 right-0 z-30",
+          "fixed top-0 left-0 right-0",
+          "z-50",
           "transition-all duration-300",
           scrolled
             ? [
-                "bg-white/95 dark:bg-dark-bg/95",
+                "bg-white/95 dark:bg-slate-900/95",
                 "backdrop-blur-md",
-                "shadow-md dark:shadow-dark-border/20",
-                "border-b border-gray-100 dark:border-dark-border",
+                "shadow-md dark:shadow-slate-800/50",
+                "border-b border-gray-100 dark:border-slate-800",
                 "py-3",
               ]
             : ["bg-transparent", "py-5"],
         )}
       >
-        {/* Demo Banner space offset */}
         <nav
           className="container-custom flex items-center justify-between"
           aria-label="Main navigation"
         >
-          {/* ===== LEFT: LOGO ===== */}
           <Logo />
 
-          {/* ===== CENTER: DESKTOP NAV LINKS ===== */}
           <div className="hidden lg:flex items-center gap-1">
             {NAV_ITEMS.map((item) => {
               const active = isActive(item.href);
@@ -97,11 +90,13 @@ export default function Navbar() {
                     "transition-all duration-200",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500",
                     active
-                      ? "text-yellow-600 dark:text-yellow-400"
+                      ? scrolled
+                        ? "text-yellow-600 dark:text-yellow-400"
+                        : "text-yellow-400"
                       : [
                           scrolled
                             ? "text-gray-700 dark:text-gray-300"
-                            : "text-gray-800 dark:text-gray-200",
+                            : "text-white/90",
                           "hover:text-yellow-600 dark:hover:text-yellow-400",
                           "hover:bg-yellow-50 dark:hover:bg-yellow-500/10",
                         ],
@@ -127,7 +122,6 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* ===== RIGHT: ACTIONS ===== */}
           <div className="flex items-center gap-2">
             {/* Search Button (shows on scroll) */}
             <AnimatePresence>
@@ -143,7 +137,7 @@ export default function Navbar() {
                       className={cn(
                         "hidden sm:flex w-9 h-9 rounded-lg items-center justify-center",
                         "bg-gray-100 hover:bg-gray-200",
-                        "dark:bg-dark-card dark:hover:bg-dark-border",
+                        "dark:bg-slate-800 dark:hover:bg-slate-700",
                         "text-gray-600 dark:text-gray-300",
                         "transition-colors duration-200",
                         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500",
@@ -167,9 +161,10 @@ export default function Navbar() {
               <motion.button
                 className={cn(
                   "relative w-9 h-9 rounded-lg flex items-center justify-center",
-                  "bg-gray-100 hover:bg-gray-200",
-                  "dark:bg-dark-card dark:hover:bg-dark-border",
-                  "text-gray-600 dark:text-gray-300",
+                  scrolled
+                    ? "bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700"
+                    : "bg-white/10 hover:bg-white/20 backdrop-blur-sm",
+                  scrolled ? "text-gray-600 dark:text-gray-300" : "text-white",
                   "transition-colors duration-200",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500",
                 )}
@@ -206,7 +201,10 @@ export default function Navbar() {
                         "text-[10px] font-bold",
                         "rounded-full",
                         "flex items-center justify-center",
-                        "border-2 border-white dark:border-dark-bg",
+                        "border-2",
+                        scrolled
+                          ? "border-white dark:border-slate-900"
+                          : "border-slate-900",
                       )}
                     >
                       {savedCount > 99 ? "99+" : savedCount}
@@ -241,9 +239,9 @@ export default function Navbar() {
               onClick={() => setIsMobileMenuOpen(true)}
               className={cn(
                 "lg:hidden w-9 h-9 rounded-lg flex items-center justify-center",
-                "bg-gray-100 hover:bg-gray-200",
-                "dark:bg-dark-card dark:hover:bg-dark-border",
-                "text-gray-700 dark:text-gray-300",
+                scrolled
+                  ? "bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-gray-300"
+                  : "bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white",
                 "transition-colors duration-200",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500",
               )}
@@ -269,9 +267,6 @@ export default function Navbar() {
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
       />
-
-      {/* Spacer to push content below fixed navbar */}
-      <div className="h-[72px]" aria-hidden="true" />
     </>
   );
 }

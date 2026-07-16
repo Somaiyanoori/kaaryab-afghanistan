@@ -20,7 +20,6 @@ const sora = Sora({
   variable: "--font-sora",
   display: "swap",
 });
-
 export default function RootLayout({ children }) {
   return (
     <html
@@ -28,9 +27,13 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning={true}
       className={`${plusJakarta.variable} ${sora.variable}`}
     >
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
       <body
         suppressHydrationWarning={true}
-        className={`${plusJakarta.className} bg-gray-50 dark:bg-dark-bg text-gray-900 dark:text-dark-text transition-colors duration-300 antialiased`}
+        className={`${plusJakarta.className} bg-gray-50 dark:bg-slate-950 text-gray-900 dark:text-gray-100 transition-colors duration-300 antialiased`}
       >
         <ThemeProvider
           attribute="class"
@@ -38,18 +41,14 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange={false}
         >
-          {/* Navbar */}
           <Navbar />
-
-          {/* Page Content */}
           <main className="min-h-screen">{children}</main>
-
-          {/* Footer */}
           <Footer />
-
-          {/* Toast Notifications */}
           <Toaster
             position="top-right"
+            containerStyle={{
+              top: 80,
+            }}
             toastOptions={{
               duration: 3000,
               style: {
@@ -59,6 +58,8 @@ export default function RootLayout({ children }) {
                 borderRadius: "12px",
                 fontSize: "14px",
                 fontWeight: "500",
+                padding: "12px 16px",
+                maxWidth: "400px",
               },
               success: {
                 iconTheme: {
@@ -69,6 +70,12 @@ export default function RootLayout({ children }) {
               error: {
                 iconTheme: {
                   primary: "#EF4444",
+                  secondary: "#1E293B",
+                },
+              },
+              loading: {
+                iconTheme: {
+                  primary: "#3B82F6",
                   secondary: "#1E293B",
                 },
               },

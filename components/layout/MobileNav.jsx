@@ -83,7 +83,7 @@ export default function MobileNav({ isOpen, onClose }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm"
             onClick={onClose}
             aria-hidden="true"
           />
@@ -96,7 +96,7 @@ export default function MobileNav({ isOpen, onClose }) {
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className={cn(
-              "fixed top-0 right-0 bottom-0 z-50",
+              "fixed top-0 right-0 bottom-0 z-[70]",
               "w-[300px] max-w-[85vw]",
               "bg-white dark:bg-dark-card",
               "shadow-2xl",
