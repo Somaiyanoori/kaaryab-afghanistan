@@ -41,7 +41,6 @@ export default function CategoryCard({ category, count, index }) {
         >
           {/* Gradient Background Effect on Hover */}
           <div
-            className={cn(
             className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
             style={{ background: category.gradient }}
           />
