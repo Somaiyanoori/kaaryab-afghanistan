@@ -42,43 +42,35 @@ export default function CategoryCard({ category, count, index }) {
           {/* Gradient Background Effect on Hover */}
           <div
             className={cn(
-              "absolute inset-0 opacity-0 group-hover:opacity-100",
-              "bg-gradient-to-br",
-              category.gradientClass,
-              "transition-opacity duration-500",
-            )}
+            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+            style={{ background: category.gradient }}
           />
 
-          {/* Decorative Corner Element */}
+          {/* Decorative Corner Element — USING INLINE STYLE */}
           <div
-            className={cn(
-              "absolute -top-8 -right-8 w-24 h-24 rounded-full",
-              "bg-gradient-to-br",
-              category.gradientClass,
-              "opacity-10 group-hover:opacity-20",
-              "transition-opacity duration-500",
-            )}
+            className="absolute -top-8 -right-8 w-24 h-24 rounded-full opacity-10 group-hover:opacity-30 transition-opacity duration-500"
+            style={{ background: category.gradient }}
           />
 
           {/* Content (relative to appear above gradient) */}
           <div className="relative z-10">
-            {/* Icon Container */}
+            {/* Icon Container — USING INLINE STYLE */}
             <div className="mb-5">
               <div
                 className={cn(
                   "inline-flex items-center justify-center",
                   "w-14 h-14 rounded-xl",
-                  "bg-gradient-to-br",
-                  category.gradientClass,
                   "shadow-lg",
                   "group-hover:scale-110 group-hover:rotate-3",
-                  "transition-transform duration-300",
+                  "group-hover:bg-white/20",
+                  "transition-all duration-300",
                 )}
+                style={{ background: category.iconBg }}
               >
                 <IconComponent
                   size={26}
                   className="text-white"
-                  strokeWidth={2}
+                  strokeWidth={2.5}
                 />
               </div>
             </div>
@@ -117,7 +109,7 @@ export default function CategoryCard({ category, count, index }) {
                   "inline-flex items-center gap-1.5",
                   "px-3 py-1 rounded-full",
                   "bg-gray-100 dark:bg-slate-700",
-                  "group-hover:bg-white/20",
+                  "group-hover:bg-white/25",
                   "transition-colors duration-300",
                 )}
               >
