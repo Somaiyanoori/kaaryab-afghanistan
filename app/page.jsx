@@ -1,11 +1,12 @@
 ﻿import HeroSection from "../components/home/HeroSection.jsx";
-
+import CategoriesSection from "../components/home/CategoriesSection.jsx";
 export default function Home() {
   return (
     <>
       {/* Hero Section */}
       <HeroSection />
-
+      {/* Categories Section */}
+      <CategoriesSection />
       {/* Placeholder for next sections */}
       <div className="container-custom py-20">
         <div className="text-center space-y-8">
