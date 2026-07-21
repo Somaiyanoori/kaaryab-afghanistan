@@ -624,10 +624,9 @@ export const testimonials = [
     role: "Frontend Developer",
     location: "Kabul",
     avatar: null,
-    initials: "AK",
     rating: 5,
-    text: "KaarYab helped me find my first internship. The platform is easy to use and has many real opportunities. I recommend it to every young Afghan.",
-    opportunity: "Found: Frontend Developer Intern at Kabul Tech",
+    text: "KaarYab helped me find my first internship. The platform is easy to use and has many real opportunities. I recommend it to every young Afghan looking to build their career in tech.",
+    opportunity: "Found: Frontend Developer Intern",
   },
   {
     id: "test_002",
@@ -635,9 +634,8 @@ export const testimonials = [
     role: "Scholarship Recipient",
     location: "Herat",
     avatar: null,
-    initials: "FR",
     rating: 5,
-    text: "I found my scholarship through KaarYab. Now I am studying online and building my skills. This platform changed my life.",
+    text: "I found my scholarship through KaarYab. Now I am studying online and building my skills. This platform changed my life and opened doors I never thought possible.",
     opportunity: "Found: Women in Tech Scholarship",
   },
   {
@@ -646,9 +644,68 @@ export const testimonials = [
     role: "Remote Worker",
     location: "Mazar-i-Sharif",
     avatar: null,
-    initials: "ON",
     rating: 5,
-    text: "KaarYab is the best platform for finding remote work in Afghanistan. I found a great opportunity and now work from home.",
+    text: "KaarYab is the best platform for finding remote work in Afghanistan. I found a great opportunity and now work from home earning in USD. Life-changing platform!",
     opportunity: "Found: Remote Data Entry Specialist",
+  },
+  {
+    id: "test_004",
+    name: "Zainab Hussaini",
+    role: "Software Engineer",
+    location: "Kabul",
+    avatar: null,
+    rating: 5,
+    text: "The filter and search features are amazing. I found exactly what I was looking for in minutes. The saved opportunities feature helped me organize my applications perfectly.",
+    opportunity: "Found: Junior Software Engineer",
+  },
+  {
+    id: "test_005",
+    name: "Bilal Ahmadi",
+    role: "Marketing Trainee",
+    location: "Kandahar",
+    avatar: null,
+    rating: 5,
+    text: "I never knew about the digital marketing training in Kabul until I found it here. The training was completely free and now I have a certificate. Thank you KaarYab!",
+    opportunity: "Found: Digital Marketing Training",
+  },
+  {
+    id: "test_006",
+    name: "Sadia Popal",
+    role: "Content Writer",
+    location: "Online",
+    avatar: null,
+    rating: 5,
+    text: "As a woman working from home, KaarYab gave me the freedom I needed. I found a Dari content writing job that fits my schedule. This platform empowers Afghan women.",
+    opportunity: "Found: Dari Content Writer Remote",
+  },
+];
+
+// ============================================
+// TRUST STATS
+// ============================================
+export const trustStats = [
+  {
+    id: "stat_001",
+    value: "1,200+",
+    label: "Happy Users",
+    icon: "Users",
+  },
+  {
+    id: "stat_002",
+    value: "500+",
+    label: "Success Stories",
+    icon: "Trophy",
+  },
+  {
+    id: "stat_003",
+    value: "4.9/5",
+    label: "User Rating",
+    icon: "Star",
+  },
+  {
+    id: "stat_004",
+    value: "98%",
+    label: "Satisfaction",
+    icon: "Heart",
   },
 ];
