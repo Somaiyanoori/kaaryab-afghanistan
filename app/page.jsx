@@ -1,6 +1,7 @@
 ﻿import HeroSection from "../components/home/HeroSection.jsx";
 import CategoriesSection from "../components/home/CategoriesSection.jsx";
 import FeaturedOpportunities from "../components/home/FeaturedOpportunities.jsx";
+import HowItWorks from "../components/home/HowItWorks.jsx";
 export default function Home() {
   return (
     <>
@@ -10,6 +11,8 @@ export default function Home() {
       <CategoriesSection />
       {/* Featured Opportunities */}
       <FeaturedOpportunities />
+      {/* How It Works */}
+      <HowItWorks />
       {/* Placeholder for next sections */}
       <div className="container-custom py-20">
         <div className="text-center space-y-8">
