@@ -173,21 +173,89 @@ export const useUIStore = create((set) => ({
 }));
 
 // ============================================
-// CV STORE
+// CV STORE (UPDATED)
 // ============================================
 export const useCVStore = create(
   persist(
-    (set) => ({
-      cvData: null,
+    (set, get) => ({
+      cvData: {
+        personal: {
+          fullName: "",
+          jobTitle: "",
+          email: "",
+          phone: "",
+          city: "",
+          website: "",
+          linkedin: "",
+          summary: "",
+        },
+        experiences: [],
+        education: [],
+        skills: [],
+        languages: [],
+        projects: [],
+        certifications: [],
+      },
       selectedTemplate: "modern",
 
       setCVData: (data) => set({ cvData: data }),
+
       updatePersonal: (personal) =>
         set((state) => ({
-          cvData: state.cvData ? { ...state.cvData, personal } : { personal },
+          cvData: { ...state.cvData, personal },
         })),
+
+      addSection: (section, item) =>
+        set((state) => ({
+          cvData: {
+            ...state.cvData,
+            [section]: [...state.cvData[section], item],
+          },
+        })),
+
+      updateSection: (section, id, data) =>
+        set((state) => ({
+          cvData: {
+            ...state.cvData,
+            [section]: state.cvData[section].map((item) =>
+              item.id === id ? { ...item, ...data } : item,
+            ),
+          },
+        })),
+
+      removeSection: (section, id) =>
+        set((state) => ({
+          cvData: {
+            ...state.cvData,
+            [section]: state.cvData[section].filter((item) => item.id !== id),
+          },
+        })),
+
       setTemplate: (templateId) => set({ selectedTemplate: templateId }),
-      clearCV: () => set({ cvData: null, selectedTemplate: "modern" }),
+
+      clearCV: () =>
+        set({
+          cvData: {
+            personal: {
+              fullName: "",
+              jobTitle: "",
+              email: "",
+              phone: "",
+              city: "",
+              website: "",
+              linkedin: "",
+              summary: "",
+            },
+            experiences: [],
+            education: [],
+            skills: [],
+            languages: [],
+            projects: [],
+            certifications: [],
+          },
+        }),
+
+      loadSampleData: (sample) => set({ cvData: sample }),
     }),
     { name: STORAGE_KEYS.CV },
   ),
