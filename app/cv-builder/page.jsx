@@ -14,9 +14,6 @@ import {
   Download,
   Layout,
   Sparkles,
-  Save,
-  RefreshCw,
-  Printer,
   Eye,
   Edit3,
   Check,
@@ -32,15 +29,9 @@ import MinimalTemplate from "../../components/cv-builder/templates/MinimalTempla
 import ProfessionalTemplate from "../../components/cv-builder/templates/ProfessionalTemplate.jsx";
 import { cn, generateId } from "../../lib/utils.js";
 
-// ============================================
-// SKILL LEVELS
-// ============================================
 const SKILL_LEVELS = ["Beginner", "Intermediate", "Advanced", "Expert"];
 const LANGUAGE_LEVELS = ["Basic", "Conversational", "Fluent", "Native"];
 
-// ============================================
-// TEMPLATE COMPONENTS MAP
-// ============================================
 const TEMPLATES = {
   modern: ModernTemplate,
   classic: ClassicTemplate,
@@ -50,10 +41,11 @@ const TEMPLATES = {
 
 export default function CVBuilderPage() {
   const [mounted, setMounted] = useState(false);
-  const [activeTab, setActiveTab] = useState("edit"); // 'edit' | 'preview'
+  const [activeTab, setActiveTab] = useState("edit");
   const [activeSection, setActiveSection] = useState("personal");
   const [showTemplateSelect, setShowTemplateSelect] = useState(false);
   const [showClearModal, setShowClearModal] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const cvData = useCVStore((state) => state.cvData);
   const selectedTemplate = useCVStore((state) => state.selectedTemplate);
@@ -68,15 +60,80 @@ export default function CVBuilderPage() {
   useEffect(() => {
     setMounted(true);
   }, []);
+  const handleDownloadPDF = async () => {
+    setIsDownloading(true);
+    const loadingToast = toast.loading("Generating your PDF...");
 
-  const handlePrint = () => {
-    window.print();
-    toast.success("Opening print dialog...");
+    try {
+      const html2canvas = (await import("html2canvas")).default;
+      const { jsPDF } = await import("jspdf");
+
+      const element = document.getElementById("cv-preview-content");
+
+      if (!element) {
+        toast.dismiss(loadingToast);
+        toast.error("CV content not found");
+        setIsDownloading(false);
+        return;
+      }
+
+      const originalTransform = element.style.transform;
+      element.style.transform = "none";
+
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      const canvas = await html2canvas(element, {
+        scale: 1.5,
+        backgroundColor: "#ffffff",
+        logging: false,
+        useCORS: true,
+        allowTaint: true,
+      });
+
+      element.style.transform = originalTransform;
+
+      const imgData = canvas.toDataURL("image/jpeg", 0.85);
+
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+        compress: true,
+      });
+
+      const pdfWidth = 210;
+      const pdfHeight = 297;
+
+      pdf.addImage(
+        imgData,
+        "JPEG",
+        0,
+        0,
+        pdfWidth,
+        pdfHeight,
+        undefined,
+        "FAST",
+      );
+
+      const fileName = cvData.personal.fullName
+        ? `${cvData.personal.fullName.replace(/\s+/g, "-")}-CV.pdf`
+        : "My-CV-KaarYab.pdf";
+
+      pdf.save(fileName);
+
+      toast.dismiss(loadingToast);
+      toast.success("CV downloaded successfully!");
+    } catch (error) {
+      toast.dismiss(loadingToast);
+      toast.error("Failed to generate PDF. Please try again.");
+      console.error("PDF Error:", error);
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   const handleLoadSample = () => {
     loadSampleData(sampleCVData);
-    toast.success("Sample data loaded! ✨");
+    toast.success("Sample data loaded!");
   };
 
   const handleClearAll = () => {
@@ -95,47 +152,25 @@ export default function CVBuilderPage() {
   ];
 
   const TemplateComponent = TEMPLATES[selectedTemplate] || ModernTemplate;
-
   if (!mounted) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+    return null;
   }
-
   return (
     <>
-      {/* Print Styles */}
-      <style jsx global>{`
-        @media print {
-          body * {
-            visibility: hidden;
-          }
-          #cv-preview,
-          #cv-preview * {
-            visibility: visible;
-          }
-          #cv-preview {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-          }
-          .no-print {
-            display: none !important;
-          }
-        }
-      `}</style>
-
-      {/* ============================================
-          HERO HEADER
-      ============================================ */}
-      <section className="no-print relative bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 pt-32 pb-8 md:pt-40 overflow-hidden">
+      {/* HERO HEADER */}
+      <section className="relative bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 pt-32 pb-8 md:pt-40 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-20 left-10 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl" />
           <div className="absolute bottom-10 right-10 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
         </div>
+
+        <div
+          className="absolute inset-0 opacity-10 pointer-events-none"
+          style={{
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+            backgroundSize: "60px 60px",
+          }}
+        />
 
         <div className="relative container-custom">
           <div className="flex items-center justify-between flex-wrap gap-4">
@@ -143,6 +178,7 @@ export default function CVBuilderPage() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
                 className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 bg-yellow-500/20 border border-yellow-500/30 rounded-full"
               >
                 <Sparkles size={14} className="text-yellow-400" />
@@ -151,19 +187,33 @@ export default function CVBuilderPage() {
                 </span>
               </motion.div>
 
-              <h1
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
                 className="text-3xl md:text-5xl font-black text-white mb-2"
                 style={{ fontFamily: "Sora, sans-serif" }}
               >
                 Build Your <span className="gradient-text">CV</span>
-              </h1>
-              <p className="text-gray-300 text-sm md:text-base">
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="text-gray-300 text-sm md:text-base"
+              >
                 Create a professional resume in minutes. Choose a template and
                 start building.
-              </p>
+              </motion.p>
             </div>
 
-            <div className="flex items-center gap-2 flex-wrap">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="flex items-center gap-2 flex-wrap"
+            >
               <button
                 onClick={handleLoadSample}
                 className="flex items-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 text-white text-sm font-semibold rounded-xl transition-colors"
@@ -179,15 +229,13 @@ export default function CVBuilderPage() {
                 <Trash2 size={16} />
                 <span>Clear All</span>
               </button>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* ============================================
-          MOBILE TABS (Edit / Preview)
-      ============================================ */}
-      <div className="no-print sticky top-16 z-30 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 lg:hidden">
+      {/* MOBILE TABS */}
+      <div className="sticky top-16 z-30 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 lg:hidden">
         <div className="container-custom py-3">
           <div className="flex items-center gap-2 p-1 bg-gray-100 dark:bg-slate-800 rounded-xl">
             <button
@@ -218,24 +266,23 @@ export default function CVBuilderPage() {
         </div>
       </div>
 
-      {/* ============================================
-          MAIN CONTENT
-      ============================================ */}
+      {/* MAIN CONTENT */}
       <section className="bg-gray-50 dark:bg-slate-950 py-8 min-h-screen">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* ============================================
-                LEFT: FORM
-            ============================================ */}
-            <div
+            {/* LEFT: FORM */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
               className={cn(
                 "lg:block",
                 activeTab === "edit" ? "block" : "hidden",
               )}
             >
-              {/* Section Tabs */}
-              <div className="no-print bg-white dark:bg-slate-800 rounded-2xl p-2 mb-4 border border-gray-100 dark:border-slate-700 overflow-x-auto scrollbar-hide">
-                <div className="flex gap-1 min-w-max">
+              <div className="bg-white dark:bg-slate-800 rounded-2xl p-2 mb-4 border border-gray-100 dark:border-slate-700">
+                {/* Desktop: Grid layout — all visible */}
+                <div className="hidden md:grid grid-cols-7 gap-1">
                   {SECTIONS.map((section) => {
                     const Icon = section.icon;
                     return (
@@ -243,7 +290,29 @@ export default function CVBuilderPage() {
                         key={section.id}
                         onClick={() => setActiveSection(section.id)}
                         className={cn(
-                          "flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors",
+                          "flex flex-col items-center justify-center gap-1 px-2 py-3 rounded-lg text-[10px] font-semibold transition-colors",
+                          activeSection === section.id
+                            ? "bg-yellow-500 text-gray-900"
+                            : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700",
+                        )}
+                      >
+                        <Icon size={16} />
+                        <span>{section.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Mobile: Horizontal scroll */}
+                <div className="md:hidden flex gap-1 overflow-x-auto scrollbar-hide">
+                  {SECTIONS.map((section) => {
+                    const Icon = section.icon;
+                    return (
+                      <button
+                        key={section.id}
+                        onClick={() => setActiveSection(section.id)}
+                        className={cn(
+                          "flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors flex-shrink-0",
                           activeSection === section.id
                             ? "bg-yellow-500 text-gray-900"
                             : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700",
@@ -257,9 +326,7 @@ export default function CVBuilderPage() {
                 </div>
               </div>
 
-              {/* Form Sections */}
               <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700">
-                {/* Personal Info */}
                 {activeSection === "personal" && (
                   <div className="space-y-4">
                     <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
@@ -333,7 +400,6 @@ export default function CVBuilderPage() {
                   </div>
                 )}
 
-                {/* Experience */}
                 {activeSection === "experiences" && (
                   <DynamicSection
                     title="Work Experience"
@@ -430,7 +496,6 @@ export default function CVBuilderPage() {
                   />
                 )}
 
-                {/* Education */}
                 {activeSection === "education" && (
                   <DynamicSection
                     title="Education"
@@ -513,7 +578,6 @@ export default function CVBuilderPage() {
                   />
                 )}
 
-                {/* Skills */}
                 {activeSection === "skills" && (
                   <DynamicSection
                     title="Skills"
@@ -548,7 +612,6 @@ export default function CVBuilderPage() {
                   />
                 )}
 
-                {/* Languages */}
                 {activeSection === "languages" && (
                   <DynamicSection
                     title="Languages"
@@ -585,7 +648,6 @@ export default function CVBuilderPage() {
                   />
                 )}
 
-                {/* Projects */}
                 {activeSection === "projects" && (
                   <DynamicSection
                     title="Projects"
@@ -642,7 +704,6 @@ export default function CVBuilderPage() {
                   />
                 )}
 
-                {/* Certifications */}
                 {activeSection === "certifications" && (
                   <DynamicSection
                     title="Certifications"
@@ -694,57 +755,67 @@ export default function CVBuilderPage() {
                   />
                 )}
               </div>
-            </div>
+            </motion.div>
 
-            {/* ============================================
-                RIGHT: PREVIEW
-            ============================================ */}
-            <div
+            {/* RIGHT: PREVIEW */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
               className={cn(
                 "lg:block",
                 activeTab === "preview" ? "block" : "hidden",
               )}
             >
-              {/* Preview Controls */}
-              <div className="no-print flex items-center justify-between mb-4 flex-wrap gap-2">
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setShowTemplateSelect(true)}
-                    className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm font-semibold hover:border-yellow-500 transition-colors"
-                  >
-                    <Layout size={14} />
-                    <span>Change Template</span>
-                  </button>
-                </div>
-
+              {/* Preview Controls — ONLY Download PDF Button */}
+              <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
                 <button
-                  onClick={handlePrint}
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 text-gray-900 font-bold text-sm rounded-xl shadow-lg transition-all"
+                  onClick={() => setShowTemplateSelect(true)}
+                  className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm font-semibold hover:border-yellow-500 transition-colors"
                 >
-                  <Printer size={14} />
-                  <span>Print / Save PDF</span>
+                  <Layout size={14} />
+                  <span>Change Template</span>
                 </button>
+
+                <motion.button
+                  onClick={handleDownloadPDF}
+                  disabled={isDownloading}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 text-gray-900 font-bold text-sm rounded-xl shadow-lg transition-all disabled:opacity-70"
+                >
+                  {isDownloading ? (
+                    <>
+                      <div className="w-3 h-3 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
+                      <span>Downloading...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Download size={14} />
+                      <span>Download PDF</span>
+                    </>
+                  )}
+                </motion.button>
               </div>
 
-              {/* CV Preview */}
-              <div className="bg-white shadow-2xl overflow-hidden rounded-lg lg:sticky lg:top-24">
-                <div
-                  id="cv-preview"
-                  className="transform scale-[0.5] md:scale-[0.65] lg:scale-[0.7] xl:scale-[0.8] origin-top-left"
-                  style={{
-                    width: "210mm",
-                    minHeight: "297mm",
-                  }}
-                >
-                  <TemplateComponent data={cvData} />
+              {/* SCROLLABLE Preview Container */}
+              <div className="cv-preview-wrapper lg:sticky lg:top-24">
+                <div className="cv-preview-container">
+                  <div className="cv-preview-scaled" id="cv-preview-content">
+                    <TemplateComponent data={cvData} />
+                  </div>
                 </div>
               </div>
-            </div>
+
+              <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-3">
+                Scroll to see the full CV preview
+              </p>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Template Selector Modal */}
+      {/* TEMPLATE SELECTOR MODAL */}
       <AnimatePresence>
         {showTemplateSelect && (
           <>
@@ -803,7 +874,7 @@ export default function CVBuilderPage() {
         )}
       </AnimatePresence>
 
-      {/* Clear Confirmation */}
+      {/* CLEAR CONFIRMATION */}
       <ConfirmModal
         isOpen={showClearModal}
         onClose={() => setShowClearModal(false)}
@@ -818,9 +889,7 @@ export default function CVBuilderPage() {
   );
 }
 
-// ============================================
-// FORM INPUT COMPONENT
-// ============================================
+// FORM INPUT
 function FormInput({ label, value, onChange, type = "text", disabled }) {
   return (
     <div>
@@ -838,9 +907,7 @@ function FormInput({ label, value, onChange, type = "text", disabled }) {
   );
 }
 
-// ============================================
-// FORM TEXTAREA COMPONENT
-// ============================================
+// FORM TEXTAREA
 function FormTextarea({ label, value, onChange, rows = 3, maxLength }) {
   return (
     <div>
@@ -858,9 +925,7 @@ function FormTextarea({ label, value, onChange, rows = 3, maxLength }) {
   );
 }
 
-// ============================================
-// FORM SELECT COMPONENT
-// ============================================
+// FORM SELECT
 function FormSelect({ label, value, onChange, options }) {
   return (
     <div>
@@ -882,9 +947,7 @@ function FormSelect({ label, value, onChange, options }) {
   );
 }
 
-// ============================================
-// DYNAMIC SECTION COMPONENT
-// ============================================
+// DYNAMIC SECTION
 function DynamicSection({ title, items, onAdd, onRemove, renderItem }) {
   return (
     <div className="space-y-4">

@@ -12,7 +12,7 @@
 
 **A modern web platform helping Afghan youth discover jobs, scholarships, internships, and skill-building opportunities across Afghanistan.**
 
-[Live Demo](https://kaaryab.vercel.app) •
+[Live Demo](https://kaaryab-afghanistan-seven.vercel.app/) •
 [Report Bug](https://github.com/Somaiyanoori/kaaryab-afghanistan/issues) •
 [Request Feature](https://github.com/Somaiyanoori/kaaryab-afghanistan/issues)
 

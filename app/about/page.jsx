@@ -165,13 +165,14 @@ export default function AboutPage() {
           HERO HEADER
       ============================================ */}
       <section className="relative bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden">
+        {/* Background Orbs */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-20 left-10 w-96 h-96 bg-yellow-500/10 rounded-full blur-3xl" />
           <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
         </div>
 
         <div
-          className="absolute inset-0 opacity-10"
+          className="absolute inset-0 opacity-10 pointer-events-none"
           style={{
             backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
             backgroundSize: "60px 60px",
@@ -179,6 +180,7 @@ export default function AboutPage() {
         />
 
         <div className="relative container-custom text-center">
+          {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -190,6 +192,7 @@ export default function AboutPage() {
             </span>
           </motion.div>
 
+          {/* Title */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -200,13 +203,14 @@ export default function AboutPage() {
             About <span className="gradient-text">KaarYab</span>
           </motion.h1>
 
+          {/* Description */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             className="text-base md:text-lg text-gray-300 max-w-3xl mx-auto"
           >
-            We're on a mission to empower Afghan youth by connecting them with
+            We are on a mission to empower Afghan youth by connecting them with
             the best opportunities across Afghanistan and beyond.
           </motion.p>
         </div>
@@ -225,6 +229,7 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
+              {/* Badge */}
               <div className="inline-flex items-center gap-2 px-3 py-1 mb-4 bg-yellow-100 dark:bg-yellow-500/20 rounded-full">
                 <Target
                   size={14}
@@ -235,6 +240,7 @@ export default function AboutPage() {
                 </span>
               </div>
 
+              {/* Heading */}
               <h2
                 className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white mb-6"
                 style={{ fontFamily: "Sora, sans-serif" }}
@@ -243,6 +249,7 @@ export default function AboutPage() {
                 <span className="gradient-text">Afghan Leaders</span>
               </h2>
 
+              {/* Body Text */}
               <div className="space-y-4 text-gray-600 dark:text-gray-400 leading-relaxed">
                 <p>
                   KaarYab was born from a simple but powerful idea: every young
@@ -253,16 +260,17 @@ export default function AboutPage() {
                   In a country full of talent and potential, information about
                   jobs, scholarships, and internships is often scattered across
                   social media groups, websites, and word of mouth. Many
-                  opportunities are missed simply because people don't know they
-                  exist.
+                  opportunities are missed simply because people do not know
+                  they exist.
                 </p>
                 <p>
-                  We're changing that by creating a single, beautiful, and
+                  We are changing that by creating a single, beautiful, and
                   easy-to-use platform where every Afghan youth can discover,
                   save, and pursue the opportunities they deserve.
                 </p>
               </div>
 
+              {/* CTA */}
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link href="/opportunities">
                   <motion.button
@@ -287,7 +295,7 @@ export default function AboutPage() {
             >
               <div className="relative rounded-3xl overflow-hidden shadow-2xl">
                 {/* Gradient Background */}
-                <div className="aspect-square bg-gradient-to-br from-yellow-400 via-orange-500 to-blue-600 p-12 flex items-center justify-center">
+                <div className="aspect-square bg-gradient-to-br from-yellow-400 via-orange-500 to-blue-600 p-12 flex items-center justify-center relative">
                   {/* Animated Icon */}
                   <motion.div
                     animate={{
@@ -308,7 +316,7 @@ export default function AboutPage() {
                     />
                   </motion.div>
 
-                  {/* Floating particles */}
+                  {/* Floating Particles — FIXED TEMPLATE LITERAL */}
                   {[...Array(15)].map((_, i) => (
                     <motion.div
                       key={i}
@@ -331,7 +339,7 @@ export default function AboutPage() {
                 </div>
               </div>
 
-              {/* Decorative element */}
+              {/* Decorative Blurs */}
               <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-yellow-500/20 rounded-full blur-3xl -z-10" />
               <div className="absolute -top-6 -left-6 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl -z-10" />
             </motion.div>
@@ -357,7 +365,7 @@ export default function AboutPage() {
                   whileHover={{ y: -4 }}
                   className="relative overflow-hidden p-6 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 text-center shadow-sm hover:shadow-md transition-shadow"
                 >
-                  {/* Background decoration */}
+                  {/* Background Decoration */}
                   <div className="absolute -top-4 -right-4 w-20 h-20 bg-yellow-500/5 rounded-full blur-2xl" />
 
                   {/* Icon */}
@@ -416,7 +424,7 @@ export default function AboutPage() {
                   whileHover={{ y: -8 }}
                   className="relative overflow-hidden p-6 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-xl transition-shadow group"
                 >
-                  {/* Background decoration */}
+                  {/* Background Decoration */}
                   <div
                     className="absolute -top-8 -right-8 w-32 h-32 rounded-full opacity-10 blur-2xl"
                     style={{ background: value.gradient }}
@@ -469,7 +477,7 @@ export default function AboutPage() {
                 transition={{ delay: index * 0.15 }}
                 className="flex items-start gap-4 md:gap-6"
               >
-                {/* Year Circle */}
+                {/* Year Circle — FIXED TEMPLATE LITERAL */}
                 <div className="flex-shrink-0">
                   <div
                     className="w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center shadow-lg"
@@ -508,7 +516,7 @@ export default function AboutPage() {
             badgeIcon={Sparkles}
             title="Everything You"
             highlightedText="Need"
-            description="Powerful features designed to make your opportunity search easier and more effective."
+            description="Powerful features designed to make your opportunity search easier."
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -544,7 +552,7 @@ export default function AboutPage() {
       </section>
 
       {/* ============================================
-          TEAM SECTION
+          TEAM / PILLARS SECTION
       ============================================ */}
       <section className="py-16 md:py-24 bg-gray-50 dark:bg-slate-950">
         <div className="container-custom">
@@ -605,8 +613,8 @@ export default function AboutPage() {
                 "linear-gradient(135deg, #EAB308 0%, #F97316 50%, #3B82F6 100%)",
             }}
           >
-            {/* Animated particles */}
-            <div className="absolute inset-0 opacity-20">
+            {/* Animated Particles — FIXED TEMPLATE LITERAL */}
+            <div className="absolute inset-0 opacity-20 pointer-events-none">
               {[...Array(20)].map((_, i) => (
                 <motion.div
                   key={i}
@@ -629,6 +637,7 @@ export default function AboutPage() {
             </div>
 
             <div className="relative">
+              {/* Animated Icon */}
               <motion.div
                 animate={{ rotate: [0, 10, -10, 0] }}
                 transition={{ duration: 3, repeat: Infinity }}
@@ -639,17 +648,21 @@ export default function AboutPage() {
                 </div>
               </motion.div>
 
+              {/* Title */}
               <h2
                 className="text-3xl md:text-5xl font-black text-white mb-4"
                 style={{ fontFamily: "Sora, sans-serif" }}
               >
                 Ready to Find Your Opportunity?
               </h2>
+
+              {/* Description */}
               <p className="text-base md:text-lg text-white/90 mb-8 max-w-2xl mx-auto">
                 Join thousands of Afghan youth who are already discovering
                 amazing opportunities every day.
               </p>
 
+              {/* Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link href="/opportunities">
                   <motion.button
@@ -669,7 +682,7 @@ export default function AboutPage() {
                   <motion.button
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
-                    className="inline-flex items-center gap-2 px-6 py-3.5 bg-white/10 hover:bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white font-bold text-sm rounded-xl"
+                    className="inline-flex items-center gap-2 px-6 py-3.5 bg-white/10 hover:bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white font-bold text-sm rounded-xl transition-all"
                   >
                     Get in Touch
                   </motion.button>

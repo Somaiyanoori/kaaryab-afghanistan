@@ -10,6 +10,16 @@ import { useOpportunitiesStore } from "../../store/index.js";
 import { cn } from "../../lib/utils.js";
 import { useEffect, useState } from "react";
 
+// Fixed particle positions (no more Math.random hydration errors)
+const SPARKLES = [
+  { top: 15, left: 20, duration: 2 },
+  { top: 40, left: 75, duration: 2.5 },
+  { top: 70, left: 30, duration: 3 },
+  { top: 25, left: 60, duration: 2.2 },
+  { top: 80, left: 45, duration: 2.8 },
+  { top: 55, left: 15, duration: 3.2 },
+];
+
 export default function CategoriesSection() {
   const [mounted, setMounted] = useState(false);
   const userOpportunities = useOpportunitiesStore(
@@ -20,12 +30,10 @@ export default function CategoriesSection() {
     setMounted(true);
   }, []);
 
-  // Combine mock data with user submitted (only after mount to prevent hydration mismatch)
   const allOpportunities = mounted
     ? [...opportunities, ...userOpportunities]
     : opportunities;
 
-  // Calculate count for each category
   const getCategoryCount = (categoryName) => {
     return allOpportunities.filter((opp) => opp.category === categoryName)
       .length;
@@ -33,15 +41,11 @@ export default function CategoriesSection() {
 
   return (
     <section className="relative py-16 md:py-24 overflow-hidden bg-gray-50 dark:bg-slate-950">
-      {/* Decorative Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
-        {/* Top-left glow */}
         <div className="absolute top-0 left-0 w-96 h-96 bg-yellow-500/5 dark:bg-yellow-500/10 rounded-full blur-3xl" />
-        {/* Bottom-right glow */}
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-3xl" />
       </div>
 
-      {/* Grid pattern */}
       <div
         className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none"
         style={{
@@ -50,11 +54,7 @@ export default function CategoriesSection() {
         }}
       />
 
-      {/* ============================================
-          Content Container
-      ============================================ */}
       <div className="relative container-custom">
-        {/* Section Header */}
         <SectionHeader
           badge="Categories"
           badgeIcon={LayoutGrid}
@@ -63,9 +63,6 @@ export default function CategoriesSection() {
           description="Browse through diverse opportunity types tailored to your career goals, skills, and interests. Every path starts with a choice."
         />
 
-        {/* ============================================
-            Categories Grid
-        ============================================ */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6">
           {categories.map((category, index) => (
             <CategoryCard
@@ -76,7 +73,7 @@ export default function CategoriesSection() {
             />
           ))}
 
-          {/* View All Card (Bonus 8th card) */}
+          {/* View All Card */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -101,22 +98,22 @@ export default function CategoriesSection() {
                   "flex flex-col justify-between",
                 )}
               >
-                {/* Animated Sparkles Background */}
-                <div className="absolute inset-0 opacity-20">
-                  {[...Array(6)].map((_, i) => (
+                {/* FIXED Sparkles */}
+                <div className="absolute inset-0 opacity-20 pointer-events-none">
+                  {SPARKLES.map((sparkle, i) => (
                     <motion.div
                       key={i}
                       className="absolute w-2 h-2 bg-white rounded-full"
                       style={{
-                        top: `${Math.random() * 100}%`,
-                        left: `${Math.random() * 100}%`,
+                        top: `${sparkle.top}%`,
+                        left: `${sparkle.left}%`,
                       }}
                       animate={{
                         opacity: [0.3, 1, 0.3],
                         scale: [1, 1.5, 1],
                       }}
                       transition={{
-                        duration: 2 + i * 0.5,
+                        duration: sparkle.duration,
                         repeat: Infinity,
                         delay: i * 0.3,
                       }}
@@ -125,7 +122,6 @@ export default function CategoriesSection() {
                 </div>
 
                 <div className="relative">
-                  {/* Icon */}
                   <div className="mb-5">
                     <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-white/20 backdrop-blur-sm group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
                       <LayoutGrid
@@ -136,12 +132,10 @@ export default function CategoriesSection() {
                     </div>
                   </div>
 
-                  {/* Title */}
                   <h3 className="text-xl font-bold text-white mb-2">
                     View All
                   </h3>
 
-                  {/* Description */}
                   <p className="text-sm text-white/90 mb-5 line-clamp-2">
                     Explore all{" "}
                     {mounted ? allOpportunities.length : opportunities.length}{" "}
@@ -149,7 +143,6 @@ export default function CategoriesSection() {
                   </p>
                 </div>
 
-                {/* Bottom Row */}
                 <div className="relative flex items-center justify-between">
                   <span className="text-xs font-bold text-white uppercase tracking-wider">
                     Browse Now
@@ -168,9 +161,6 @@ export default function CategoriesSection() {
           </motion.div>
         </div>
 
-        {/* ============================================
-            Bottom CTA
-        ============================================ */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

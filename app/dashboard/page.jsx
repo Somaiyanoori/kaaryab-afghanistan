@@ -11,7 +11,6 @@ import {
   Wifi,
   AlertCircle,
   TrendingUp,
-  Users,
   Trash2,
   Eye,
   Pencil,
@@ -131,9 +130,7 @@ export default function DashboardPage() {
 
   return (
     <>
-      {/* ============================================
-          HERO HEADER
-      ============================================ */}
+      {/* HERO HEADER */}
       <section className="relative bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 pt-32 pb-8 md:pt-40 md:pb-12 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-20 left-10 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl" />
@@ -179,9 +176,7 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      {/* ============================================
-          MAIN CONTENT
-      ============================================ */}
+      {/* MAIN CONTENT */}
       <section className="bg-gray-50 dark:bg-slate-950 py-8 md:py-12 min-h-screen">
         <div className="container-custom space-y-8">
           {/* Stats Cards */}
@@ -377,7 +372,7 @@ export default function DashboardPage() {
 
               {expiringSoon.length === 0 ? (
                 <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-6">
-                  No opportunities expiring soon 🎉
+                  No opportunities expiring soon
                 </p>
               ) : (
                 <div className="space-y-3">
@@ -418,7 +413,7 @@ export default function DashboardPage() {
                     Your Submissions
                   </h3>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Manage opportunities you've added (
+                    Manage opportunities you have added (
                     {userOpportunities.length})
                   </p>
                 </div>
@@ -466,6 +461,7 @@ export default function DashboardPage() {
                         </td>
                         <td className="px-4 py-4">
                           <div className="flex items-center justify-end gap-2">
+                            {/* View Button */}
                             <Link
                               href={`/opportunities/${opp.slug || opp.id}`}
                               className="w-8 h-8 rounded-lg bg-blue-100 hover:bg-blue-200 dark:bg-blue-500/20 dark:hover:bg-blue-500/30 text-blue-600 dark:text-blue-400 flex items-center justify-center transition-colors"
@@ -473,6 +469,17 @@ export default function DashboardPage() {
                             >
                               <Eye size={14} />
                             </Link>
+
+                            {/* Edit Button */}
+                            <Link
+                              href={`/edit-opportunity/${opp.id}`}
+                              className="w-8 h-8 rounded-lg bg-yellow-100 hover:bg-yellow-200 dark:bg-yellow-500/20 dark:hover:bg-yellow-500/30 text-yellow-600 dark:text-yellow-400 flex items-center justify-center transition-colors"
+                              title="Edit"
+                            >
+                              <Pencil size={14} />
+                            </Link>
+
+                            {/* Delete Button */}
                             <button
                               onClick={() => setDeleteId(opp.id)}
                               className="w-8 h-8 rounded-lg bg-red-100 hover:bg-red-200 dark:bg-red-500/20 dark:hover:bg-red-500/30 text-red-600 dark:text-red-400 flex items-center justify-center transition-colors"
