@@ -344,14 +344,155 @@ body {
 }
 
 /* ============================================
+   CV BUILDER PREVIEW SCALE (SCROLLABLE)
+   ============================================ */
+.cv-preview-scaled {
+  transform: scale(0.5);
+  transform-origin: top left;
+  width: 210mm;
+  min-height: 297mm;
+  background: white;
+}
+
+@media (min-width: 640px) {
+  .cv-preview-scaled {
+    transform: scale(0.55);
+  }
+}
+
+@media (min-width: 768px) {
+  .cv-preview-scaled {
+    transform: scale(0.6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .cv-preview-scaled {
+    transform: scale(0.5);
+  }
+}
+
+@media (min-width: 1280px) {
+  .cv-preview-scaled {
+    transform: scale(0.6);
+  }
+}
+
+@media (min-width: 1536px) {
+  .cv-preview-scaled {
+    transform: scale(0.7);
+  }
+}
+
+/* Scrollable preview wrapper */
+.cv-preview-wrapper {
+  height: calc(100vh - 200px);
+  min-height: 500px;
+  overflow: auto;
+  padding: 1rem;
+  background: #e5e7eb;
+  border-radius: 0.5rem;
+}
+
+.dark .cv-preview-wrapper {
+  background: #1e293b;
+}
+
+/* Container that holds the scaled CV — needs to reserve space */
+.cv-preview-container {
+  width: calc(210mm * 0.5);
+  height: calc(297mm * 0.5);
+  margin: 0 auto;
+  position: relative;
+}
+
+@media (min-width: 640px) {
+  .cv-preview-container {
+    width: calc(210mm * 0.55);
+    height: calc(297mm * 0.55);
+  }
+}
+
+@media (min-width: 768px) {
+  .cv-preview-container {
+    width: calc(210mm * 0.6);
+    height: calc(297mm * 0.6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .cv-preview-container {
+    width: calc(210mm * 0.5);
+    height: calc(297mm * 0.5);
+  }
+}
+
+@media (min-width: 1280px) {
+  .cv-preview-container {
+    width: calc(210mm * 0.6);
+    height: calc(297mm * 0.6);
+  }
+}
+
+@media (min-width: 1536px) {
+  .cv-preview-container {
+    width: calc(210mm * 0.7);
+    height: calc(297mm * 0.7);
+  }
+}
+
+/* Hidden print area — only shows when printing */
+#cv-print-area {
+  display: none;
+}
+
+/* ============================================
    PRINT STYLES
    ============================================ */
 @media print {
-  .no-print {
+  /* Reset colors */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Hide everything */
+  body > * {
     display: none !important;
   }
-  body {
+
+  /* Show ONLY the print area */
+  /* Hidden print area — only shows when printing */
+  #cv-print-area {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    width: 210mm;
     background: white;
-    color: black;
+  }
+
+  #cv-print-area * {
+    visibility: visible !important;
+  }
+
+  /* Reset body/html */
+  body,
+  html {
+    background: white !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* A4 page size */
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  /* Hide any no-print elements */
+  .no-print {
+    display: none !important;
   }
 }

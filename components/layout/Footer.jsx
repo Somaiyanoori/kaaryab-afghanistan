@@ -71,30 +71,19 @@ export default function Footer() {
 
   return (
     <footer className="relative bg-gray-900 dark:bg-slate-950 text-gray-300 overflow-hidden">
-      {/* ============================================
-          Top Gradient Border
-      ============================================ */}
+      {/* Top Gradient Border */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-500 via-orange-500 to-blue-600" />
 
-      {/* ============================================
-          Decorative Background Pattern
-      ============================================ */}
+      {/* Decorative Background */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <div className="absolute top-10 left-10 w-64 h-64 bg-yellow-500 rounded-full blur-3xl" />
         <div className="absolute bottom-10 right-10 w-64 h-64 bg-blue-500 rounded-full blur-3xl" />
       </div>
 
-      {/* ============================================
-          Main Footer Content
-      ============================================ */}
       <div className="relative container-custom pt-16 pb-8">
-        {/* ============================================
-            4-Column Grid
-        ============================================ */}
+        {/* 4-Column Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
-          {/* ==================== */}
           {/* COLUMN 1: BRAND */}
-          {/* ==================== */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -110,7 +99,7 @@ export default function Footer() {
               opportunities.
             </p>
 
-            {/* Social Media Icons */}
+            {/* Social Media */}
             <div className="flex items-center gap-3 pt-2">
               {socialLinks.map((social) => {
                 const Icon = social.icon;
@@ -139,9 +128,7 @@ export default function Footer() {
             </div>
           </motion.div>
 
-          {/* ==================== */}
           {/* COLUMN 2: EXPLORE */}
-          {/* ==================== */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -154,7 +141,7 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2.5">
               {exploreLinks.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className={cn(
@@ -175,9 +162,7 @@ export default function Footer() {
             </ul>
           </motion.div>
 
-          {/* ==================== */}
           {/* COLUMN 3: RESOURCES */}
-          {/* ==================== */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -190,7 +175,7 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2.5">
               {resourceLinks.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className={cn(
@@ -211,9 +196,7 @@ export default function Footer() {
             </ul>
           </motion.div>
 
-          {/* ==================== */}
           {/* COLUMN 4: CONNECT */}
-          {/* ==================== */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -226,7 +209,6 @@ export default function Footer() {
               Get in Touch
             </h3>
 
-            {/* Contact Info */}
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
@@ -264,7 +246,6 @@ export default function Footer() {
               </li>
             </ul>
 
-            {/* Newsletter Signup */}
             <div className="pt-4 border-t border-white/10">
               <h4 className="text-sm font-semibold text-white mb-3">
                 Subscribe to Newsletter
@@ -274,16 +255,11 @@ export default function Footer() {
           </motion.div>
         </div>
 
-        {/* ============================================
-            Divider Line
-        ============================================ */}
+        {/* Divider */}
         <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-6" />
 
-        {/* ============================================
-            Bottom Bar
-        ============================================ */}
+        {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
-          {/* Copyright */}
           <div className="flex flex-wrap items-center gap-2 text-gray-500">
             <span>© {currentYear}</span>
             <span className="text-yellow-500 font-semibold">
@@ -293,7 +269,6 @@ export default function Footer() {
             <span>All rights reserved</span>
           </div>
 
-          {/* Made with love */}
           <div className="flex items-center gap-1.5 text-gray-500">
             <span>Made with</span>
             <motion.span
@@ -306,7 +281,6 @@ export default function Footer() {
             <span>for Afghan Youth</span>
           </div>
 
-          {/* Tech Stack */}
           <div className="flex items-center gap-2 text-xs text-gray-600">
             <span>Built with</span>
             <span className="text-white font-semibold">Next.js</span>
@@ -315,9 +289,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* ============================================
-            Demo Data Notice
-        ============================================ */}
+        {/* Demo Notice */}
         <div className="mt-6 pt-6 border-t border-white/5">
           <p className="text-center text-xs text-gray-600">
             ⚠️ This platform uses demo data for educational and portfolio

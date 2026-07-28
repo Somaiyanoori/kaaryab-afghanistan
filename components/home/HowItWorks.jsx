@@ -7,9 +7,6 @@ import SectionHeader from "../shared/SectionHeader.jsx";
 import StepCard from "./StepCard.jsx";
 import { cn } from "../../lib/utils.js";
 
-// ============================================
-// STEPS DATA
-// ============================================
 const STEPS = [
   {
     id: 1,
@@ -57,20 +54,39 @@ const STEPS = [
   },
 ];
 
+// FIXED positions (no more Math.random)
+const CTA_SPARKLES = [
+  { top: 10, left: 15, duration: 2 },
+  { top: 20, left: 45, duration: 2.5 },
+  { top: 30, left: 75, duration: 3 },
+  { top: 40, left: 85, duration: 2.2 },
+  { top: 50, left: 25, duration: 2.8 },
+  { top: 60, left: 55, duration: 3.2 },
+  { top: 70, left: 15, duration: 2.4 },
+  { top: 80, left: 65, duration: 2.6 },
+  { top: 15, left: 90, duration: 3.1 },
+  { top: 25, left: 5, duration: 2.9 },
+  { top: 35, left: 40, duration: 2.3 },
+  { top: 45, left: 70, duration: 2.7 },
+  { top: 55, left: 10, duration: 3.3 },
+  { top: 65, left: 80, duration: 2.1 },
+  { top: 75, left: 30, duration: 2.5 },
+  { top: 85, left: 50, duration: 2.8 },
+  { top: 12, left: 65, duration: 3 },
+  { top: 42, left: 20, duration: 2.4 },
+  { top: 72, left: 95, duration: 2.6 },
+  { top: 92, left: 35, duration: 2.2 },
+];
+
 export default function HowItWorks() {
   return (
     <section className="relative py-16 md:py-24 overflow-hidden bg-gray-50 dark:bg-slate-950">
-      {/* ============================================
-          DECORATIVE BACKGROUND
-      ============================================ */}
       <div className="absolute inset-0 pointer-events-none">
-        {/* Gradient orbs */}
         <div className="absolute top-20 left-10 w-96 h-96 bg-yellow-500/5 dark:bg-yellow-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-3xl" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-500/3 dark:bg-purple-500/5 rounded-full blur-3xl" />
       </div>
 
-      {/* Grid pattern */}
       <div
         className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none"
         style={{
@@ -79,11 +95,7 @@ export default function HowItWorks() {
         }}
       />
 
-      {/* ============================================
-          CONTENT CONTAINER
-      ============================================ */}
       <div className="relative container-custom">
-        {/* Section Header */}
         <SectionHeader
           badge="How It Works"
           badgeIcon={PlayCircle}
@@ -92,9 +104,6 @@ export default function HowItWorks() {
           description="Four simple steps to find and apply for the perfect opportunity. Start your journey today — it's completely free."
         />
 
-        {/* ============================================
-            STEPS CONTAINER
-        ============================================ */}
         <div className="max-w-5xl mx-auto mt-12 md:mt-16 space-y-4">
           {STEPS.map((step, index) => (
             <StepCard
@@ -106,9 +115,6 @@ export default function HowItWorks() {
           ))}
         </div>
 
-        {/* ============================================
-            BOTTOM CTA CARD
-        ============================================ */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -129,31 +135,30 @@ export default function HowItWorks() {
                 "linear-gradient(135deg, #EAB308 0%, #F97316 50%, #3B82F6 100%)",
             }}
           >
-            {/* Animated Background Pattern */}
-            <div className="absolute inset-0 opacity-20">
-              {[...Array(20)].map((_, i) => (
+            {/* FIXED Sparkles */}
+            <div className="absolute inset-0 opacity-20 pointer-events-none">
+              {CTA_SPARKLES.map((sparkle, i) => (
                 <motion.div
                   key={i}
                   className="absolute w-2 h-2 bg-white rounded-full"
                   style={{
-                    top: `${Math.random() * 100}%`,
-                    left: `${Math.random() * 100}%`,
+                    top: `${sparkle.top}%`,
+                    left: `${sparkle.left}%`,
                   }}
                   animate={{
                     opacity: [0.3, 1, 0.3],
                     scale: [1, 1.5, 1],
                   }}
                   transition={{
-                    duration: 2 + Math.random() * 2,
+                    duration: sparkle.duration,
                     repeat: Infinity,
-                    delay: Math.random() * 2,
+                    delay: (i * 0.1) % 2,
                   }}
                 />
               ))}
             </div>
 
             <div className="relative">
-              {/* Icon */}
               <motion.div
                 animate={{ rotate: [0, 10, -10, 0] }}
                 transition={{ duration: 3, repeat: Infinity }}
@@ -164,7 +169,6 @@ export default function HowItWorks() {
                 </div>
               </motion.div>
 
-              {/* Title */}
               <h3
                 className="text-2xl md:text-4xl font-black text-white mb-4"
                 style={{ fontFamily: "Sora, sans-serif" }}
@@ -172,14 +176,12 @@ export default function HowItWorks() {
                 Ready to Start Your Journey?
               </h3>
 
-              {/* Description */}
               <p className="text-base md:text-lg text-white/90 mb-8 max-w-xl mx-auto">
                 Join thousands of Afghan youth already discovering
                 opportunities. It's completely free and takes less than a minute
                 to get started.
               </p>
 
-              {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link href="/opportunities">
                   <motion.button
