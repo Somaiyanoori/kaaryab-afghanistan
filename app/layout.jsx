@@ -28,7 +28,16 @@ export default function RootLayout({ children }) {
       className={`${plusJakarta.variable} ${sora.variable}`}
     >
       <head>
-        <link rel="icon" href="/favicon.ico" />
+        {/* Modern browsers: SVG favicon (looks perfect at any size!) */}
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+        {/* Apple devices */}
+        <link rel="apple-touch-icon" href="/favicon.svg" />
+
+        {/* Theme color for browser UI */}
+        <meta name="theme-color" content="#EAB308" />
+
+        {/* Viewport */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body

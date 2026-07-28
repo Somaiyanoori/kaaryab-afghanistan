@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="darkGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+  </defs>
+
+  <rect
+    width="100"
+    height="100"
+    rx="22"
+    ry="22"
+    fill="url(#darkGradient)"
+  />
+
+  <text
+    x="50"
+    y="72"
+    font-family="Arial Black, Arial, sans-serif"
+    font-size="65"
+    font-weight="900"
+    text-anchor="middle"
+    fill="#EAB308"
+    letter-spacing="-2"
+  >K</text>
+
+  <circle
+    cx="78"
+    cy="22"
+    r="8"
+    fill="#3B82F6"
+    stroke="#0F172A"
+    stroke-width="2"
+  />
+</svg>
