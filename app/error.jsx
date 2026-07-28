@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useEffect } from "react";
-
+import Button from "../components/ui/Button.jsx";
 export default function Error({ error, reset }) {
   useEffect(() => {
     console.error(error);
@@ -27,19 +27,13 @@ export default function Error({ error, reset }) {
 
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <button
-            onClick={reset}
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold text-sm rounded-xl shadow-lg transition-all"
-          >
+          <Button variant="primary" size="md" onClick={reset}>
             Try Again
-          </button>
+          </Button>
 
-          <a
-            href="/"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-gray-300 font-semibold text-sm rounded-xl hover:border-yellow-500 transition-all"
-          >
+          <Button href="/" variant="outline" size="md">
             Go Home
-          </a>
+          </Button>
         </div>
       </div>
     </div>

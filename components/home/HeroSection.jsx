@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { Sparkles, ArrowRight, PlusCircle, ChevronDown } from "lucide-react";
 import HeroSearch from "./HeroSearch.jsx";
 import FloatingCards from "./FloatingCards.jsx";
+import Button from "../ui/Button.jsx";
 import { cn } from "../../lib/utils.js";
 
 // Statistics data
@@ -39,18 +39,10 @@ const itemVariants = {
   },
 };
 
-const wordVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5 },
-  },
-};
-
 export default function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
+      {/* Background Gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900" />
 
       {/* Grid Pattern Overlay */}
@@ -101,11 +93,12 @@ export default function HeroSection() {
         />
       </div>
 
-      {/* Radial Gradient Overlay for readability */}
+      {/* Radial Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
 
       <div className="relative container-custom pt-24 pb-20 z-[5]">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* LEFT: Content */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -172,53 +165,29 @@ export default function HeroSection() {
               <HeroSearch />
             </motion.div>
 
-            {/* CTA Buttons */}
+            {/* CTA Buttons — USING REUSABLE BUTTON */}
             <motion.div
               variants={itemVariants}
               className="flex flex-wrap gap-3 justify-center lg:justify-start"
             >
-              <Link href="/opportunities">
-                <motion.button
-                  whileHover={{ scale: 1.03, y: -2 }}
-                  whileTap={{ scale: 0.97 }}
-                  className={cn(
-                    "group inline-flex items-center gap-2",
-                    "px-6 py-3.5",
-                    "bg-white text-gray-900",
-                    "font-semibold text-sm",
-                    "rounded-xl",
-                    "shadow-lg hover:shadow-xl",
-                    "transition-all duration-200",
-                  )}
-                >
-                  <span>Browse All Opportunities</span>
-                  <ArrowRight
-                    size={16}
-                    className="group-hover:translate-x-1 transition-transform duration-200"
-                  />
-                </motion.button>
-              </Link>
+              <Button
+                href="/opportunities"
+                variant="white"
+                size="lg"
+                icon={ArrowRight}
+                iconPosition="right"
+              >
+                Browse All Opportunities
+              </Button>
 
-              <Link href="/add-opportunity">
-                <motion.button
-                  whileHover={{ scale: 1.03, y: -2 }}
-                  whileTap={{ scale: 0.97 }}
-                  className={cn(
-                    "inline-flex items-center gap-2",
-                    "px-6 py-3.5",
-                    "bg-white/10 hover:bg-white/15",
-                    "border border-white/20 hover:border-white/30",
-                    "text-white",
-                    "font-semibold text-sm",
-                    "rounded-xl",
-                    "backdrop-blur-sm",
-                    "transition-all duration-200",
-                  )}
-                >
-                  <PlusCircle size={16} />
-                  <span>Add Opportunity</span>
-                </motion.button>
-              </Link>
+              <Button
+                href="/add-opportunity"
+                variant="glass"
+                size="lg"
+                icon={PlusCircle}
+              >
+                Add Opportunity
+              </Button>
             </motion.div>
 
             {/* Statistics */}
@@ -246,6 +215,8 @@ export default function HeroSection() {
               </div>
             </motion.div>
           </motion.div>
+
+          {/* RIGHT: Floating Cards */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -254,6 +225,8 @@ export default function HeroSection() {
             <FloatingCards />
           </motion.div>
         </div>
+
+        {/* Scroll Indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -277,7 +250,7 @@ export default function HeroSection() {
         </motion.div>
       </div>
 
-      {/* Bottom Wave/Fade Transition */}
+      {/* Bottom Wave */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-gray-50 dark:to-slate-950 pointer-events-none" />
     </section>
   );

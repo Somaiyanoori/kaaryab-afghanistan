@@ -28,7 +28,7 @@ import ClassicTemplate from "../../components/cv-builder/templates/ClassicTempla
 import MinimalTemplate from "../../components/cv-builder/templates/MinimalTemplate.jsx";
 import ProfessionalTemplate from "../../components/cv-builder/templates/ProfessionalTemplate.jsx";
 import { cn, generateId } from "../../lib/utils.js";
-
+import Button from "../../components/ui/Button.jsx";
 const SKILL_LEVELS = ["Beginner", "Intermediate", "Advanced", "Expert"];
 const LANGUAGE_LEVELS = ["Basic", "Conversational", "Fluent", "Native"];
 
@@ -214,13 +214,14 @@ export default function CVBuilderPage() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="flex items-center gap-2 flex-wrap"
             >
-              <button
+              <Button
+                variant="glass"
+                size="md"
+                icon={Sparkles}
                 onClick={handleLoadSample}
-                className="flex items-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 text-white text-sm font-semibold rounded-xl transition-colors"
               >
-                <Sparkles size={16} />
-                <span>Load Sample</span>
-              </button>
+                Load Sample
+              </Button>
 
               <button
                 onClick={() => setShowClearModal(true)}
@@ -769,33 +770,24 @@ export default function CVBuilderPage() {
             >
               {/* Preview Controls — ONLY Download PDF Button */}
               <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-                <button
+                <Button
+                  variant="outline"
+                  size="md"
+                  icon={Layout}
                   onClick={() => setShowTemplateSelect(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm font-semibold hover:border-yellow-500 transition-colors"
                 >
-                  <Layout size={14} />
-                  <span>Change Template</span>
-                </button>
+                  Change Template
+                </Button>
 
-                <motion.button
+                <Button
+                  variant="primary"
+                  size="md"
+                  icon={Download}
                   onClick={handleDownloadPDF}
-                  disabled={isDownloading}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 text-gray-900 font-bold text-sm rounded-xl shadow-lg transition-all disabled:opacity-70"
+                  isLoading={isDownloading}
                 >
-                  {isDownloading ? (
-                    <>
-                      <div className="w-3 h-3 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
-                      <span>Downloading...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Download size={14} />
-                      <span>Download PDF</span>
-                    </>
-                  )}
-                </motion.button>
+                  {isDownloading ? "Downloading..." : "Download PDF"}
+                </Button>
               </div>
 
               {/* SCROLLABLE Preview Container */}

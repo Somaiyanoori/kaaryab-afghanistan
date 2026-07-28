@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { SearchX, Sparkles } from "lucide-react";
 import { cn } from "../../lib/utils.js";
-
+import Button from "../ui/Button.jsx";
 export default function EmptyState({
   icon: Icon = SearchX,
   title = "No results found",
@@ -61,40 +61,16 @@ export default function EmptyState({
       </p>
 
       {/* Action Button */}
-      {actionLabel &&
-        (actionHref || onAction) &&
-        (actionHref ? (
-          <Link href={actionHref}>
-            <motion.button
-              whileHover={{ scale: 1.03, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              className={cn(
-                "px-6 py-3 rounded-xl",
-                "bg-yellow-500 hover:bg-yellow-400",
-                "text-gray-900 font-semibold text-sm",
-                "shadow-md hover:shadow-yellow-glow",
-                "transition-all duration-200",
-              )}
-            >
-              {actionLabel}
-            </motion.button>
-          </Link>
-        ) : (
-          <motion.button
-            onClick={onAction}
-            whileHover={{ scale: 1.03, y: -2 }}
-            whileTap={{ scale: 0.97 }}
-            className={cn(
-              "px-6 py-3 rounded-xl",
-              "bg-yellow-500 hover:bg-yellow-400",
-              "text-gray-900 font-semibold text-sm",
-              "shadow-md hover:shadow-yellow-glow",
-              "transition-all duration-200",
-            )}
-          >
-            {actionLabel}
-          </motion.button>
-        ))}
+      {actionLabel && (actionHref || onAction) && (
+        <Button
+          href={actionHref}
+          variant="primary"
+          size="md"
+          onClick={onAction}
+        >
+          {actionLabel}
+        </Button>
+      )}
     </motion.div>
   );
 }

@@ -31,7 +31,7 @@ import {
   Legend,
 } from "recharts";
 import toast from "react-hot-toast";
-
+import Button from "../../components/ui/Button.jsx";
 import DashboardStatCard from "../../components/dashboard/DashboardStatCard.jsx";
 import ConfirmModal from "../../components/shared/ConfirmModal.jsx";
 import { opportunities as mockOpportunities } from "../../data/opportunities.js";
@@ -162,16 +162,14 @@ export default function DashboardPage() {
               </p>
             </div>
 
-            <Link href="/add-opportunity">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 px-5 py-3 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold rounded-xl shadow-lg transition-all"
-              >
-                <Plus size={18} />
-                <span>Add Opportunity</span>
-              </motion.button>
-            </Link>
+            <Button
+              href="/add-opportunity"
+              variant="primary"
+              size="md"
+              icon={Plus}
+            >
+              Add Opportunity
+            </Button>
           </div>
         </div>
       </section>

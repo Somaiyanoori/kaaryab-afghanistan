@@ -9,7 +9,7 @@ import { categories, opportunities } from "../../data/opportunities.js";
 import { useOpportunitiesStore } from "../../store/index.js";
 import { cn } from "../../lib/utils.js";
 import { useEffect, useState } from "react";
-
+import Button from "../ui/Button.jsx";
 // Fixed particle positions (no more Math.random hydration errors)
 const SPARKLES = [
   { top: 15, left: 20, duration: 2 },
@@ -171,24 +171,15 @@ export default function CategoriesSection() {
           <p className="text-gray-600 dark:text-gray-400 mb-4">
             Can't find what you're looking for?
           </p>
-          <Link href="/add-opportunity">
-            <motion.button
-              whileHover={{ scale: 1.03, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              className={cn(
-                "inline-flex items-center gap-2",
-                "px-6 py-3 rounded-xl",
-                "bg-gray-900 dark:bg-white",
-                "text-white dark:text-gray-900",
-                "font-semibold text-sm",
-                "shadow-lg hover:shadow-xl",
-                "transition-all duration-200",
-              )}
-            >
-              <span>Submit an Opportunity</span>
-              <ArrowRight size={16} />
-            </motion.button>
-          </Link>
+          <Button
+            href="/add-opportunity"
+            variant="dark"
+            size="md"
+            icon={ArrowRight}
+            iconPosition="right"
+          >
+            Submit an Opportunity
+          </Button>
         </motion.div>
       </div>
     </section>

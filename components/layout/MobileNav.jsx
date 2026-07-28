@@ -13,13 +13,12 @@ import {
   Info,
   Mail,
   PlusCircle,
-  BookmarkCheck,
   ChevronRight,
 } from "lucide-react";
 import Logo from "../shared/Logo.jsx";
 import ThemeToggle from "../shared/ThemeToggle.jsx";
+import Button from "../ui/Button.jsx";
 import { useSavedStore } from "../../store/index.js";
-import { NAV_LINKS } from "../../lib/constants.js";
 import { cn } from "../../lib/utils.js";
 
 // Icon map for nav links
@@ -206,26 +205,18 @@ export default function MobileNav({ isOpen, onClose }) {
               </div>
             </nav>
 
-            {/* Drawer Footer */}
+            {/* Drawer Footer — USING REUSABLE BUTTON */}
             <div className="p-4 border-t border-gray-100 dark:border-dark-border space-y-3">
-              {/* Add Opportunity Button */}
-              <Link href="/add-opportunity" onClick={onClose}>
-                <motion.div
-                  className={cn(
-                    "flex items-center justify-center gap-2",
-                    "w-full py-3 px-4 rounded-xl",
-                    "bg-yellow-500 hover:bg-yellow-400",
-                    "text-gray-900 font-semibold text-sm",
-                    "transition-all duration-200",
-                    "shadow-yellow-glow hover:shadow-yellow-glow-lg",
-                  )}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <PlusCircle size={16} />
-                  <span>Add Opportunity</span>
-                </motion.div>
-              </Link>
+              <Button
+                href="/add-opportunity"
+                variant="primary"
+                size="md"
+                icon={PlusCircle}
+                fullWidth
+                onClick={onClose}
+              >
+                Add Opportunity
+              </Button>
 
               {/* App Version */}
               <p className="text-center text-xs text-gray-400 dark:text-gray-600">

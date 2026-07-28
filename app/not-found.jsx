@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Compass, Home, Search, ArrowRight } from "lucide-react";
-
+import Button from "../components/ui/Button.jsx";
 export default function NotFound() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-950 pt-20 pb-12 px-4 overflow-hidden relative">
@@ -83,31 +83,18 @@ export default function NotFound() {
           transition={{ delay: 0.5 }}
           className="flex flex-col sm:flex-row gap-3 justify-center"
         >
-          <Link href="/">
-            <motion.button
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 text-gray-900 font-bold text-sm rounded-xl shadow-lg transition-all"
-            >
-              <Home size={16} />
-              <span>Back to Home</span>
-            </motion.button>
-          </Link>
+          <Button href="/" variant="primary" size="lg" icon={Home}>
+            Back to Home
+          </Button>
 
-          <Link href="/opportunities">
-            <motion.button
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white dark:bg-slate-800 border-2 border-gray-200 dark:border-slate-700 hover:border-yellow-500 text-gray-700 dark:text-gray-300 font-semibold text-sm rounded-xl transition-all group"
-            >
-              <Search size={16} />
-              <span>Browse Opportunities</span>
-              <ArrowRight
-                size={14}
-                className="group-hover:translate-x-1 transition-transform"
-              />
-            </motion.button>
-          </Link>
+          <Button
+            href="/opportunities"
+            variant="outline"
+            size="lg"
+            icon={Search}
+          >
+            Browse Opportunities
+          </Button>
         </motion.div>
       </div>
     </div>

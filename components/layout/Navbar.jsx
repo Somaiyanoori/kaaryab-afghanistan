@@ -8,8 +8,10 @@ import { Menu, PlusCircle, Bookmark, Search } from "lucide-react";
 import Logo from "../shared/Logo.jsx";
 import ThemeToggle from "../shared/ThemeToggle.jsx";
 import MobileNav from "./MobileNav.jsx";
+import Button from "../ui/Button.jsx";
 import { useSavedStore } from "../../store/index.js";
 import { cn } from "../../lib/utils.js";
+
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
   { label: "Opportunities", href: "/opportunities" },
@@ -74,8 +76,10 @@ export default function Navbar() {
           className="container-custom flex items-center justify-between"
           aria-label="Main navigation"
         >
+          {/* Logo */}
           <Logo />
 
+          {/* Desktop Nav Links */}
           <div className="hidden lg:flex items-center gap-1">
             {NAV_ITEMS.map((item) => {
               const active = isActive(item.href);
@@ -122,6 +126,7 @@ export default function Navbar() {
             })}
           </div>
 
+          {/* Right Side Actions */}
           <div className="flex items-center gap-2">
             {/* Search Button (shows on scroll) */}
             <AnimatePresence>
@@ -214,25 +219,17 @@ export default function Navbar() {
               </motion.button>
             </Link>
 
-            {/* Add Opportunity Button - Desktop */}
-            <Link href="/add-opportunity" className="hidden md:block">
-              <motion.button
-                className={cn(
-                  "flex items-center gap-2",
-                  "px-4 py-2 rounded-lg",
-                  "bg-yellow-500 hover:bg-yellow-400",
-                  "text-gray-900 font-semibold text-sm",
-                  "transition-all duration-200",
-                  "shadow-md hover:shadow-yellow-glow",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-600",
-                )}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
+            {/* Add Opportunity Button - Desktop (USING REUSABLE BUTTON!) */}
+            <div className="hidden md:block">
+              <Button
+                href="/add-opportunity"
+                variant="primary"
+                size="md"
+                icon={PlusCircle}
               >
-                <PlusCircle size={15} />
-                <span>Add Opportunity</span>
-              </motion.button>
-            </Link>
+                Add Opportunity
+              </Button>
+            </div>
 
             {/* Mobile Hamburger */}
             <motion.button
