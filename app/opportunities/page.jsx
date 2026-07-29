@@ -4,7 +4,7 @@ import { Suspense, useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, SearchX } from "lucide-react";
-
+import PageHeader from "../../components/layout/PageHeader.jsx";
 import SearchInput from "../../components/opportunities/SearchInput.jsx";
 import CategoryTabs from "../../components/opportunities/CategoryTabs.jsx";
 import FilterSidebar from "../../components/opportunities/FilterSidebar.jsx";
@@ -133,59 +133,24 @@ function OpportunitiesContent() {
 
   return (
     <>
-      <section className="relative bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 pt-32 pb-12 md:pt-40 md:pb-16 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-20 left-10 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
+      <PageHeader
+        badge="Explore All Opportunities"
+        badgeIcon={Sparkles}
+        title="Find Your Next"
+        highlightedText="Opportunity"
+        description={`Browse through ${
+          mounted ? allOpportunities.length : opportunities.length
+        }+ opportunities across Afghanistan.`}
+        centered
+      >
+        <div className="max-w-2xl mx-auto">
+          <SearchInput
+            value={filters.search}
+            onChange={(value) => updateFilter("search", value)}
+            placeholder="Search opportunities, organizations, skills..."
+          />
         </div>
-
-        <div className="relative container-custom text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 bg-yellow-500/20 border border-yellow-500/30 rounded-full"
-          >
-            <Sparkles size={14} className="text-yellow-400" />
-            <span className="text-xs font-semibold text-yellow-300 uppercase tracking-wider">
-              Explore All Opportunities
-            </span>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4"
-          >
-            Find Your Next <span className="gradient-text">Opportunity</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto mb-8"
-          >
-            Browse through{" "}
-            {mounted ? allOpportunities.length : opportunities.length}+
-            opportunities across Afghanistan.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="max-w-2xl mx-auto"
-          >
-            <SearchInput
-              value={filters.search}
-              onChange={(value) => updateFilter("search", value)}
-              placeholder="Search opportunities, organizations, skills..."
-            />
-          </motion.div>
-        </div>
-      </section>
+      </PageHeader>
 
       <section className="bg-gray-50 dark:bg-slate-950 py-8 md:py-12 min-h-screen">
         <div className="container-custom">

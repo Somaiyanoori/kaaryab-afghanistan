@@ -31,7 +31,7 @@ import {
   Legend,
 } from "recharts";
 import toast from "react-hot-toast";
-
+import PageHeader from "../../components/layout/PageHeader.jsx";
 import DashboardStatCard from "../../components/dashboard/DashboardStatCard.jsx";
 import ConfirmModal from "../../components/shared/ConfirmModal.jsx";
 import Button from "../../components/ui/Button.jsx";
@@ -133,48 +133,22 @@ export default function DashboardPage() {
   return (
     <>
       {/* HERO HEADER */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 pt-32 pb-8 md:pt-40 md:pb-12 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-20 left-10 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
-        </div>
-
-        <div className="relative container-custom">
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 bg-yellow-500/20 border border-yellow-500/30 rounded-full"
-              >
-                <BarChart3 size={14} className="text-yellow-400" />
-                <span className="text-xs font-semibold text-yellow-300 uppercase tracking-wider">
-                  Analytics & Management
-                </span>
-              </motion.div>
-
-              <h1
-                className="text-3xl md:text-5xl font-black text-white mb-2"
-                style={{ fontFamily: "Sora, sans-serif" }}
-              >
-                Dashboard
-              </h1>
-              <p className="text-gray-300">
-                Manage opportunities and view analytics
-              </p>
-            </div>
-
-            <Button
-              href="/add-opportunity"
-              variant="primary"
-              size="md"
-              icon={Plus}
-            >
-              Add Opportunity
-            </Button>
-          </div>
-        </div>
-      </section>
+      <PageHeader
+        badge="Analytics & Management"
+        badgeIcon={BarChart3}
+        title="Dashboard"
+        description="Manage opportunities and view analytics"
+        actions={
+          <Button
+            href="/add-opportunity"
+            variant="primary"
+            size="md"
+            icon={Plus}
+          >
+            Add Opportunity
+          </Button>
+        }
+      />
 
       {/* MAIN CONTENT */}
       <section className="bg-gray-50 dark:bg-slate-950 py-8 md:py-12 min-h-screen">

@@ -33,7 +33,7 @@ import ClassicTemplate from "../../components/cv-builder/templates/ClassicTempla
 import MinimalTemplate from "../../components/cv-builder/templates/MinimalTemplate.jsx";
 import ProfessionalTemplate from "../../components/cv-builder/templates/ProfessionalTemplate.jsx";
 import { cn, generateId } from "../../lib/utils.js";
-
+import PageHeader from "../../components/layout/PageHeader.jsx";
 const SKILL_LEVELS = ["Beginner", "Intermediate", "Advanced", "Expert"];
 const LANGUAGE_LEVELS = ["Basic", "Conversational", "Fluent", "Native"];
 
@@ -203,82 +203,35 @@ export default function CVBuilderPage() {
   return (
     <>
       {/* HERO HEADER */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 pt-32 pb-8 md:pt-40 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-20 left-10 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
-        </div>
-
-        <div
-          className="absolute inset-0 opacity-10 pointer-events-none"
-          style={{
-            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-            backgroundSize: "60px 60px",
-          }}
-        />
-
-        <div className="relative container-custom">
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 bg-yellow-500/20 border border-yellow-500/30 rounded-full"
-              >
-                <Sparkles size={14} className="text-yellow-400" />
-                <span className="text-xs font-semibold text-yellow-300 uppercase tracking-wider">
-                  Free CV Builder
-                </span>
-              </motion.div>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-3xl md:text-5xl font-black text-white mb-2"
-                style={{ fontFamily: "Sora, sans-serif" }}
-              >
-                Build Your <span className="gradient-text">CV</span>
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="text-gray-300 text-sm md:text-base"
-              >
-                Create a professional resume in minutes. Choose a template and
-                start building.
-              </motion.p>
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex items-center gap-2 flex-wrap"
+      <PageHeader
+        badge="Free CV Builder"
+        badgeIcon={Sparkles}
+        title="Build Your"
+        highlightedText="CV"
+        description="Create a professional resume in minutes. Choose a template and start building."
+        size="sm"
+        showGrid
+        actions={
+          <>
+            <Button
+              variant="glass"
+              size="md"
+              icon={Sparkles}
+              onClick={handleLoadSample}
             >
-              <Button
-                variant="glass"
-                size="md"
-                icon={Sparkles}
-                onClick={handleLoadSample}
-              >
-                Load Sample
-              </Button>
+              Load Sample
+            </Button>
 
-              <button
-                onClick={() => setShowClearModal(true)}
-                className="flex items-center gap-2 px-4 py-2.5 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-300 text-sm font-semibold rounded-xl transition-colors"
-              >
-                <Trash2 size={16} />
-                <span>Clear All</span>
-              </button>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+            <button
+              onClick={() => setShowClearModal(true)}
+              className="flex items-center gap-2 px-4 py-2.5 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-300 text-sm font-semibold rounded-xl transition-colors"
+            >
+              <Trash2 size={16} />
+              <span>Clear All</span>
+            </button>
+          </>
+        }
+      />
 
       {/* MOBILE TABS */}
       <div className="sticky top-16 z-30 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 lg:hidden">

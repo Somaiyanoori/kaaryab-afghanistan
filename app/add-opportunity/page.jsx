@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import toast from "react-hot-toast";
-
+import PageHeader from "../../components/layout/PageHeader.jsx";
 import Input from "../../components/ui/Input.jsx";
 import Textarea from "../../components/ui/Textarea.jsx";
 import Select from "../../components/ui/Select.jsx";
@@ -162,56 +162,15 @@ export default function AddOpportunityPage() {
   return (
     <>
       {/* HERO HEADER */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 pt-32 pb-12 md:pt-40 md:pb-16 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-20 left-10 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
-        </div>
-
-        <div className="relative container-custom">
-          <Link
-            href="/opportunities"
-            className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-yellow-400 transition-colors mb-6"
-          >
-            <ArrowLeft size={14} />
-            <span>Back to Opportunities</span>
-          </Link>
-
-          <div className="max-w-3xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 bg-yellow-500/20 border border-yellow-500/30 rounded-full"
-            >
-              <Sparkles size={14} className="text-yellow-400" />
-              <span className="text-xs font-semibold text-yellow-300 uppercase tracking-wider">
-                Share an Opportunity
-              </span>
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4"
-              style={{ fontFamily: "Sora, sans-serif" }}
-            >
-              Post a New <span className="gradient-text">Opportunity</span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-base md:text-lg text-gray-300"
-            >
-              Help other Afghan youth discover new opportunities. Fill in the
-              details below.
-            </motion.p>
-          </div>
-        </div>
-      </section>
+      <PageHeader
+        backHref="/opportunities"
+        backLabel="Back to Opportunities"
+        badge="Share an Opportunity"
+        badgeIcon={Sparkles}
+        title="Post a New"
+        highlightedText="Opportunity"
+        description="Help other Afghan youth discover new opportunities. Fill in the details below."
+      />
 
       {/* FORM CONTENT */}
       <section className="bg-gray-50 dark:bg-slate-950 py-12 min-h-screen">

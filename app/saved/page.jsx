@@ -22,7 +22,7 @@ import SearchInput from "../../components/opportunities/SearchInput.jsx";
 import CategoryTabs from "../../components/opportunities/CategoryTabs.jsx";
 import ConfirmModal from "../../components/shared/ConfirmModal.jsx";
 import SavedStats from "../../components/saved/SavedStats.jsx";
-
+import PageHeader from "../../components/layout/PageHeader.jsx";
 import { useSavedStore } from "../../store/index.js";
 import { SORT_OPTIONS } from "../../lib/constants.js";
 import { filterOpportunities, cn } from "../../lib/utils.js";
@@ -79,59 +79,23 @@ export default function SavedPage() {
       {/* ============================================
           HERO HEADER
       ============================================ */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 pt-32 pb-12 md:pt-40 md:pb-16 overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-20 left-10 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
-        </div>
-
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-            backgroundSize: "60px 60px",
-          }}
-        />
-
-        <div className="relative container-custom text-center">
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 bg-yellow-500/20 border border-yellow-500/30 rounded-full"
-          >
-            <Bookmark size={14} className="text-yellow-400 fill-yellow-400" />
-            <span className="text-xs font-semibold text-yellow-300 uppercase tracking-wider">
-              Your Collection
-            </span>
-          </motion.div>
-
-          {/* Title */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4"
-            style={{ fontFamily: "Sora, sans-serif" }}
-          >
-            Your Saved <span className="gradient-text">Opportunities</span>
-          </motion.h1>
-
-          {/* Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto mb-8"
-          >
-            {mounted && savedOpportunities.length > 0
-              ? `You have ${savedOpportunities.length} saved ${savedOpportunities.length === 1 ? "opportunity" : "opportunities"}. Review, apply, or organize them here.`
-              : "Save opportunities you love and access them all in one place."}
-          </motion.p>
-        </div>
-      </section>
+      <PageHeader
+        badge="Your Collection"
+        badgeIcon={Bookmark}
+        title="Your Saved"
+        highlightedText="Opportunities"
+        description={
+          mounted && savedOpportunities.length > 0
+            ? `You have ${savedOpportunities.length} saved ${
+                savedOpportunities.length === 1
+                  ? "opportunity"
+                  : "opportunities"
+              }. Review, apply, or organize them here.`
+            : "Save opportunities you love and access them all in one place."
+        }
+        centered
+        showGrid
+      />
 
       {/* ============================================
           MAIN CONTENT
