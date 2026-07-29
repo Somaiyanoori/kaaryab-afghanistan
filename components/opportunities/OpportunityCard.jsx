@@ -6,11 +6,12 @@ import { MapPin, Building2, Sparkles, AlertCircle } from "lucide-react";
 import CategoryBadge from "./CategoryBadge.jsx";
 import DeadlineBadge from "./DeadlineBadge.jsx";
 import SaveButton from "./SaveButton.jsx";
-import { getCategoryColors, getInitials, cn } from "../../lib/utils.js";
+import Avatar from "../ui/Avatar.jsx";
+import Badge from "../ui/Badge.jsx";
+import { getCategoryColors, cn } from "../../lib/utils.js";
 
 export default function OpportunityCard({ opportunity, index = 0 }) {
   const colors = getCategoryColors(opportunity.category);
-  const initials = getInitials(opportunity.organization);
 
   return (
     <motion.article
@@ -42,34 +43,23 @@ export default function OpportunityCard({ opportunity, index = 0 }) {
             "flex flex-col",
           )}
         >
-          {/* ============================================
-              Top Colored Border (based on category) — USING INLINE STYLE
-          ============================================ */}
+          {/* Top Colored Border (on hover) */}
           <div
             className="absolute top-0 left-0 right-0 h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             style={{ background: colors.solidGradient }}
           />
 
-          {/* ============================================
-              Top Corner Badges (Featured/Urgent)
-          ============================================ */}
-          <div className="absolute top-3 right-3 z-10 flex flex-col gap-1.5">
+          {/* Top Corner Badges */}
+          <div className="absolute top-3 right-3 z-10 flex flex-col gap-1.8">
             {opportunity.featured && (
               <motion.div
                 initial={{ scale: 0, rotate: -180 }}
                 animate={{ scale: 1, rotate: 0 }}
                 transition={{ delay: 0.3, type: "spring" }}
-                className={cn(
-                  "flex items-center gap-1",
-                  "px-2 py-0.5 rounded-full",
-                  "bg-gradient-to-r from-yellow-500 to-orange-500",
-                  "text-white text-[10px] font-bold",
-                  "shadow-md",
-                )}
-                title="Featured Opportunity"
               >
-                <Sparkles size={10} />
-                <span>FEATURED</span>
+                <Badge variant="solid" size="sm" icon={Sparkles}>
+                  FEATURED
+                </Badge>
               </motion.div>
             )}
             {opportunity.urgent && (
@@ -77,61 +67,32 @@ export default function OpportunityCard({ opportunity, index = 0 }) {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.4, type: "spring" }}
-                className={cn(
-                  "flex items-center gap-1",
-                  "px-2 py-0.5 rounded-full",
-                  "bg-red-500",
-                  "text-white text-[10px] font-bold",
-                  "shadow-md",
-                )}
-                title="Urgent — Apply Soon"
               >
-                <AlertCircle size={10} className="animate-pulse" />
-                <span>URGENT</span>
+                <Badge variant="danger" size="sm" icon={AlertCircle} pulse>
+                  URGENT
+                </Badge>
               </motion.div>
             )}
           </div>
 
-          {/* ============================================
-              Card Content
-          ============================================ */}
+          {/* Card Content */}
           <div className="p-5 flex flex-col flex-1">
-            {/* ============================================
-                Header: Logo + Category
-            ============================================ */}
+            {/* Header: Logo + Category */}
             <div className="flex items-start gap-3 mb-4">
-              {/* Organization Logo/Initials — USING INLINE STYLE */}
-              <div
-                className={cn(
-                  "flex-shrink-0",
-                  "w-12 h-12 rounded-xl",
-                  "flex items-center justify-center",
-                  "shadow-md",
-                  "text-white font-bold text-base",
-                  "overflow-hidden",
-                )}
-                style={{ background: colors.solidGradient }}
-              >
-                {opportunity.logo ? (
-                  <img
-                    src={opportunity.logo}
-                    alt={opportunity.organization}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <span className="text-white drop-shadow-sm">{initials}</span>
-                )}
-              </div>
+              <Avatar
+                src={opportunity.logo}
+                name={opportunity.organization}
+                size="md"
+                gradient={colors.solidGradient}
+                className="!rounded-xl"
+              />
 
-              {/* Category Badge */}
               <div className="flex-1 min-w-0 pt-1">
-                <CategoryBadge category={opportunity.category} size="small" />
+                <CategoryBadge category={opportunity.category} size="sm" />
               </div>
             </div>
 
-            {/* ============================================
-                Title
-            ============================================ */}
+            {/* Title */}
             <h3
               className={cn(
                 "text-base md:text-lg font-bold",
@@ -146,9 +107,7 @@ export default function OpportunityCard({ opportunity, index = 0 }) {
               {opportunity.title}
             </h3>
 
-            {/* ============================================
-                Organization Name
-            ============================================ */}
+            {/* Organization */}
             <div className="flex items-center gap-1.5 mb-3 text-gray-500 dark:text-gray-400">
               <Building2 size={12} className="flex-shrink-0" />
               <span className="text-xs truncate">
@@ -156,18 +115,13 @@ export default function OpportunityCard({ opportunity, index = 0 }) {
               </span>
             </div>
 
-            {/* ============================================
-                Description
-            ============================================ */}
+            {/* Description */}
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2 flex-1 min-h-[2.5rem]">
               {opportunity.shortDesc || opportunity.description}
             </p>
 
-            {/* ============================================
-                Meta Info: Location + Type
-            ============================================ */}
+            {/* Meta Info: Location + Type */}
             <div className="flex items-center flex-wrap gap-2 mb-4">
-              {/* Location */}
               <div
                 className={cn(
                   "inline-flex items-center gap-1",
@@ -180,7 +134,6 @@ export default function OpportunityCard({ opportunity, index = 0 }) {
                 <span>{opportunity.location}</span>
               </div>
 
-              {/* Work Type */}
               <div
                 className={cn(
                   "inline-flex items-center",
@@ -198,9 +151,7 @@ export default function OpportunityCard({ opportunity, index = 0 }) {
               </div>
             </div>
 
-            {/* ============================================
-                Footer: Deadline + Save Button
-            ============================================ */}
+            {/* Footer: Deadline + Save Button */}
             <div
               className={cn(
                 "flex items-center justify-between",
@@ -208,7 +159,7 @@ export default function OpportunityCard({ opportunity, index = 0 }) {
                 "border-t border-gray-100 dark:border-slate-700",
               )}
             >
-              <DeadlineBadge deadline={opportunity.deadline} size="small" />
+              <DeadlineBadge deadline={opportunity.deadline} size="sm" />
               <SaveButton opportunity={opportunity} size="small" />
             </div>
           </div>

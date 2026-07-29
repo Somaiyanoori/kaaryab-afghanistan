@@ -3,9 +3,7 @@
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { notFound } from "next/navigation";
 import {
-  ArrowLeft,
   Building2,
   MapPin,
   Calendar,
@@ -19,7 +17,7 @@ import {
   ChevronRight,
   AlertCircle,
 } from "lucide-react";
-
+import ErrorState from "../../../components/states/ErrorState.jsx";
 import ApplyCard from "../../../components/detail/ApplyCard.jsx";
 import SimilarOpportunities from "../../../components/detail/SimilarOpportunities.jsx";
 import CategoryBadge from "../../../components/opportunities/CategoryBadge.jsx";
@@ -57,26 +55,13 @@ export default function OpportunityDetailPage({ params }) {
   // Show 404 if not found (after mount)
   if (mounted && !opportunity) {
     return (
-      <div className="min-h-screen flex items-center justify-center pt-32 pb-20">
-        <div className="text-center max-w-md mx-auto px-4">
-          <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center">
-            <AlertCircle size={40} className="text-white" />
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Opportunity Not Found
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
-            The opportunity you're looking for doesn't exist or has been
-            removed.
-          </p>
-          <Link href="/opportunities">
-            <button className="btn-yellow inline-flex items-center gap-2">
-              <ArrowLeft size={16} />
-              <span>Browse Opportunities</span>
-            </button>
-          </Link>
-        </div>
-      </div>
+      <ErrorState
+        fullPage
+        title="Opportunity Not Found"
+        description="The opportunity you're looking for doesn't exist or has been removed."
+        actionLabel="Browse Opportunities"
+        actionHref="/opportunities"
+      />
     );
   }
 

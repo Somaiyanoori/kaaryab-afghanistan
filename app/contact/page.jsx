@@ -12,7 +12,6 @@ import {
   MessageSquare,
   User,
   FileText,
-  CheckCircle2,
   Phone,
   ChevronDown,
   Sparkles,
@@ -26,16 +25,16 @@ import {
   FaGithub,
 } from "react-icons/fa";
 import toast from "react-hot-toast";
-
-import FormField from "../../components/forms/FormField.jsx";
-import FormTextarea from "../../components/forms/FormTextarea.jsx";
-import FormSelect from "../../components/forms/FormSelect.jsx";
+import SuccessState from "../../components/states/SuccessState.jsx";
+import Input from "../../components/ui/Input.jsx";
+import Textarea from "../../components/ui/Textarea.jsx";
+import Select from "../../components/ui/Select.jsx";
 import { contactSchema } from "../../lib/validators.js";
 import { cn } from "../../lib/utils.js";
 import Button from "../../components/ui/Button.jsx";
-// ============================================
+import PageHeader from "../../components/layout/PageHeader.jsx";
+
 // CONTACT INFO
-// ============================================
 const CONTACT_INFO = [
   {
     icon: Mail,
@@ -228,45 +227,15 @@ export default function ContactPage() {
       {/* ============================================
           HERO HEADER
       ============================================ */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 pt-32 pb-16 md:pt-40 md:pb-20 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-20 left-10 w-96 h-96 bg-yellow-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-        </div>
-
-        <div className="relative container-custom text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 bg-yellow-500/20 border border-yellow-500/30 rounded-full"
-          >
-            <MessageSquare size={14} className="text-yellow-400" />
-            <span className="text-xs font-semibold text-yellow-300 uppercase tracking-wider">
-              We're Here to Help
-            </span>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl sm:text-5xl md:text-6xl font-black text-white mb-4"
-            style={{ fontFamily: "Sora, sans-serif" }}
-          >
-            Get in <span className="gradient-text">Touch</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto"
-          >
-            Have a question, suggestion, or feedback? We'd love to hear from
-            you. Send us a message and we'll respond as soon as possible.
-          </motion.p>
-        </div>
-      </section>
+      <PageHeader
+        badge="We're Here to Help"
+        badgeIcon={MessageSquare}
+        title="Get in"
+        highlightedText="Touch"
+        description="Have a question, suggestion, or feedback? We'd love to hear from you. Send us a message and we'll respond as soon as possible."
+        centered
+        size="lg"
+      />
 
       {/* ============================================
           CONTACT INFO CARDS
@@ -365,30 +334,10 @@ export default function ContactPage() {
 
                 <AnimatePresence mode="wait">
                   {isSubmitted ? (
-                    <motion.div
-                      key="success"
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      className="text-center py-12"
-                    >
-                      <motion.div
-                        initial={{ scale: 0, rotate: -180 }}
-                        animate={{ scale: 1, rotate: 0 }}
-                        transition={{ type: "spring", stiffness: 200 }}
-                        className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center shadow-2xl"
-                      >
-                        <CheckCircle2 size={40} className="text-white" />
-                      </motion.div>
-
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                        Message Sent! 🎉
-                      </h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 max-w-md mx-auto">
-                        Thank you for reaching out! We've received your message
-                        and will respond within 24 hours.
-                      </p>
-                    </motion.div>
+                    <SuccessState
+                      title="Message Sent!"
+                      description="Thank you for reaching out! We'll respond within 24 hours."
+                    />
                   ) : (
                     <motion.form
                       key="form"
@@ -398,7 +347,7 @@ export default function ContactPage() {
                       onSubmit={handleSubmit(onSubmit)}
                       className="space-y-4"
                     >
-                      <FormField
+                      <Input
                         label="Full Name"
                         name="fullName"
                         register={register}
@@ -408,7 +357,7 @@ export default function ContactPage() {
                         icon={User}
                       />
 
-                      <FormField
+                      <Input
                         label="Email Address"
                         name="email"
                         type="email"
@@ -419,7 +368,7 @@ export default function ContactPage() {
                         icon={Mail}
                       />
 
-                      <FormSelect
+                      <Select
                         label="Subject"
                         name="subject"
                         register={register}
@@ -430,7 +379,7 @@ export default function ContactPage() {
                         options={SUBJECT_OPTIONS}
                       />
 
-                      <FormTextarea
+                      <Textarea
                         label="Your Message"
                         name="message"
                         register={register}

@@ -23,33 +23,41 @@ import {
   Save,
   Trash2,
   ArrowLeft,
-  AlertCircle,
 } from "lucide-react";
 import Link from "next/link";
 import toast from "react-hot-toast";
-
-import FormField from "../../../components/forms/FormField.jsx";
-import FormTextarea from "../../../components/forms/FormTextarea.jsx";
-import FormSelect from "../../../components/forms/FormSelect.jsx";
+import PageHeader from "../../../components/layout/PageHeader.jsx";
+import Input from "../../../components/ui/Input.jsx";
+import Textarea from "../../../components/ui/Textarea.jsx";
+import Select from "../../../components/ui/Select.jsx";
+import Button from "../../../components/ui/Button.jsx";
+import Card from "../../../components/ui/Card.jsx";
+import ErrorState from "../../../components/states/ErrorState.jsx";
 import DynamicListInput from "../../../components/forms/DynamicListInput.jsx";
 import ConfirmModal from "../../../components/shared/ConfirmModal.jsx";
 
 import { opportunitySchema } from "../../../lib/validators.js";
 import { categories, locations } from "../../../data/opportunities.js";
 import { useOpportunitiesStore } from "../../../store/index.js";
-import { cn } from "../../../lib/utils.js";
-import Button from "../../../components/ui/Button.jsx";
+
 export default function EditOpportunityPage({ params }) {
   const { id } = use(params);
   const router = useRouter();
+
+  // ============================================
+  // ALL STATE DECLARATIONS
+  // ============================================
+  const [mounted, setMounted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const [requirements, setRequirements] = useState([]);
   const [tags, setTags] = useState([]);
   const [notFound, setNotFound] = useState(false);
 
+  // ============================================
+  // ZUSTAND STORE
+  // ============================================
   const userOpportunities = useOpportunitiesStore(
     (state) => state.userOpportunities,
   );
@@ -60,6 +68,9 @@ export default function EditOpportunityPage({ params }) {
     (state) => state.deleteOpportunity,
   );
 
+  // ============================================
+  // REACT HOOK FORM
+  // ============================================
   const {
     register,
     handleSubmit,
@@ -70,11 +81,14 @@ export default function EditOpportunityPage({ params }) {
     resolver: zodResolver(opportunitySchema),
   });
 
+  // Mount check
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Load existing opportunity data
+  // ============================================
+  // LOAD OPPORTUNITY DATA
+  // ============================================
   useEffect(() => {
     if (!mounted) return;
 
@@ -87,7 +101,7 @@ export default function EditOpportunityPage({ params }) {
       return;
     }
 
-    // Pre-fill the form
+    // Pre-fill form with existing data
     reset({
       title: opportunity.title,
       organization: opportunity.organization,
@@ -110,15 +124,19 @@ export default function EditOpportunityPage({ params }) {
     setTags(opportunity.tags || []);
   }, [mounted, id, userOpportunities, reset]);
 
-  // Sync requirements and tags
+  // Sync requirements to form
   useEffect(() => {
     setValue("requirements", requirements);
   }, [requirements, setValue]);
 
+  // Sync tags to form
   useEffect(() => {
     setValue("tags", tags);
   }, [tags, setValue]);
 
+  // ============================================
+  // SUBMIT HANDLER
+  // ============================================
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     await new Promise((resolve) => setTimeout(resolve, 800));
@@ -137,6 +155,7 @@ export default function EditOpportunityPage({ params }) {
     }
   };
 
+  // DELETE HANDLER
   const handleDelete = async () => {
     setIsDeleting(true);
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -146,96 +165,48 @@ export default function EditOpportunityPage({ params }) {
     router.push("/dashboard");
   };
 
-  // Not Found State
+  // NOT FOUND STATE
   if (mounted && notFound) {
     return (
-      <div className="min-h-screen flex items-center justify-center pt-32 pb-20">
-        <div className="text-center max-w-md mx-auto px-4">
-          <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center shadow-xl">
-            <AlertCircle size={40} className="text-white" />
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Opportunity Not Found
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
-            You can only edit opportunities you have submitted.
-          </p>
-          <Button
-            href="/dashboard"
-            variant="primary"
-            size="md"
-            icon={ArrowLeft}
-          >
-            Go to Dashboard
-          </Button>
-        </div>
-      </div>
+      <ErrorState
+        fullPage
+        title="Opportunity Not Found"
+        description="You can only edit opportunities you have submitted."
+        actionLabel="Go to Dashboard"
+        actionHref="/dashboard"
+      />
     );
   }
 
-  // Loading State
   if (!mounted) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+    return null;
   }
 
   return (
     <>
-      {/* HERO */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 pt-32 pb-12 md:pt-40 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-20 left-10 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
-        </div>
+      {/* HERO HEADER */}
+      <PageHeader
+        backHref="/dashboard"
+        backLabel="Back to Dashboard"
+        badge="Edit Mode"
+        badgeIcon={Sparkles}
+        badgeColor="blue"
+        title="Edit"
+        highlightedText="Opportunity"
+        description="Update the details of your opportunity below."
+      />
 
-        <div className="relative container-custom">
-          <Link
-            href="/dashboard"
-            className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-yellow-400 transition-colors mb-6"
-          >
-            <ArrowLeft size={14} />
-            <span>Back to Dashboard</span>
-          </Link>
-
-          <div className="max-w-3xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 bg-blue-500/20 border border-blue-500/30 rounded-full"
-            >
-              <Sparkles size={14} className="text-blue-400" />
-              <span className="text-xs font-semibold text-blue-300 uppercase tracking-wider">
-                Edit Mode
-              </span>
-            </motion.div>
-
-            <h1
-              className="text-3xl md:text-5xl font-black text-white mb-4"
-              style={{ fontFamily: "Sora, sans-serif" }}
-            >
-              Edit <span className="gradient-text">Opportunity</span>
-            </h1>
-            <p className="text-gray-300">
-              Update the details of your opportunity below.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* FORM */}
+      {/* FORM CONTENT */}
       <section className="bg-gray-50 dark:bg-slate-950 py-12 min-h-screen">
         <div className="container-custom max-w-4xl">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Basic Info */}
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 md:p-8 border border-gray-100 dark:border-slate-700 shadow-sm">
+            <Card variant="default" padding="lg">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6">
                 Basic Information
               </h2>
               <div className="space-y-4">
-                <FormField
+                <Input
                   label="Title"
                   name="title"
                   register={register}
@@ -243,7 +214,7 @@ export default function EditOpportunityPage({ params }) {
                   required
                   icon={FileText}
                 />
-                <FormField
+                <Input
                   label="Organization"
                   name="organization"
                   register={register}
@@ -251,7 +222,7 @@ export default function EditOpportunityPage({ params }) {
                   required
                   icon={Building2}
                 />
-                <FormTextarea
+                <Textarea
                   label="Short Description"
                   name="shortDesc"
                   register={register}
@@ -262,15 +233,15 @@ export default function EditOpportunityPage({ params }) {
                   maxLength={300}
                 />
               </div>
-            </div>
+            </Card>
 
             {/* Classification */}
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 md:p-8 border border-gray-100 dark:border-slate-700 shadow-sm">
+            <Card variant="default" padding="lg">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6">
                 Classification
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <FormSelect
+                <Select
                   label="Category"
                   name="category"
                   register={register}
@@ -282,7 +253,7 @@ export default function EditOpportunityPage({ params }) {
                     label: c.name,
                   }))}
                 />
-                <FormSelect
+                <Select
                   label="Location"
                   name="location"
                   register={register}
@@ -294,7 +265,7 @@ export default function EditOpportunityPage({ params }) {
                     label: l.name,
                   }))}
                 />
-                <FormSelect
+                <Select
                   label="Work Type"
                   name="type"
                   register={register}
@@ -307,7 +278,7 @@ export default function EditOpportunityPage({ params }) {
                     { value: "Hybrid", label: "Hybrid" },
                   ]}
                 />
-                <FormField
+                <Input
                   label="Deadline"
                   name="deadline"
                   type="date"
@@ -317,15 +288,15 @@ export default function EditOpportunityPage({ params }) {
                   icon={Calendar}
                 />
               </div>
-            </div>
+            </Card>
 
             {/* Details */}
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 md:p-8 border border-gray-100 dark:border-slate-700 shadow-sm">
+            <Card variant="default" padding="lg">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6">
                 Full Details
               </h2>
               <div className="space-y-4">
-                <FormTextarea
+                <Textarea
                   label="Description"
                   name="description"
                   register={register}
@@ -351,15 +322,15 @@ export default function EditOpportunityPage({ params }) {
                   maxItems={10}
                 />
               </div>
-            </div>
+            </Card>
 
             {/* Application */}
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 md:p-8 border border-gray-100 dark:border-slate-700 shadow-sm">
+            <Card variant="default" padding="lg">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6">
                 Application Info
               </h2>
               <div className="space-y-4">
-                <FormField
+                <Input
                   label="Apply Link"
                   name="applyLink"
                   type="url"
@@ -368,7 +339,7 @@ export default function EditOpportunityPage({ params }) {
                   required
                   icon={LinkIcon}
                 />
-                <FormField
+                <Input
                   label="Contact Email"
                   name="contactEmail"
                   type="email"
@@ -377,29 +348,29 @@ export default function EditOpportunityPage({ params }) {
                   icon={Mail}
                 />
               </div>
-            </div>
+            </Card>
 
             {/* Optional Details */}
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 md:p-8 border border-gray-100 dark:border-slate-700 shadow-sm">
+            <Card variant="default" padding="lg">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6">
                 Additional Details
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <FormField
+                <Input
                   label="Salary"
                   name="salary"
                   register={register}
                   error={errors.salary}
                   icon={DollarSign}
                 />
-                <FormField
+                <Input
                   label="Duration"
                   name="duration"
                   register={register}
                   error={errors.duration}
                   icon={Clock}
                 />
-                <FormField
+                <Input
                   label="Seats"
                   name="seats"
                   type="number"
@@ -407,7 +378,7 @@ export default function EditOpportunityPage({ params }) {
                   error={errors.seats}
                   icon={Users}
                 />
-                <FormSelect
+                <Select
                   label="Gender"
                   name="gender"
                   register={register}
@@ -419,7 +390,7 @@ export default function EditOpportunityPage({ params }) {
                     { value: "Female", label: "Female" },
                   ]}
                 />
-                <FormSelect
+                <Select
                   label="Language"
                   name="language"
                   register={register}
@@ -433,7 +404,7 @@ export default function EditOpportunityPage({ params }) {
                   ]}
                 />
               </div>
-            </div>
+            </Card>
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-3">
@@ -462,7 +433,7 @@ export default function EditOpportunityPage({ params }) {
         </div>
       </section>
 
-      {/* Delete Modal */}
+      {/* Delete Confirmation Modal */}
       <ConfirmModal
         isOpen={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}

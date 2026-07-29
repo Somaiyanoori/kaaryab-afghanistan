@@ -196,25 +196,6 @@ export default function HowItWorks() {
                 <Button href="/cv-builder" variant="glass" size="lg">
                   Build Your CV Free
                 </Button>
-
-                <Link href="/cv-builder">
-                  <motion.button
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={cn(
-                      "inline-flex items-center gap-2",
-                      "px-6 py-3.5 rounded-xl",
-                      "bg-white/10 hover:bg-white/20",
-                      "backdrop-blur-sm",
-                      "border-2 border-white/30",
-                      "text-white",
-                      "font-bold text-sm",
-                      "transition-all duration-200",
-                    )}
-                  >
-                    <span>Build Your CV Free</span>
-                  </motion.button>
-                </Link>
               </div>
             </div>
           </div>

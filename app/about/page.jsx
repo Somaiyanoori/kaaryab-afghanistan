@@ -1,6 +1,4 @@
 "use client";
-
-import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   Heart,
@@ -19,9 +17,9 @@ import {
   HandshakeIcon,
 } from "lucide-react";
 import SectionHeader from "../../components/shared/SectionHeader.jsx";
-import { cn } from "../../lib/utils.js";
+
 import Button from "../../components/ui/Button.jsx";
-// ============================================
+import PageHeader from "../../components/layout/PageHeader.jsx";
 // VALUES DATA
 // ============================================
 const VALUES = [
@@ -161,60 +159,17 @@ const TEAM = [
 export default function AboutPage() {
   return (
     <>
-      {/* ============================================
-          HERO HEADER
-      ============================================ */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden">
-        {/* Background Orbs */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-20 left-10 w-96 h-96 bg-yellow-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-        </div>
-
-        <div
-          className="absolute inset-0 opacity-10 pointer-events-none"
-          style={{
-            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-            backgroundSize: "60px 60px",
-          }}
-        />
-
-        <div className="relative container-custom text-center">
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 bg-yellow-500/20 border border-yellow-500/30 rounded-full"
-          >
-            <Heart size={14} className="text-yellow-400 fill-yellow-400" />
-            <span className="text-xs font-semibold text-yellow-300 uppercase tracking-wider">
-              Our Story
-            </span>
-          </motion.div>
-
-          {/* Title */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl sm:text-5xl md:text-6xl font-black text-white mb-6"
-            style={{ fontFamily: "Sora, sans-serif" }}
-          >
-            About <span className="gradient-text">KaarYab</span>
-          </motion.h1>
-
-          {/* Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-base md:text-lg text-gray-300 max-w-3xl mx-auto"
-          >
-            We are on a mission to empower Afghan youth by connecting them with
-            the best opportunities across Afghanistan and beyond.
-          </motion.p>
-        </div>
-      </section>
+      {/*HERO HEADER*/}
+      <PageHeader
+        badge="Our Story"
+        badgeIcon={Heart}
+        title="About"
+        highlightedText="KaarYab"
+        description="We are on a mission to empower Afghan youth by connecting them with the best opportunities across Afghanistan and beyond."
+        centered
+        size="lg"
+        showGrid
+      />
 
       {/* ============================================
           MISSION SECTION

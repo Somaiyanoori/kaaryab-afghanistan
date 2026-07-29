@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bookmark, BookmarkCheck } from "lucide-react";
 import toast from "react-hot-toast";
+import Tooltip from "../ui/Tooltip.jsx";
 import { useSavedStore } from "../../store/index.js";
 import { cn } from "../../lib/utils.js";
 
@@ -12,6 +13,7 @@ export default function SaveButton({
   size = "default",
   variant = "default",
   onSaveChange,
+  showTooltip = true,
 }) {
   const [mounted, setMounted] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -40,7 +42,7 @@ export default function SaveButton({
       });
     } else {
       saveOpportunity(opportunity);
-      toast.success("Saved to your list! ⭐", {
+      toast.success("Saved to your list!", {
         duration: 2000,
       });
     }
@@ -79,7 +81,7 @@ export default function SaveButton({
     ),
   };
 
-  return (
+  const button = (
     <motion.button
       onClick={handleToggle}
       whileHover={{ scale: 1.1 }}
@@ -93,7 +95,6 @@ export default function SaveButton({
         variantClasses[variant],
       )}
       aria-label={saved ? "Remove from saved" : "Save opportunity"}
-      title={saved ? "Remove from saved" : "Save opportunity"}
     >
       <AnimatePresence mode="wait" initial={false}>
         {saved ? (
@@ -148,5 +149,21 @@ export default function SaveButton({
         )}
       </AnimatePresence>
     </motion.button>
+  );
+
+  // If tooltip is disabled, return button directly
+  if (!showTooltip) {
+    return button;
+  }
+
+  // Wrap with tooltip
+  return (
+    <Tooltip
+      content={saved ? "Remove from saved" : "Save opportunity"}
+      position="left"
+      color={saved ? "yellow" : "default"}
+    >
+      {button}
+    </Tooltip>
   );
 }
