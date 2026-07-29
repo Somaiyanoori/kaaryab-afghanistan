@@ -26,7 +26,7 @@ import {
   Cell,
   XAxis,
   YAxis,
-  Tooltip,
+  Tooltip as RechartsTooltip,
   ResponsiveContainer,
   Legend,
 } from "recharts";
@@ -37,6 +37,7 @@ import ConfirmModal from "../../components/shared/ConfirmModal.jsx";
 import Button from "../../components/ui/Button.jsx";
 import Card from "../../components/ui/Card.jsx";
 import Badge from "../../components/ui/Badge.jsx";
+import Tooltip from "../../components/ui/Tooltip.jsx";
 import { opportunities as mockOpportunities } from "../../data/opportunities.js";
 import { useOpportunitiesStore, useSavedStore } from "../../store/index.js";
 import {
@@ -249,7 +250,7 @@ export default function DashboardPage() {
                       height={60}
                     />
                     <YAxis tick={{ fontSize: 12, fill: "#6B7280" }} />
-                    <Tooltip
+                    <RechartsTooltip
                       contentStyle={{
                         backgroundColor: "#1E293B",
                         border: "1px solid #334155",
@@ -300,7 +301,7 @@ export default function DashboardPage() {
                       <Cell fill="#3B82F6" />
                       <Cell fill="#A855F7" />
                     </Pie>
-                    <Tooltip
+                    <RechartsTooltip
                       contentStyle={{
                         backgroundColor: "#1E293B",
                         border: "1px solid #334155",
@@ -425,7 +426,10 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
-                <div className="overflow-x-auto">
+                <div
+                  className="overflow-x-auto"
+                  style={{ overflowY: "visible" }}
+                >
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-gray-200 dark:border-slate-700">
@@ -467,29 +471,49 @@ export default function DashboardPage() {
                           </td>
                           <td className="px-4 py-4">
                             <div className="flex items-center justify-end gap-2">
-                              <Link
-                                href={`/opportunities/${opp.slug || opp.id}`}
-                                className="w-8 h-8 rounded-lg bg-blue-100 hover:bg-blue-200 dark:bg-blue-500/20 dark:hover:bg-blue-500/30 text-blue-600 dark:text-blue-400 flex items-center justify-center transition-colors"
-                                title="View"
+                              {/* View Button with Tooltip */}
+                              <Tooltip
+                                content="View opportunity"
+                                position="left"
                               >
-                                <Eye size={14} />
-                              </Link>
+                                <Link
+                                  href={`/opportunities/${opp.slug || opp.id}`}
+                                  className="w-8 h-8 rounded-lg bg-blue-100 hover:bg-blue-200 dark:bg-blue-500/20 dark:hover:bg-blue-500/30 text-blue-600 dark:text-blue-400 flex items-center justify-center transition-colors"
+                                  aria-label="View opportunity"
+                                >
+                                  <Eye size={14} />
+                                </Link>
+                              </Tooltip>
 
-                              <Link
-                                href={`/edit-opportunity/${opp.id}`}
-                                className="w-8 h-8 rounded-lg bg-yellow-100 hover:bg-yellow-200 dark:bg-yellow-500/20 dark:hover:bg-yellow-500/30 text-yellow-600 dark:text-yellow-400 flex items-center justify-center transition-colors"
-                                title="Edit"
+                              {/* Edit Button with Tooltip */}
+                              <Tooltip
+                                content="Edit opportunity"
+                                position="left"
+                                color="yellow"
                               >
-                                <Pencil size={14} />
-                              </Link>
+                                <Link
+                                  href={`/edit-opportunity/${opp.id}`}
+                                  className="w-8 h-8 rounded-lg bg-yellow-100 hover:bg-yellow-200 dark:bg-yellow-500/20 dark:hover:bg-yellow-500/30 text-yellow-600 dark:text-yellow-400 flex items-center justify-center transition-colors"
+                                  aria-label="Edit opportunity"
+                                >
+                                  <Pencil size={14} />
+                                </Link>
+                              </Tooltip>
 
-                              <button
-                                onClick={() => setDeleteId(opp.id)}
-                                className="w-8 h-8 rounded-lg bg-red-100 hover:bg-red-200 dark:bg-red-500/20 dark:hover:bg-red-500/30 text-red-600 dark:text-red-400 flex items-center justify-center transition-colors"
-                                title="Delete"
+                              {/* Delete Button with Tooltip */}
+                              <Tooltip
+                                content="Delete opportunity"
+                                position="left"
+                                color="danger"
                               >
-                                <Trash2 size={14} />
-                              </button>
+                                <button
+                                  onClick={() => setDeleteId(opp.id)}
+                                  className="w-8 h-8 rounded-lg bg-red-100 hover:bg-red-200 dark:bg-red-500/20 dark:hover:bg-red-500/30 text-red-600 dark:text-red-400 flex items-center justify-center transition-colors"
+                                  aria-label="Delete opportunity"
+                                >
+                                  <Trash2 size={14} />
+                                </button>
+                              </Tooltip>
                             </div>
                           </td>
                         </tr>

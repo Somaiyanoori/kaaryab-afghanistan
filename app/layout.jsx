@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 import Navbar from "../components/layout/Navbar.jsx";
 import Footer from "../components/layout/Footer.jsx";
 import "./globals.css";
-
+import ScrollToTop from "../components/ui/ScrollToTop.jsx";
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
@@ -53,6 +53,7 @@ export default function RootLayout({ children }) {
           <Navbar />
           <main className="min-h-screen">{children}</main>
           <Footer />
+          <ScrollToTop />
           <Toaster
             position="top-right"
             containerStyle={{
