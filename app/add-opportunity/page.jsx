@@ -21,31 +21,28 @@ import {
   ListChecks,
   Sparkles,
   Send,
-  CheckCircle2,
   Eye,
-  Save,
   ArrowLeft,
 } from "lucide-react";
+import Link from "next/link";
 import toast from "react-hot-toast";
 
-import FormField from "../../components/forms/FormField.jsx";
-import FormTextarea from "../../components/forms/FormTextarea.jsx";
-import FormSelect from "../../components/forms/FormSelect.jsx";
+import Input from "../../components/ui/Input.jsx";
+import Textarea from "../../components/ui/Textarea.jsx";
+import Select from "../../components/ui/Select.jsx";
+import Button from "../../components/ui/Button.jsx";
 import DynamicListInput from "../../components/forms/DynamicListInput.jsx";
 import OpportunityCard from "../../components/opportunities/OpportunityCard.jsx";
 
 import { opportunitySchema } from "../../lib/validators.js";
 import { categories, locations } from "../../data/opportunities.js";
 import { useOpportunitiesStore } from "../../store/index.js";
-import Link from "next/link";
-import { cn } from "../../lib/utils.js";
-import Button from "../../components/ui/Button.jsx";
+
 export default function AddOpportunityPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [requirements, setRequirements] = useState([]);
   const [tags, setTags] = useState([]);
-  const [showPreview, setShowPreview] = useState(false);
 
   const addOpportunity = useOpportunitiesStore((state) => state.addOpportunity);
 
@@ -79,20 +76,16 @@ export default function AddOpportunityPage() {
     },
   });
 
-  // Watch form values for live preview
   const formValues = watch();
 
-  // Sync requirements to form
   useEffect(() => {
     setValue("requirements", requirements);
   }, [requirements, setValue]);
 
-  // Sync tags to form
   useEffect(() => {
     setValue("tags", tags);
   }, [tags, setValue]);
 
-  // Preview data
   const previewData = {
     id: "preview",
     slug: "preview",
@@ -120,8 +113,6 @@ export default function AddOpportunityPage() {
 
   const onSubmit = async (data) => {
     setIsSubmitting(true);
-
-    // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 800));
 
     try {
@@ -131,11 +122,8 @@ export default function AddOpportunityPage() {
         tags: tags,
       });
 
-      toast.success("🎉 Opportunity submitted successfully!", {
-        duration: 3000,
-      });
+      toast.success("Opportunity submitted successfully!", { duration: 3000 });
 
-      // Redirect to detail page
       setTimeout(() => {
         router.push(`/opportunities/${newOpp.slug || newOpp.id}`);
       }, 1000);
@@ -153,9 +141,7 @@ export default function AddOpportunityPage() {
 
   return (
     <>
-      {/* ============================================
-          HERO HEADER
-      ============================================ */}
+      {/* HERO HEADER */}
       <section className="relative bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 pt-32 pb-12 md:pt-40 md:pb-16 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-20 left-10 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl" />
@@ -207,15 +193,11 @@ export default function AddOpportunityPage() {
         </div>
       </section>
 
-      {/* ============================================
-          FORM CONTENT
-      ============================================ */}
+      {/* FORM CONTENT */}
       <section className="bg-gray-50 dark:bg-slate-950 py-12 min-h-screen">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* ============================================
-                LEFT: FORM
-            ============================================ */}
+            {/* LEFT: FORM */}
             <div className="lg:col-span-2">
               <form
                 onSubmit={handleSubmit(onSubmit, onError)}
@@ -242,7 +224,7 @@ export default function AddOpportunityPage() {
                   </div>
 
                   <div className="space-y-4">
-                    <FormField
+                    <Input
                       label="Opportunity Title"
                       name="title"
                       register={register}
@@ -252,7 +234,7 @@ export default function AddOpportunityPage() {
                       icon={FileText}
                     />
 
-                    <FormField
+                    <Input
                       label="Organization Name"
                       name="organization"
                       register={register}
@@ -262,7 +244,7 @@ export default function AddOpportunityPage() {
                       icon={Building2}
                     />
 
-                    <FormTextarea
+                    <Textarea
                       label="Short Description"
                       name="shortDesc"
                       register={register}
@@ -299,7 +281,7 @@ export default function AddOpportunityPage() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <FormSelect
+                    <Select
                       label="Category"
                       name="category"
                       register={register}
@@ -312,7 +294,7 @@ export default function AddOpportunityPage() {
                       }))}
                     />
 
-                    <FormSelect
+                    <Select
                       label="Location"
                       name="location"
                       register={register}
@@ -325,7 +307,7 @@ export default function AddOpportunityPage() {
                       }))}
                     />
 
-                    <FormSelect
+                    <Select
                       label="Work Type"
                       name="type"
                       register={register}
@@ -339,7 +321,7 @@ export default function AddOpportunityPage() {
                       ]}
                     />
 
-                    <FormField
+                    <Input
                       label="Deadline"
                       name="deadline"
                       type="date"
@@ -373,7 +355,7 @@ export default function AddOpportunityPage() {
                   </div>
 
                   <div className="space-y-4">
-                    <FormTextarea
+                    <Textarea
                       label="Full Description"
                       name="description"
                       register={register}
@@ -432,7 +414,7 @@ export default function AddOpportunityPage() {
                   </div>
 
                   <div className="space-y-4">
-                    <FormField
+                    <Input
                       label="Apply Link"
                       name="applyLink"
                       type="url"
@@ -444,7 +426,7 @@ export default function AddOpportunityPage() {
                       helper="URL where candidates can apply"
                     />
 
-                    <FormField
+                    <Input
                       label="Contact Email"
                       name="contactEmail"
                       type="email"
@@ -479,7 +461,7 @@ export default function AddOpportunityPage() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <FormField
+                    <Input
                       label="Salary / Stipend"
                       name="salary"
                       register={register}
@@ -488,7 +470,7 @@ export default function AddOpportunityPage() {
                       icon={DollarSign}
                     />
 
-                    <FormField
+                    <Input
                       label="Duration"
                       name="duration"
                       register={register}
@@ -497,7 +479,7 @@ export default function AddOpportunityPage() {
                       icon={Clock}
                     />
 
-                    <FormField
+                    <Input
                       label="Available Seats"
                       name="seats"
                       type="number"
@@ -507,7 +489,7 @@ export default function AddOpportunityPage() {
                       icon={Users}
                     />
 
-                    <FormSelect
+                    <Select
                       label="Gender"
                       name="gender"
                       register={register}
@@ -520,7 +502,7 @@ export default function AddOpportunityPage() {
                       ]}
                     />
 
-                    <FormSelect
+                    <Select
                       label="Language"
                       name="language"
                       register={register}
@@ -566,9 +548,7 @@ export default function AddOpportunityPage() {
               </form>
             </div>
 
-            {/* ============================================
-                RIGHT: LIVE PREVIEW
-            ============================================ */}
+            {/* RIGHT: LIVE PREVIEW */}
             <div className="lg:col-span-1">
               <div className="lg:sticky lg:top-24 space-y-4">
                 <div className="flex items-center gap-2 mb-3">

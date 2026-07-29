@@ -27,9 +27,9 @@ import {
 } from "react-icons/fa";
 import toast from "react-hot-toast";
 
-import FormField from "../../components/forms/FormField.jsx";
-import FormTextarea from "../../components/forms/FormTextarea.jsx";
-import FormSelect from "../../components/forms/FormSelect.jsx";
+import Input from "../../components/ui/Input.jsx";
+import Textarea from "../../components/ui/Textarea.jsx";
+import Select from "../../components/ui/Select.jsx";
 import { contactSchema } from "../../lib/validators.js";
 import { cn } from "../../lib/utils.js";
 import Button from "../../components/ui/Button.jsx";
@@ -398,7 +398,7 @@ export default function ContactPage() {
                       onSubmit={handleSubmit(onSubmit)}
                       className="space-y-4"
                     >
-                      <FormField
+                      <Input
                         label="Full Name"
                         name="fullName"
                         register={register}
@@ -408,7 +408,7 @@ export default function ContactPage() {
                         icon={User}
                       />
 
-                      <FormField
+                      <Input
                         label="Email Address"
                         name="email"
                         type="email"
@@ -419,7 +419,7 @@ export default function ContactPage() {
                         icon={Mail}
                       />
 
-                      <FormSelect
+                      <Select
                         label="Subject"
                         name="subject"
                         register={register}
@@ -430,7 +430,7 @@ export default function ContactPage() {
                         options={SUBJECT_OPTIONS}
                       />
 
-                      <FormTextarea
+                      <Textarea
                         label="Your Message"
                         name="message"
                         register={register}

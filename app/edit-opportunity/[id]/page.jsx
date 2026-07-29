@@ -28,17 +28,17 @@ import {
 import Link from "next/link";
 import toast from "react-hot-toast";
 
-import FormField from "../../../components/forms/FormField.jsx";
-import FormTextarea from "../../../components/forms/FormTextarea.jsx";
-import FormSelect from "../../../components/forms/FormSelect.jsx";
+import Input from "../../../components/ui/Input.jsx";
+import Textarea from "../../../components/ui/Textarea.jsx";
+import Select from "../../../components/ui/Select.jsx";
+import Button from "../../../components/ui/Button.jsx";
 import DynamicListInput from "../../../components/forms/DynamicListInput.jsx";
 import ConfirmModal from "../../../components/shared/ConfirmModal.jsx";
 
 import { opportunitySchema } from "../../../lib/validators.js";
 import { categories, locations } from "../../../data/opportunities.js";
 import { useOpportunitiesStore } from "../../../store/index.js";
-import { cn } from "../../../lib/utils.js";
-import Button from "../../../components/ui/Button.jsx";
+
 export default function EditOpportunityPage({ params }) {
   const { id } = use(params);
   const router = useRouter();
@@ -74,7 +74,6 @@ export default function EditOpportunityPage({ params }) {
     setMounted(true);
   }, []);
 
-  // Load existing opportunity data
   useEffect(() => {
     if (!mounted) return;
 
@@ -87,7 +86,6 @@ export default function EditOpportunityPage({ params }) {
       return;
     }
 
-    // Pre-fill the form
     reset({
       title: opportunity.title,
       organization: opportunity.organization,
@@ -110,7 +108,6 @@ export default function EditOpportunityPage({ params }) {
     setTags(opportunity.tags || []);
   }, [mounted, id, userOpportunities, reset]);
 
-  // Sync requirements and tags
   useEffect(() => {
     setValue("requirements", requirements);
   }, [requirements, setValue]);
@@ -175,11 +172,7 @@ export default function EditOpportunityPage({ params }) {
 
   // Loading State
   if (!mounted) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+    return null;
   }
 
   return (
@@ -235,7 +228,7 @@ export default function EditOpportunityPage({ params }) {
                 Basic Information
               </h2>
               <div className="space-y-4">
-                <FormField
+                <Input
                   label="Title"
                   name="title"
                   register={register}
@@ -243,7 +236,7 @@ export default function EditOpportunityPage({ params }) {
                   required
                   icon={FileText}
                 />
-                <FormField
+                <Input
                   label="Organization"
                   name="organization"
                   register={register}
@@ -251,7 +244,7 @@ export default function EditOpportunityPage({ params }) {
                   required
                   icon={Building2}
                 />
-                <FormTextarea
+                <Textarea
                   label="Short Description"
                   name="shortDesc"
                   register={register}
@@ -270,7 +263,7 @@ export default function EditOpportunityPage({ params }) {
                 Classification
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <FormSelect
+                <Select
                   label="Category"
                   name="category"
                   register={register}
@@ -282,7 +275,7 @@ export default function EditOpportunityPage({ params }) {
                     label: c.name,
                   }))}
                 />
-                <FormSelect
+                <Select
                   label="Location"
                   name="location"
                   register={register}
@@ -294,7 +287,7 @@ export default function EditOpportunityPage({ params }) {
                     label: l.name,
                   }))}
                 />
-                <FormSelect
+                <Select
                   label="Work Type"
                   name="type"
                   register={register}
@@ -307,7 +300,7 @@ export default function EditOpportunityPage({ params }) {
                     { value: "Hybrid", label: "Hybrid" },
                   ]}
                 />
-                <FormField
+                <Input
                   label="Deadline"
                   name="deadline"
                   type="date"
@@ -325,7 +318,7 @@ export default function EditOpportunityPage({ params }) {
                 Full Details
               </h2>
               <div className="space-y-4">
-                <FormTextarea
+                <Textarea
                   label="Description"
                   name="description"
                   register={register}
@@ -359,7 +352,7 @@ export default function EditOpportunityPage({ params }) {
                 Application Info
               </h2>
               <div className="space-y-4">
-                <FormField
+                <Input
                   label="Apply Link"
                   name="applyLink"
                   type="url"
@@ -368,7 +361,7 @@ export default function EditOpportunityPage({ params }) {
                   required
                   icon={LinkIcon}
                 />
-                <FormField
+                <Input
                   label="Contact Email"
                   name="contactEmail"
                   type="email"
@@ -385,21 +378,21 @@ export default function EditOpportunityPage({ params }) {
                 Additional Details
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <FormField
+                <Input
                   label="Salary"
                   name="salary"
                   register={register}
                   error={errors.salary}
                   icon={DollarSign}
                 />
-                <FormField
+                <Input
                   label="Duration"
                   name="duration"
                   register={register}
                   error={errors.duration}
                   icon={Clock}
                 />
-                <FormField
+                <Input
                   label="Seats"
                   name="seats"
                   type="number"
@@ -407,7 +400,7 @@ export default function EditOpportunityPage({ params }) {
                   error={errors.seats}
                   icon={Users}
                 />
-                <FormSelect
+                <Select
                   label="Gender"
                   name="gender"
                   register={register}
@@ -419,7 +412,7 @@ export default function EditOpportunityPage({ params }) {
                     { value: "Female", label: "Female" },
                   ]}
                 />
-                <FormSelect
+                <Select
                   label="Language"
                   name="language"
                   register={register}

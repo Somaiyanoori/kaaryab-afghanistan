@@ -23,12 +23,16 @@ import toast from "react-hot-toast";
 import { useCVStore } from "../../store/index.js";
 import { sampleCVData, cvTemplates } from "../../data/cvSampleData.js";
 import ConfirmModal from "../../components/shared/ConfirmModal.jsx";
+import Button from "../../components/ui/Button.jsx";
+import Input from "../../components/ui/Input.jsx";
+import Textarea from "../../components/ui/Textarea.jsx";
+import Select from "../../components/ui/Select.jsx";
 import ModernTemplate from "../../components/cv-builder/templates/ModernTemplate.jsx";
 import ClassicTemplate from "../../components/cv-builder/templates/ClassicTemplate.jsx";
 import MinimalTemplate from "../../components/cv-builder/templates/MinimalTemplate.jsx";
 import ProfessionalTemplate from "../../components/cv-builder/templates/ProfessionalTemplate.jsx";
 import { cn, generateId } from "../../lib/utils.js";
-import Button from "../../components/ui/Button.jsx";
+
 const SKILL_LEVELS = ["Beginner", "Intermediate", "Advanced", "Expert"];
 const LANGUAGE_LEVELS = ["Basic", "Conversational", "Fluent", "Native"];
 
@@ -60,6 +64,7 @@ export default function CVBuilderPage() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
   const handleDownloadPDF = async () => {
     setIsDownloading(true);
     const loadingToast = toast.loading("Generating your PDF...");
@@ -152,9 +157,11 @@ export default function CVBuilderPage() {
   ];
 
   const TemplateComponent = TEMPLATES[selectedTemplate] || ModernTemplate;
+
   if (!mounted) {
     return null;
   }
+
   return (
     <>
       {/* HERO HEADER */}
@@ -282,7 +289,6 @@ export default function CVBuilderPage() {
               )}
             >
               <div className="bg-white dark:bg-slate-800 rounded-2xl p-2 mb-4 border border-gray-100 dark:border-slate-700">
-                {/* Desktop: Grid layout — all visible */}
                 <div className="hidden md:grid grid-cols-7 gap-1">
                   {SECTIONS.map((section) => {
                     const Icon = section.icon;
@@ -304,7 +310,6 @@ export default function CVBuilderPage() {
                   })}
                 </div>
 
-                {/* Mobile: Horizontal scroll */}
                 <div className="md:hidden flex gap-1 overflow-x-auto scrollbar-hide">
                   {SECTIONS.map((section) => {
                     const Icon = section.icon;
@@ -334,64 +339,90 @@ export default function CVBuilderPage() {
                       Personal Information
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <FormInput
-                        label="Full Name *"
+                      <Input
+                        label="Full Name"
+                        required
                         value={cvData.personal.fullName}
-                        onChange={(v) =>
-                          updatePersonal({ ...cvData.personal, fullName: v })
+                        onChange={(e) =>
+                          updatePersonal({
+                            ...cvData.personal,
+                            fullName: e.target.value,
+                          })
                         }
                       />
-                      <FormInput
+                      <Input
                         label="Job Title"
                         value={cvData.personal.jobTitle}
-                        onChange={(v) =>
-                          updatePersonal({ ...cvData.personal, jobTitle: v })
+                        onChange={(e) =>
+                          updatePersonal({
+                            ...cvData.personal,
+                            jobTitle: e.target.value,
+                          })
                         }
                       />
-                      <FormInput
-                        label="Email *"
+                      <Input
+                        label="Email"
                         type="email"
+                        required
                         value={cvData.personal.email}
-                        onChange={(v) =>
-                          updatePersonal({ ...cvData.personal, email: v })
+                        onChange={(e) =>
+                          updatePersonal({
+                            ...cvData.personal,
+                            email: e.target.value,
+                          })
                         }
                       />
-                      <FormInput
+                      <Input
                         label="Phone"
                         value={cvData.personal.phone}
-                        onChange={(v) =>
-                          updatePersonal({ ...cvData.personal, phone: v })
+                        onChange={(e) =>
+                          updatePersonal({
+                            ...cvData.personal,
+                            phone: e.target.value,
+                          })
                         }
                       />
-                      <FormInput
+                      <Input
                         label="City"
                         value={cvData.personal.city}
-                        onChange={(v) =>
-                          updatePersonal({ ...cvData.personal, city: v })
+                        onChange={(e) =>
+                          updatePersonal({
+                            ...cvData.personal,
+                            city: e.target.value,
+                          })
                         }
                       />
-                      <FormInput
+                      <Input
                         label="Website"
                         value={cvData.personal.website}
-                        onChange={(v) =>
-                          updatePersonal({ ...cvData.personal, website: v })
+                        onChange={(e) =>
+                          updatePersonal({
+                            ...cvData.personal,
+                            website: e.target.value,
+                          })
                         }
                       />
                       <div className="md:col-span-2">
-                        <FormInput
+                        <Input
                           label="LinkedIn"
                           value={cvData.personal.linkedin}
-                          onChange={(v) =>
-                            updatePersonal({ ...cvData.personal, linkedin: v })
+                          onChange={(e) =>
+                            updatePersonal({
+                              ...cvData.personal,
+                              linkedin: e.target.value,
+                            })
                           }
                         />
                       </div>
                       <div className="md:col-span-2">
-                        <FormTextarea
+                        <Textarea
                           label="Professional Summary"
                           value={cvData.personal.summary}
-                          onChange={(v) =>
-                            updatePersonal({ ...cvData.personal, summary: v })
+                          onChange={(e) =>
+                            updatePersonal({
+                              ...cvData.personal,
+                              summary: e.target.value,
+                            })
                           }
                           rows={4}
                           maxLength={500}
@@ -420,51 +451,51 @@ export default function CVBuilderPage() {
                     onRemove={(id) => removeSection("experiences", id)}
                     renderItem={(item) => (
                       <>
-                        <FormInput
+                        <Input
                           label="Position"
                           value={item.position}
-                          onChange={(v) =>
+                          onChange={(e) =>
                             updateSection("experiences", item.id, {
-                              position: v,
+                              position: e.target.value,
                             })
                           }
                         />
-                        <FormInput
+                        <Input
                           label="Company"
                           value={item.company}
-                          onChange={(v) =>
+                          onChange={(e) =>
                             updateSection("experiences", item.id, {
-                              company: v,
+                              company: e.target.value,
                             })
                           }
                         />
-                        <FormInput
+                        <Input
                           label="Location"
                           value={item.location}
-                          onChange={(v) =>
+                          onChange={(e) =>
                             updateSection("experiences", item.id, {
-                              location: v,
+                              location: e.target.value,
                             })
                           }
                         />
                         <div className="grid grid-cols-2 gap-2">
-                          <FormInput
+                          <Input
                             label="Start Date"
                             type="month"
                             value={item.startDate}
-                            onChange={(v) =>
+                            onChange={(e) =>
                               updateSection("experiences", item.id, {
-                                startDate: v,
+                                startDate: e.target.value,
                               })
                             }
                           />
-                          <FormInput
+                          <Input
                             label="End Date"
                             type="month"
                             value={item.endDate}
-                            onChange={(v) =>
+                            onChange={(e) =>
                               updateSection("experiences", item.id, {
-                                endDate: v,
+                                endDate: e.target.value,
                               })
                             }
                             disabled={item.current}
@@ -483,12 +514,12 @@ export default function CVBuilderPage() {
                           />
                           <span>Currently working here</span>
                         </label>
-                        <FormTextarea
+                        <Textarea
                           label="Description"
                           value={item.description}
-                          onChange={(v) =>
+                          onChange={(e) =>
                             updateSection("experiences", item.id, {
-                              description: v,
+                              description: e.target.value,
                             })
                           }
                         />
@@ -517,60 +548,70 @@ export default function CVBuilderPage() {
                     onRemove={(id) => removeSection("education", id)}
                     renderItem={(item) => (
                       <>
-                        <FormInput
+                        <Input
                           label="Degree"
                           value={item.degree}
-                          onChange={(v) =>
-                            updateSection("education", item.id, { degree: v })
+                          onChange={(e) =>
+                            updateSection("education", item.id, {
+                              degree: e.target.value,
+                            })
                           }
                         />
-                        <FormInput
+                        <Input
                           label="Field of Study"
                           value={item.field}
-                          onChange={(v) =>
-                            updateSection("education", item.id, { field: v })
+                          onChange={(e) =>
+                            updateSection("education", item.id, {
+                              field: e.target.value,
+                            })
                           }
                         />
-                        <FormInput
+                        <Input
                           label="School"
                           value={item.school}
-                          onChange={(v) =>
-                            updateSection("education", item.id, { school: v })
+                          onChange={(e) =>
+                            updateSection("education", item.id, {
+                              school: e.target.value,
+                            })
                           }
                         />
-                        <FormInput
+                        <Input
                           label="Location"
                           value={item.location}
-                          onChange={(v) =>
-                            updateSection("education", item.id, { location: v })
+                          onChange={(e) =>
+                            updateSection("education", item.id, {
+                              location: e.target.value,
+                            })
                           }
                         />
                         <div className="grid grid-cols-3 gap-2">
-                          <FormInput
+                          <Input
                             label="Start"
                             type="month"
                             value={item.startDate}
-                            onChange={(v) =>
+                            onChange={(e) =>
                               updateSection("education", item.id, {
-                                startDate: v,
+                                startDate: e.target.value,
                               })
                             }
                           />
-                          <FormInput
+                          <Input
                             label="End"
                             type="month"
                             value={item.endDate}
-                            onChange={(v) =>
+                            onChange={(e) =>
                               updateSection("education", item.id, {
-                                endDate: v,
+                                endDate: e.target.value,
                               })
                             }
                           />
-                          <FormInput
+                          <Input
                             label="GPA"
                             value={item.gpa}
-                            onChange={(v) =>
-                              updateSection("education", item.id, { gpa: v })
+                            onChange={(e) =>
+                              updateSection("education", item.id, {
+                                gpa: e.target.value,
+                              })
                             }
                           />
                         </div>
@@ -593,20 +634,25 @@ export default function CVBuilderPage() {
                     onRemove={(id) => removeSection("skills", id)}
                     renderItem={(item) => (
                       <div className="grid grid-cols-2 gap-2">
-                        <FormInput
+                        <Input
                           label="Skill Name"
                           value={item.name}
-                          onChange={(v) =>
-                            updateSection("skills", item.id, { name: v })
+                          onChange={(e) =>
+                            updateSection("skills", item.id, {
+                              name: e.target.value,
+                            })
                           }
                         />
-                        <FormSelect
+                        <Select
                           label="Level"
                           value={item.level}
-                          onChange={(v) =>
-                            updateSection("skills", item.id, { level: v })
+                          onChange={(e) =>
+                            updateSection("skills", item.id, {
+                              level: e.target.value,
+                            })
                           }
                           options={SKILL_LEVELS}
+                          placeholder=""
                         />
                       </div>
                     )}
@@ -627,22 +673,25 @@ export default function CVBuilderPage() {
                     onRemove={(id) => removeSection("languages", id)}
                     renderItem={(item) => (
                       <div className="grid grid-cols-2 gap-2">
-                        <FormInput
+                        <Input
                           label="Language"
                           value={item.name}
-                          onChange={(v) =>
-                            updateSection("languages", item.id, { name: v })
+                          onChange={(e) =>
+                            updateSection("languages", item.id, {
+                              name: e.target.value,
+                            })
                           }
                         />
-                        <FormSelect
+                        <Select
                           label="Proficiency"
                           value={item.proficiency}
-                          onChange={(v) =>
+                          onChange={(e) =>
                             updateSection("languages", item.id, {
-                              proficiency: v,
+                              proficiency: e.target.value,
                             })
                           }
                           options={LANGUAGE_LEVELS}
+                          placeholder=""
                         />
                       </div>
                     )}
@@ -665,35 +714,39 @@ export default function CVBuilderPage() {
                     onRemove={(id) => removeSection("projects", id)}
                     renderItem={(item) => (
                       <>
-                        <FormInput
+                        <Input
                           label="Project Name"
                           value={item.name}
-                          onChange={(v) =>
-                            updateSection("projects", item.id, { name: v })
-                          }
-                        />
-                        <FormTextarea
-                          label="Description"
-                          value={item.description}
-                          onChange={(v) =>
+                          onChange={(e) =>
                             updateSection("projects", item.id, {
-                              description: v,
+                              name: e.target.value,
                             })
                           }
                         />
-                        <FormInput
-                          label="Link"
-                          value={item.link}
-                          onChange={(v) =>
-                            updateSection("projects", item.id, { link: v })
+                        <Textarea
+                          label="Description"
+                          value={item.description}
+                          onChange={(e) =>
+                            updateSection("projects", item.id, {
+                              description: e.target.value,
+                            })
                           }
                         />
-                        <FormInput
+                        <Input
+                          label="Link"
+                          value={item.link}
+                          onChange={(e) =>
+                            updateSection("projects", item.id, {
+                              link: e.target.value,
+                            })
+                          }
+                        />
+                        <Input
                           label="Technologies (comma separated)"
                           value={item.technologies.join(", ")}
-                          onChange={(v) =>
+                          onChange={(e) =>
                             updateSection("projects", item.id, {
-                              technologies: v
+                              technologies: e.target.value
                                 .split(",")
                                 .map((t) => t.trim())
                                 .filter(Boolean),
@@ -721,32 +774,32 @@ export default function CVBuilderPage() {
                     onRemove={(id) => removeSection("certifications", id)}
                     renderItem={(item) => (
                       <>
-                        <FormInput
+                        <Input
                           label="Certificate Name"
                           value={item.name}
-                          onChange={(v) =>
+                          onChange={(e) =>
                             updateSection("certifications", item.id, {
-                              name: v,
+                              name: e.target.value,
                             })
                           }
                         />
                         <div className="grid grid-cols-2 gap-2">
-                          <FormInput
+                          <Input
                             label="Issuer"
                             value={item.issuer}
-                            onChange={(v) =>
+                            onChange={(e) =>
                               updateSection("certifications", item.id, {
-                                issuer: v,
+                                issuer: e.target.value,
                               })
                             }
                           />
-                          <FormInput
+                          <Input
                             label="Date"
                             type="month"
                             value={item.date}
-                            onChange={(v) =>
+                            onChange={(e) =>
                               updateSection("certifications", item.id, {
-                                date: v,
+                                date: e.target.value,
                               })
                             }
                           />
@@ -768,7 +821,6 @@ export default function CVBuilderPage() {
                 activeTab === "preview" ? "block" : "hidden",
               )}
             >
-              {/* Preview Controls — ONLY Download PDF Button */}
               <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
                 <Button
                   variant="outline"
@@ -790,7 +842,6 @@ export default function CVBuilderPage() {
                 </Button>
               </div>
 
-              {/* SCROLLABLE Preview Container */}
               <div className="cv-preview-wrapper lg:sticky lg:top-24">
                 <div className="cv-preview-container">
                   <div className="cv-preview-scaled" id="cv-preview-content">
@@ -881,65 +932,7 @@ export default function CVBuilderPage() {
   );
 }
 
-// FORM INPUT
-function FormInput({ label, value, onChange, type = "text", disabled }) {
-  return (
-    <div>
-      <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-        {label}
-      </label>
-      <input
-        type={type}
-        value={value || ""}
-        onChange={(e) => onChange(e.target.value)}
-        disabled={disabled}
-        className="w-full px-3 py-2 bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg text-sm text-gray-900 dark:text-white focus:outline-none focus:border-yellow-500 disabled:opacity-50"
-      />
-    </div>
-  );
-}
-
-// FORM TEXTAREA
-function FormTextarea({ label, value, onChange, rows = 3, maxLength }) {
-  return (
-    <div>
-      <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-        {label}
-      </label>
-      <textarea
-        value={value || ""}
-        onChange={(e) => onChange(e.target.value)}
-        rows={rows}
-        maxLength={maxLength}
-        className="w-full px-3 py-2 bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg text-sm text-gray-900 dark:text-white focus:outline-none focus:border-yellow-500 resize-none"
-      />
-    </div>
-  );
-}
-
-// FORM SELECT
-function FormSelect({ label, value, onChange, options }) {
-  return (
-    <div>
-      <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-        {label}
-      </label>
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full px-3 py-2 bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg text-sm text-gray-900 dark:text-white focus:outline-none focus:border-yellow-500"
-      >
-        {options.map((opt) => (
-          <option key={opt} value={opt}>
-            {opt}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-}
-
-// DYNAMIC SECTION
+// DYNAMIC SECTION (kept internal — used only here)
 function DynamicSection({ title, items, onAdd, onRemove, renderItem }) {
   return (
     <div className="space-y-4">
