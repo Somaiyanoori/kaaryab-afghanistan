@@ -4,7 +4,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { cn } from "../../lib/utils.js";
-
 /**
  * PageHeader - Reusable hero header for all pages
  *
@@ -75,21 +74,15 @@ export default function PageHeader({
   badge,
   badgeIcon: BadgeIcon,
   badgeColor = "yellow",
-
   // Back navigation
   backHref,
   backLabel = "Back",
-
-  // Right side actions (button, etc)
   actions,
-
   // Layout options
   centered = false,
   showGrid = false,
-
   // Size options
-  size = "md", // "sm" | "md" | "lg"
-
+  size = "md",
   className,
   children,
 }) {
@@ -162,18 +155,9 @@ export default function PageHeader({
           </Link>
         )}
 
-        {/* Main Layout: Split (title left + actions right) OR Centered */}
-        <div
-          className={cn(
-            centered
-              ? "text-center max-w-3xl mx-auto"
-              : actions
-                ? "flex items-center justify-between flex-wrap gap-4"
-                : "max-w-3xl",
-          )}
-        >
-          {/* Left/Center: Content */}
-          <div className={cn(centered && "flex flex-col items-center")}>
+        {/* Centered Layout */}
+        {centered ? (
+          <div className="text-center max-w-4xl mx-auto flex flex-col items-center">
             {/* Badge */}
             {badge && (
               <motion.div
@@ -226,40 +210,119 @@ export default function PageHeader({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className={cn(
-                  "text-base md:text-lg text-gray-300",
-                  centered && "max-w-2xl",
-                )}
+                className="text-base md:text-lg text-gray-300 max-w-2xl"
               >
                 {description}
               </motion.p>
             )}
 
-            {/* Custom children content */}
+            {/* Custom children */}
             {children && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="mt-6"
+                className="mt-6 w-full"
               >
                 {children}
               </motion.div>
             )}
           </div>
+        ) : (
+          /* Split Layout (title left + actions right) */
+          <div
+            className={cn(
+              actions
+                ? "flex items-center justify-between flex-wrap gap-4"
+                : "max-w-3xl",
+            )}
+          >
+            {/* Left: Content */}
+            <div>
+              {/* Badge */}
+              {badge && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className={cn(
+                    "inline-flex items-center gap-2 px-4 py-1.5 mb-4",
+                    "border rounded-full",
+                    badgeColors[badgeColor],
+                  )}
+                >
+                  {BadgeIcon && (
+                    <BadgeIcon
+                      size={14}
+                      className={badgeIconColors[badgeColor]}
+                    />
+                  )}
+                  <span className="text-xs font-semibold uppercase tracking-wider">
+                    {badge}
+                  </span>
+                </motion.div>
+              )}
 
-          {/* Right: Actions */}
-          {actions && !centered && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex items-center gap-2 flex-wrap"
-            >
-              {actions}
-            </motion.div>
-          )}
-        </div>
+              {/* Title */}
+              {title && (
+                <motion.h1
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className={cn(
+                    "font-black text-white mb-4 leading-tight",
+                    titleSizes[size],
+                  )}
+                  style={{ fontFamily: "Sora, sans-serif" }}
+                >
+                  {title}
+                  {highlightedText && (
+                    <>
+                      {" "}
+                      <span className="gradient-text">{highlightedText}</span>
+                    </>
+                  )}
+                </motion.h1>
+              )}
+
+              {/* Description */}
+              {description && (
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="text-base md:text-lg text-gray-300"
+                >
+                  {description}
+                </motion.p>
+              )}
+
+              {/* Custom children */}
+              {children && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="mt-6"
+                >
+                  {children}
+                </motion.div>
+              )}
+            </div>
+
+            {/* Right: Actions */}
+            {actions && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="flex items-center gap-2 flex-wrap"
+              >
+                {actions}
+              </motion.div>
+            )}
+          </div>
+        )}
       </div>
     </section>
   );
