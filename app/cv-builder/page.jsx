@@ -82,19 +82,50 @@ export default function CVBuilderPage() {
         return;
       }
 
-      const originalTransform = element.style.transform;
+      // Save original parent state
+      const parentContainer = element.closest(".cv-preview-container");
+      const grandParent = element.closest(".cv-preview-wrapper");
+      const mainContainer = element.closest(".lg\\:block");
+
+      // Save all original styles
+      const originalStyles = {
+        elementTransform: element.style.transform,
+        elementDisplay: element.style.display,
+        parentDisplay: parentContainer?.style.display,
+        grandParentDisplay: grandParent?.style.display,
+        mainDisplay: mainContainer?.style.display,
+      };
+
+      // FORCE everything to be visible for capture
+      if (mainContainer) mainContainer.style.display = "block";
+      if (grandParent) grandParent.style.display = "block";
+      if (parentContainer) parentContainer.style.display = "block";
+      element.style.display = "block";
       element.style.transform = "none";
 
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      // Wait for browser to render
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      // Take screenshot
       const canvas = await html2canvas(element, {
         scale: 1.5,
         backgroundColor: "#ffffff",
         logging: false,
         useCORS: true,
         allowTaint: true,
+        width: 794, // A4 width in pixels at 96 DPI
+        windowWidth: 794,
       });
 
-      element.style.transform = originalTransform;
+      // Restore all original styles
+      element.style.transform = originalStyles.elementTransform;
+      element.style.display = originalStyles.elementDisplay;
+      if (parentContainer)
+        parentContainer.style.display = originalStyles.parentDisplay || "";
+      if (grandParent)
+        grandParent.style.display = originalStyles.grandParentDisplay || "";
+      if (mainContainer)
+        mainContainer.style.display = originalStyles.mainDisplay || "";
 
       const imgData = canvas.toDataURL("image/jpeg", 0.85);
 
