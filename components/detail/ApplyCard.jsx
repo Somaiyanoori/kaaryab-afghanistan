@@ -14,7 +14,7 @@ import CountdownTimer from "./CountdownTimer.jsx";
 import SaveButton from "../opportunities/SaveButton.jsx";
 import ShareButtons from "./ShareButtons.jsx";
 import { cn } from "../../lib/utils.js";
-
+import Button from "../ui/Button.jsx";
 export default function ApplyCard({ opportunity }) {
   const isExpired = (() => {
     try {
@@ -60,28 +60,17 @@ export default function ApplyCard({ opportunity }) {
             </p>
           </div>
         ) : (
-          <motion.a
+          <Button
             href={opportunity.applyLink}
             target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.02, y: -2 }}
-            whileTap={{ scale: 0.98 }}
-            className={cn(
-              "group flex items-center justify-center gap-2",
-              "w-full py-4 px-6 rounded-xl",
-              "bg-gradient-to-r from-yellow-500 to-orange-500",
-              "hover:from-yellow-400 hover:to-orange-400",
-              "text-gray-900 font-bold text-base",
-              "shadow-lg hover:shadow-yellow-glow-lg",
-              "transition-all duration-200",
-            )}
+            variant="primary"
+            size="lg"
+            icon={ExternalLink}
+            iconPosition="right"
+            fullWidth
           >
-            <span>Apply Now</span>
-            <ExternalLink
-              size={18}
-              className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
-            />
-          </motion.a>
+            Apply Now
+          </Button>
         )}
 
         {/* ============================================

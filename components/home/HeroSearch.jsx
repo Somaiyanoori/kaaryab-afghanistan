@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Search, TrendingUp, Sparkles } from "lucide-react";
+import { Search, TrendingUp } from "lucide-react";
 import { cn } from "../../lib/utils.js";
 
 // Quick filter suggestions
@@ -48,7 +48,7 @@ export default function HeroSearch() {
             "shadow-2xl",
             "border-2 transition-all duration-300",
             isFocused
-              ? "border-yellow-500 shadow-yellow-glow-lg"
+              ? "border-yellow-500 shadow-yellow-glow"
               : "border-white/20 dark:border-white/10",
           )}
           whileHover={{ scale: 1.01 }}
@@ -82,7 +82,7 @@ export default function HeroSearch() {
             )}
           />
 
-          {/* Search Button */}
+          {/* Search Button (Inline with input) */}
           <motion.button
             type="submit"
             className={cn(

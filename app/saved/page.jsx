@@ -26,7 +26,7 @@ import SavedStats from "../../components/saved/SavedStats.jsx";
 import { useSavedStore } from "../../store/index.js";
 import { SORT_OPTIONS } from "../../lib/constants.js";
 import { filterOpportunities, cn } from "../../lib/utils.js";
-
+import Button from "../../components/ui/Button.jsx";
 export default function SavedPage() {
   const [mounted, setMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -216,25 +216,14 @@ export default function SavedPage() {
                 </div>
 
                 {/* Clear All Button */}
-                <motion.button
+                <Button
+                  variant="danger"
+                  size="md"
+                  icon={Trash2}
                   onClick={() => setShowClearModal(true)}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={cn(
-                    "flex items-center justify-center gap-2",
-                    "px-4 py-3 rounded-xl",
-                    "bg-red-50 hover:bg-red-100",
-                    "dark:bg-red-500/10 dark:hover:bg-red-500/20",
-                    "text-red-600 dark:text-red-400",
-                    "font-semibold text-sm",
-                    "border-2 border-red-200 dark:border-red-500/30",
-                    "transition-colors duration-200",
-                    "whitespace-nowrap",
-                  )}
                 >
-                  <Trash2 size={16} />
-                  <span>Clear All</span>
-                </motion.button>
+                  Clear All
+                </Button>
               </motion.div>
 
               {/* ============================================
@@ -395,25 +384,17 @@ export default function SavedPage() {
                   </p>
                 </div>
 
-                <Link href="/opportunities" className="flex-shrink-0">
-                  <motion.button
-                    whileHover={{ scale: 1.03, y: -2 }}
-                    whileTap={{ scale: 0.97 }}
-                    className={cn(
-                      "flex items-center gap-2",
-                      "px-6 py-3 rounded-xl",
-                      "bg-gray-900 dark:bg-white",
-                      "text-white dark:text-gray-900",
-                      "font-semibold text-sm",
-                      "shadow-lg hover:shadow-xl",
-                      "transition-all duration-200",
-                      "whitespace-nowrap",
-                    )}
+                <div className="flex-shrink-0">
+                  <Button
+                    href="/opportunities"
+                    variant="dark"
+                    size="md"
+                    icon={ArrowRight}
+                    iconPosition="right"
                   >
-                    <span>Browse All</span>
-                    <ArrowRight size={16} />
-                  </motion.button>
-                </Link>
+                    Browse All
+                  </Button>
+                </div>
               </motion.div>
             </>
           )}

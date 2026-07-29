@@ -38,7 +38,7 @@ import { opportunitySchema } from "../../../lib/validators.js";
 import { categories, locations } from "../../../data/opportunities.js";
 import { useOpportunitiesStore } from "../../../store/index.js";
 import { cn } from "../../../lib/utils.js";
-
+import Button from "../../../components/ui/Button.jsx";
 export default function EditOpportunityPage({ params }) {
   const { id } = use(params);
   const router = useRouter();
@@ -160,13 +160,14 @@ export default function EditOpportunityPage({ params }) {
           <p className="text-gray-600 dark:text-gray-400 mb-6">
             You can only edit opportunities you have submitted.
           </p>
-          <Link
+          <Button
             href="/dashboard"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold text-sm rounded-xl shadow-lg transition-all"
+            variant="primary"
+            size="md"
+            icon={ArrowLeft}
           >
-            <ArrowLeft size={16} />
             Go to Dashboard
-          </Link>
+          </Button>
         </div>
       </div>
     );
@@ -436,54 +437,26 @@ export default function EditOpportunityPage({ params }) {
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-3">
-              <motion.button
+              <Button
                 type="button"
+                variant="danger"
+                size="md"
+                icon={Trash2}
                 onClick={() => setShowDeleteModal(true)}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className={cn(
-                  "flex items-center justify-center gap-2",
-                  "px-6 py-3 rounded-xl",
-                  "bg-red-50 hover:bg-red-100",
-                  "dark:bg-red-500/10 dark:hover:bg-red-500/20",
-                  "text-red-600 dark:text-red-400",
-                  "border-2 border-red-200 dark:border-red-500/30",
-                  "font-semibold text-sm",
-                  "transition-colors",
-                )}
               >
-                <Trash2 size={16} />
-                <span>Delete Opportunity</span>
-              </motion.button>
+                Delete Opportunity
+              </Button>
 
-              <motion.button
+              <Button
                 type="submit"
-                disabled={isSubmitting}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className={cn(
-                  "flex-1 flex items-center justify-center gap-2",
-                  "px-6 py-3 rounded-xl",
-                  "bg-gradient-to-r from-yellow-500 to-orange-500",
-                  "hover:from-yellow-400 hover:to-orange-400",
-                  "text-gray-900 font-bold text-sm",
-                  "shadow-lg hover:shadow-yellow-glow-lg",
-                  "transition-all",
-                  "disabled:opacity-70",
-                )}
+                variant="primary"
+                size="md"
+                icon={Save}
+                isLoading={isSubmitting}
+                fullWidth
               >
-                {isSubmitting ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
-                    <span>Saving...</span>
-                  </>
-                ) : (
-                  <>
-                    <Save size={16} />
-                    <span>Save Changes</span>
-                  </>
-                )}
-              </motion.button>
+                {isSubmitting ? "Saving..." : "Save Changes"}
+              </Button>
             </div>
           </form>
         </div>

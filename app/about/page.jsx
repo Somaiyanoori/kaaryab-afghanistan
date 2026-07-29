@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import SectionHeader from "../../components/shared/SectionHeader.jsx";
 import { cn } from "../../lib/utils.js";
-
+import Button from "../../components/ui/Button.jsx";
 // ============================================
 // VALUES DATA
 // ============================================
@@ -272,16 +272,15 @@ export default function AboutPage() {
 
               {/* CTA */}
               <div className="mt-8 flex flex-wrap gap-3">
-                <Link href="/opportunities">
-                  <motion.button
-                    whileHover={{ scale: 1.03, y: -2 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="flex items-center gap-2 px-6 py-3 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold text-sm rounded-xl shadow-lg transition-all"
-                  >
-                    <span>Explore Opportunities</span>
-                    <ArrowRight size={16} />
-                  </motion.button>
-                </Link>
+                <Button
+                  href="/opportunities"
+                  variant="primary"
+                  size="md"
+                  icon={ArrowRight}
+                  iconPosition="right"
+                >
+                  Explore Opportunities
+                </Button>
               </div>
             </motion.div>
 
@@ -664,29 +663,19 @@ export default function AboutPage() {
 
               {/* Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link href="/opportunities">
-                  <motion.button
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="inline-flex items-center gap-2 px-6 py-3.5 bg-white text-gray-900 font-bold text-sm rounded-xl shadow-xl group"
-                  >
-                    <span>Browse Opportunities</span>
-                    <ArrowRight
-                      size={16}
-                      className="group-hover:translate-x-1 transition-transform"
-                    />
-                  </motion.button>
-                </Link>
+                <Button
+                  href="/opportunities"
+                  variant="white"
+                  size="lg"
+                  icon={ArrowRight}
+                  iconPosition="right"
+                >
+                  Browse Opportunities
+                </Button>
 
-                <Link href="/contact">
-                  <motion.button
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="inline-flex items-center gap-2 px-6 py-3.5 bg-white/10 hover:bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white font-bold text-sm rounded-xl transition-all"
-                  >
-                    Get in Touch
-                  </motion.button>
-                </Link>
+                <Button href="/contact" variant="glass" size="lg">
+                  Get in Touch
+                </Button>
               </div>
             </div>
           </motion.div>

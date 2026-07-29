@@ -10,7 +10,7 @@ import OpportunityCardSkeleton from "../opportunities/OpportunityCardSkeleton.js
 import { opportunities } from "../../data/opportunities.js";
 import { cn } from "../../lib/utils.js";
 import { isPast, parseISO } from "date-fns";
-
+import Button from "../ui/Button.jsx";
 export default function FeaturedOpportunities() {
   const [mounted, setMounted] = useState(false);
 
@@ -58,29 +58,17 @@ export default function FeaturedOpportunities() {
           </div>
 
           {/* View All Link (Desktop) */}
-          <Link href="/opportunities" className="hidden md:block flex-shrink-0">
-            <motion.button
-              whileHover={{ scale: 1.03, x: 5 }}
-              whileTap={{ scale: 0.97 }}
-              className={cn(
-                "inline-flex items-center gap-2",
-                "px-5 py-2.5 rounded-xl",
-                "bg-gray-100 hover:bg-yellow-500",
-                "dark:bg-slate-800 dark:hover:bg-yellow-500",
-                "text-gray-900 dark:text-white",
-                "hover:text-gray-900 dark:hover:text-gray-900",
-                "font-semibold text-sm",
-                "transition-all duration-200",
-                "group",
-              )}
+          <div className="hidden md:block flex-shrink-0">
+            <Button
+              href="/opportunities"
+              variant="outline"
+              size="md"
+              icon={ArrowRight}
+              iconPosition="right"
             >
-              <span>View All</span>
-              <ArrowRight
-                size={16}
-                className="group-hover:translate-x-1 transition-transform"
-              />
-            </motion.button>
-          </Link>
+              View All
+            </Button>
+          </div>
         </div>
 
         {/* ============================================
@@ -124,25 +112,16 @@ export default function FeaturedOpportunities() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="mt-10 md:hidden text-center"
         >
-          <Link href="/opportunities">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className={cn(
-                "inline-flex items-center gap-2",
-                "w-full sm:w-auto",
-                "px-6 py-3 rounded-xl",
-                "bg-yellow-500 hover:bg-yellow-400",
-                "text-gray-900",
-                "font-semibold text-sm",
-                "shadow-md hover:shadow-yellow-glow",
-                "transition-all duration-200",
-              )}
-            >
-              <span>Browse All Opportunities</span>
-              <ArrowRight size={16} />
-            </motion.button>
-          </Link>
+          <Button
+            href="/opportunities"
+            variant="primary"
+            size="md"
+            icon={ArrowRight}
+            iconPosition="right"
+            fullWidth
+          >
+            Browse All Opportunities
+          </Button>
         </motion.div>
 
         {/* ============================================
@@ -185,23 +164,11 @@ export default function FeaturedOpportunities() {
             </p>
           </div>
 
-          <Link href="/add-opportunity" className="flex-shrink-0">
-            <motion.button
-              whileHover={{ scale: 1.03, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              className={cn(
-                "px-6 py-3 rounded-xl",
-                "bg-gray-900 dark:bg-white",
-                "text-white dark:text-gray-900",
-                "font-semibold text-sm",
-                "shadow-lg hover:shadow-xl",
-                "transition-all duration-200",
-                "whitespace-nowrap",
-              )}
-            >
+          <div className="flex-shrink-0">
+            <Button href="/add-opportunity" variant="dark" size="md">
               Submit Opportunity
-            </motion.button>
-          </Link>
+            </Button>
+          </div>
         </motion.div>
       </div>
     </section>

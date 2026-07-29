@@ -39,7 +39,7 @@ import { categories, locations } from "../../data/opportunities.js";
 import { useOpportunitiesStore } from "../../store/index.js";
 import Link from "next/link";
 import { cn } from "../../lib/utils.js";
-
+import Button from "../../components/ui/Button.jsx";
 export default function AddOpportunityPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -543,50 +543,25 @@ export default function AddOpportunityPage() {
                   transition={{ delay: 0.5 }}
                   className="flex flex-col sm:flex-row gap-3"
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="outline"
+                    size="md"
                     onClick={() => reset()}
-                    className={cn(
-                      "px-6 py-3 rounded-xl",
-                      "bg-white dark:bg-slate-800",
-                      "border-2 border-gray-200 dark:border-slate-700",
-                      "text-gray-700 dark:text-gray-300",
-                      "font-semibold text-sm",
-                      "hover:border-red-500 hover:text-red-500",
-                      "transition-colors duration-200",
-                    )}
                   >
                     Reset Form
-                  </button>
+                  </Button>
 
-                  <motion.button
+                  <Button
                     type="submit"
-                    disabled={isSubmitting}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className={cn(
-                      "flex-1 flex items-center justify-center gap-2",
-                      "px-6 py-3 rounded-xl",
-                      "bg-gradient-to-r from-yellow-500 to-orange-500",
-                      "hover:from-yellow-400 hover:to-orange-400",
-                      "text-gray-900 font-bold text-sm",
-                      "shadow-lg hover:shadow-yellow-glow-lg",
-                      "transition-all duration-200",
-                      "disabled:opacity-70 disabled:cursor-not-allowed",
-                    )}
+                    variant="primary"
+                    size="md"
+                    icon={Send}
+                    isLoading={isSubmitting}
+                    fullWidth
                   >
-                    {isSubmitting ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
-                        <span>Submitting...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Send size={16} />
-                        <span>Submit Opportunity</span>
-                      </>
-                    )}
-                  </motion.button>
+                    {isSubmitting ? "Submitting..." : "Submit Opportunity"}
+                  </Button>
                 </motion.div>
               </form>
             </div>

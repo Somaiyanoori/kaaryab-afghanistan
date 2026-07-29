@@ -6,7 +6,7 @@ import { Sparkles, ArrowRight, PlayCircle } from "lucide-react";
 import SectionHeader from "../shared/SectionHeader.jsx";
 import StepCard from "./StepCard.jsx";
 import { cn } from "../../lib/utils.js";
-
+import Button from "../ui/Button.jsx";
 const STEPS = [
   {
     id: 1,
@@ -183,27 +183,19 @@ export default function HowItWorks() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link href="/opportunities">
-                  <motion.button
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={cn(
-                      "inline-flex items-center gap-2",
-                      "px-6 py-3.5 rounded-xl",
-                      "bg-white text-gray-900",
-                      "font-bold text-sm",
-                      "shadow-xl hover:shadow-2xl",
-                      "transition-all duration-200",
-                      "group",
-                    )}
-                  >
-                    <span>Browse Opportunities</span>
-                    <ArrowRight
-                      size={16}
-                      className="group-hover:translate-x-1 transition-transform"
-                    />
-                  </motion.button>
-                </Link>
+                <Button
+                  href="/opportunities"
+                  variant="white"
+                  size="lg"
+                  icon={ArrowRight}
+                  iconPosition="right"
+                >
+                  Browse Opportunities
+                </Button>
+
+                <Button href="/cv-builder" variant="glass" size="lg">
+                  Build Your CV Free
+                </Button>
 
                 <Link href="/cv-builder">
                   <motion.button

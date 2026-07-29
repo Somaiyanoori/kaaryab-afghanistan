@@ -32,7 +32,7 @@ import FormTextarea from "../../components/forms/FormTextarea.jsx";
 import FormSelect from "../../components/forms/FormSelect.jsx";
 import { contactSchema } from "../../lib/validators.js";
 import { cn } from "../../lib/utils.js";
-
+import Button from "../../components/ui/Button.jsx";
 // ============================================
 // CONTACT INFO
 // ============================================
@@ -443,34 +443,16 @@ export default function ContactPage() {
                         value={messageValue}
                       />
 
-                      <motion.button
+                      <Button
                         type="submit"
-                        disabled={isSubmitting}
-                        whileHover={{ scale: 1.01, y: -2 }}
-                        whileTap={{ scale: 0.99 }}
-                        className={cn(
-                          "w-full flex items-center justify-center gap-2",
-                          "px-6 py-3.5 rounded-xl",
-                          "bg-gradient-to-r from-yellow-500 to-orange-500",
-                          "hover:from-yellow-400 hover:to-orange-400",
-                          "text-gray-900 font-bold text-sm",
-                          "shadow-lg hover:shadow-yellow-glow-lg",
-                          "transition-all duration-200",
-                          "disabled:opacity-70 disabled:cursor-not-allowed",
-                        )}
+                        variant="primary"
+                        size="lg"
+                        icon={Send}
+                        isLoading={isSubmitting}
+                        fullWidth
                       >
-                        {isSubmitting ? (
-                          <>
-                            <div className="w-4 h-4 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
-                            <span>Sending...</span>
-                          </>
-                        ) : (
-                          <>
-                            <Send size={16} />
-                            <span>Send Message</span>
-                          </>
-                        )}
-                      </motion.button>
+                        {isSubmitting ? "Sending..." : "Send Message"}
+                      </Button>
                     </motion.form>
                   )}
                 </AnimatePresence>
