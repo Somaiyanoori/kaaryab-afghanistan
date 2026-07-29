@@ -31,12 +31,32 @@ import Input from "../../components/ui/Input.jsx";
 import Textarea from "../../components/ui/Textarea.jsx";
 import Select from "../../components/ui/Select.jsx";
 import Button from "../../components/ui/Button.jsx";
+import Card from "../../components/ui/Card.jsx";
 import DynamicListInput from "../../components/forms/DynamicListInput.jsx";
 import OpportunityCard from "../../components/opportunities/OpportunityCard.jsx";
 
 import { opportunitySchema } from "../../lib/validators.js";
 import { categories, locations } from "../../data/opportunities.js";
 import { useOpportunitiesStore } from "../../store/index.js";
+
+// Form section header component
+function SectionHeader({ number, title, subtitle, color }) {
+  return (
+    <div className="flex items-center gap-3 mb-6">
+      <div
+        className={`w-10 h-10 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center text-white font-bold`}
+      >
+        {number}
+      </div>
+      <div>
+        <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+          {title}
+        </h2>
+        <p className="text-xs text-gray-500 dark:text-gray-400">{subtitle}</p>
+      </div>
+    </div>
+  );
+}
 
 export default function AddOpportunityPage() {
   const router = useRouter();
@@ -207,56 +227,50 @@ export default function AddOpportunityPage() {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-white dark:bg-slate-800 rounded-2xl p-6 md:p-8 border border-gray-100 dark:border-slate-700 shadow-sm"
                 >
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center text-white font-bold">
-                      1
+                  <Card variant="default" padding="lg">
+                    <SectionHeader
+                      number={1}
+                      title="Basic Information"
+                      subtitle="Tell us about the opportunity"
+                      color="from-yellow-500 to-orange-500"
+                    />
+
+                    <div className="space-y-4">
+                      <Input
+                        label="Opportunity Title"
+                        name="title"
+                        register={register}
+                        error={errors.title}
+                        placeholder="e.g., Frontend Developer Intern"
+                        required
+                        icon={FileText}
+                      />
+
+                      <Input
+                        label="Organization Name"
+                        name="organization"
+                        register={register}
+                        error={errors.organization}
+                        placeholder="e.g., Kabul Tech Community"
+                        required
+                        icon={Building2}
+                      />
+
+                      <Textarea
+                        label="Short Description"
+                        name="shortDesc"
+                        register={register}
+                        error={errors.shortDesc}
+                        placeholder="A brief summary (shown in cards)"
+                        required
+                        icon={FileText}
+                        rows={2}
+                        maxLength={300}
+                        value={formValues.shortDesc}
+                      />
                     </div>
-                    <div>
-                      <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-                        Basic Information
-                      </h2>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        Tell us about the opportunity
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <Input
-                      label="Opportunity Title"
-                      name="title"
-                      register={register}
-                      error={errors.title}
-                      placeholder="e.g., Frontend Developer Intern"
-                      required
-                      icon={FileText}
-                    />
-
-                    <Input
-                      label="Organization Name"
-                      name="organization"
-                      register={register}
-                      error={errors.organization}
-                      placeholder="e.g., Kabul Tech Community"
-                      required
-                      icon={Building2}
-                    />
-
-                    <Textarea
-                      label="Short Description"
-                      name="shortDesc"
-                      register={register}
-                      error={errors.shortDesc}
-                      placeholder="A brief summary (shown in cards)"
-                      required
-                      icon={FileText}
-                      rows={2}
-                      maxLength={300}
-                      value={formValues.shortDesc}
-                    />
-                  </div>
+                  </Card>
                 </motion.div>
 
                 {/* Section 2: Classification */}
@@ -264,73 +278,67 @@ export default function AddOpportunityPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
-                  className="bg-white dark:bg-slate-800 rounded-2xl p-6 md:p-8 border border-gray-100 dark:border-slate-700 shadow-sm"
                 >
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold">
-                      2
+                  <Card variant="default" padding="lg">
+                    <SectionHeader
+                      number={2}
+                      title="Classification"
+                      subtitle="Help users find your opportunity"
+                      color="from-blue-500 to-indigo-600"
+                    />
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <Select
+                        label="Category"
+                        name="category"
+                        register={register}
+                        error={errors.category}
+                        required
+                        icon={Tag}
+                        options={categories.map((c) => ({
+                          value: c.name,
+                          label: c.name,
+                        }))}
+                      />
+
+                      <Select
+                        label="Location"
+                        name="location"
+                        register={register}
+                        error={errors.location}
+                        required
+                        icon={MapPin}
+                        options={locations.map((l) => ({
+                          value: l.name,
+                          label: l.name,
+                        }))}
+                      />
+
+                      <Select
+                        label="Work Type"
+                        name="type"
+                        register={register}
+                        error={errors.type}
+                        required
+                        icon={Briefcase}
+                        options={[
+                          { value: "Remote", label: "Remote" },
+                          { value: "On-site", label: "On-site" },
+                          { value: "Hybrid", label: "Hybrid" },
+                        ]}
+                      />
+
+                      <Input
+                        label="Deadline"
+                        name="deadline"
+                        type="date"
+                        register={register}
+                        error={errors.deadline}
+                        required
+                        icon={Calendar}
+                      />
                     </div>
-                    <div>
-                      <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-                        Classification
-                      </h2>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        Help users find your opportunity
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <Select
-                      label="Category"
-                      name="category"
-                      register={register}
-                      error={errors.category}
-                      required
-                      icon={Tag}
-                      options={categories.map((c) => ({
-                        value: c.name,
-                        label: c.name,
-                      }))}
-                    />
-
-                    <Select
-                      label="Location"
-                      name="location"
-                      register={register}
-                      error={errors.location}
-                      required
-                      icon={MapPin}
-                      options={locations.map((l) => ({
-                        value: l.name,
-                        label: l.name,
-                      }))}
-                    />
-
-                    <Select
-                      label="Work Type"
-                      name="type"
-                      register={register}
-                      error={errors.type}
-                      required
-                      icon={Briefcase}
-                      options={[
-                        { value: "Remote", label: "Remote" },
-                        { value: "On-site", label: "On-site" },
-                        { value: "Hybrid", label: "Hybrid" },
-                      ]}
-                    />
-
-                    <Input
-                      label="Deadline"
-                      name="deadline"
-                      type="date"
-                      register={register}
-                      error={errors.deadline}
-                      required
-                      icon={Calendar}
-                    />
-                  </div>
+                  </Card>
                 </motion.div>
 
                 {/* Section 3: Details */}
@@ -338,58 +346,52 @@ export default function AddOpportunityPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
-                  className="bg-white dark:bg-slate-800 rounded-2xl p-6 md:p-8 border border-gray-100 dark:border-slate-700 shadow-sm"
                 >
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-white font-bold">
-                      3
+                  <Card variant="default" padding="lg">
+                    <SectionHeader
+                      number={3}
+                      title="Full Details"
+                      subtitle="Describe the opportunity in detail"
+                      color="from-purple-500 to-pink-600"
+                    />
+
+                    <div className="space-y-4">
+                      <Textarea
+                        label="Full Description"
+                        name="description"
+                        register={register}
+                        error={errors.description}
+                        placeholder="Describe the opportunity in detail..."
+                        required
+                        icon={FileText}
+                        rows={6}
+                        maxLength={2000}
+                        value={formValues.description}
+                      />
+
+                      <DynamicListInput
+                        label="Requirements"
+                        items={requirements}
+                        onChange={setRequirements}
+                        placeholder="e.g., Basic knowledge of React"
+                        required
+                        icon={ListChecks}
+                        helper="Add requirements one by one. Press Enter or click Add."
+                        error={errors.requirements?.message}
+                        maxItems={15}
+                      />
+
+                      <DynamicListInput
+                        label="Tags"
+                        items={tags}
+                        onChange={setTags}
+                        placeholder="e.g., React, JavaScript"
+                        icon={Tag}
+                        helper="Optional. Add keywords to help users find this opportunity."
+                        maxItems={10}
+                      />
                     </div>
-                    <div>
-                      <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-                        Full Details
-                      </h2>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        Describe the opportunity in detail
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <Textarea
-                      label="Full Description"
-                      name="description"
-                      register={register}
-                      error={errors.description}
-                      placeholder="Describe the opportunity in detail..."
-                      required
-                      icon={FileText}
-                      rows={6}
-                      maxLength={2000}
-                      value={formValues.description}
-                    />
-
-                    <DynamicListInput
-                      label="Requirements"
-                      items={requirements}
-                      onChange={setRequirements}
-                      placeholder="e.g., Basic knowledge of React"
-                      required
-                      icon={ListChecks}
-                      helper="Add requirements one by one. Press Enter or click Add."
-                      error={errors.requirements?.message}
-                      maxItems={15}
-                    />
-
-                    <DynamicListInput
-                      label="Tags"
-                      items={tags}
-                      onChange={setTags}
-                      placeholder="e.g., React, JavaScript"
-                      icon={Tag}
-                      helper="Optional. Add keywords to help users find this opportunity."
-                      maxItems={10}
-                    />
-                  </div>
+                  </Card>
                 </motion.div>
 
                 {/* Section 4: Application */}
@@ -397,46 +399,40 @@ export default function AddOpportunityPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
-                  className="bg-white dark:bg-slate-800 rounded-2xl p-6 md:p-8 border border-gray-100 dark:border-slate-700 shadow-sm"
                 >
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center text-white font-bold">
-                      4
-                    </div>
-                    <div>
-                      <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-                        Application Info
-                      </h2>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        How can candidates apply?
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <Input
-                      label="Apply Link"
-                      name="applyLink"
-                      type="url"
-                      register={register}
-                      error={errors.applyLink}
-                      placeholder="https://example.com/apply"
-                      required
-                      icon={LinkIcon}
-                      helper="URL where candidates can apply"
+                  <Card variant="default" padding="lg">
+                    <SectionHeader
+                      number={4}
+                      title="Application Info"
+                      subtitle="How can candidates apply?"
+                      color="from-green-500 to-teal-600"
                     />
 
-                    <Input
-                      label="Contact Email"
-                      name="contactEmail"
-                      type="email"
-                      register={register}
-                      error={errors.contactEmail}
-                      placeholder="contact@organization.com"
-                      icon={Mail}
-                      helper="Optional. For candidate inquiries."
-                    />
-                  </div>
+                    <div className="space-y-4">
+                      <Input
+                        label="Apply Link"
+                        name="applyLink"
+                        type="url"
+                        register={register}
+                        error={errors.applyLink}
+                        placeholder="https://example.com/apply"
+                        required
+                        icon={LinkIcon}
+                        helper="URL where candidates can apply"
+                      />
+
+                      <Input
+                        label="Contact Email"
+                        name="contactEmail"
+                        type="email"
+                        register={register}
+                        error={errors.contactEmail}
+                        placeholder="contact@organization.com"
+                        icon={Mail}
+                        helper="Optional. For candidate inquiries."
+                      />
+                    </div>
+                  </Card>
                 </motion.div>
 
                 {/* Section 5: Optional Details */}
@@ -444,78 +440,72 @@ export default function AddOpportunityPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
-                  className="bg-white dark:bg-slate-800 rounded-2xl p-6 md:p-8 border border-gray-100 dark:border-slate-700 shadow-sm"
                 >
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold">
-                      5
+                  <Card variant="default" padding="lg">
+                    <SectionHeader
+                      number={5}
+                      title="Additional Details"
+                      subtitle="Optional but helpful"
+                      color="from-amber-500 to-orange-600"
+                    />
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <Input
+                        label="Salary / Stipend"
+                        name="salary"
+                        register={register}
+                        error={errors.salary}
+                        placeholder="e.g., $500-800/month"
+                        icon={DollarSign}
+                      />
+
+                      <Input
+                        label="Duration"
+                        name="duration"
+                        register={register}
+                        error={errors.duration}
+                        placeholder="e.g., 3 months"
+                        icon={Clock}
+                      />
+
+                      <Input
+                        label="Available Seats"
+                        name="seats"
+                        type="number"
+                        register={register}
+                        error={errors.seats}
+                        placeholder="e.g., 5"
+                        icon={Users}
+                      />
+
+                      <Select
+                        label="Gender"
+                        name="gender"
+                        register={register}
+                        error={errors.gender}
+                        icon={Users}
+                        options={[
+                          { value: "Any", label: "Any Gender" },
+                          { value: "Male", label: "Male" },
+                          { value: "Female", label: "Female" },
+                        ]}
+                      />
+
+                      <Select
+                        label="Language"
+                        name="language"
+                        register={register}
+                        error={errors.language}
+                        icon={Globe}
+                        options={[
+                          { value: "Any", label: "Any Language" },
+                          { value: "Dari", label: "Dari" },
+                          { value: "Pashto", label: "Pashto" },
+                          { value: "English", label: "English" },
+                        ]}
+                      />
                     </div>
-                    <div>
-                      <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-                        Additional Details
-                      </h2>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        Optional but helpful
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <Input
-                      label="Salary / Stipend"
-                      name="salary"
-                      register={register}
-                      error={errors.salary}
-                      placeholder="e.g., $500-800/month"
-                      icon={DollarSign}
-                    />
-
-                    <Input
-                      label="Duration"
-                      name="duration"
-                      register={register}
-                      error={errors.duration}
-                      placeholder="e.g., 3 months"
-                      icon={Clock}
-                    />
-
-                    <Input
-                      label="Available Seats"
-                      name="seats"
-                      type="number"
-                      register={register}
-                      error={errors.seats}
-                      placeholder="e.g., 5"
-                      icon={Users}
-                    />
-
-                    <Select
-                      label="Gender"
-                      name="gender"
-                      register={register}
-                      error={errors.gender}
-                      icon={Users}
-                      options={[
-                        { value: "Any", label: "Any Gender" },
-                        { value: "Male", label: "Male" },
-                        { value: "Female", label: "Female" },
-                      ]}
-                    />
-
-                    <Select
-                      label="Language"
-                      name="language"
-                      register={register}
-                      error={errors.language}
-                      icon={Globe}
-                      options={[
-                        { value: "Any", label: "Any Language" },
-                        { value: "Dari", label: "Dari" },
-                        { value: "Pashto", label: "Pashto" },
-                        { value: "English", label: "English" },
-                      ]}
-                    />
-                  </div>
+                  </Card>
                 </motion.div>
 
                 {/* Submit Buttons */}
@@ -562,7 +552,7 @@ export default function AddOpportunityPage() {
                   <OpportunityCard opportunity={previewData} index={0} />
                 </div>
 
-                <div className="bg-yellow-50 dark:bg-yellow-500/10 border border-yellow-200 dark:border-yellow-500/30 rounded-xl p-4">
+                <Card variant="gradient" padding="md">
                   <div className="flex items-start gap-2">
                     <Sparkles
                       size={14}
@@ -573,7 +563,7 @@ export default function AddOpportunityPage() {
                       your opportunity will look to others.
                     </p>
                   </div>
-                </div>
+                </Card>
               </div>
             </div>
           </div>

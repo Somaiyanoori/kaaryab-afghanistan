@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Star, Quote, MapPin } from "lucide-react";
 import { cn, getInitials } from "../../lib/utils.js";
-
+import Avatar from "../ui/Avatar.jsx";
 // Random colorful gradients for avatars
 const AVATAR_GRADIENTS = [
   "linear-gradient(135deg, #EAB308 0%, #F97316 100%)",
@@ -125,27 +125,13 @@ export default function TestimonialCard({ testimonial, index }) {
         ============================================ */}
         <div className="flex items-center gap-3 relative z-10 pt-4 border-t border-gray-100 dark:border-slate-700">
           {/* Avatar with Initials */}
-          <div
-            className={cn(
-              "flex-shrink-0",
-              "w-12 h-12 rounded-full",
-              "flex items-center justify-center",
-              "shadow-md",
-              "text-white font-bold text-sm",
-              "ring-2 ring-white dark:ring-slate-700",
-            )}
-            style={{ background: gradient }}
-          >
-            {testimonial.avatar ? (
-              <img
-                src={testimonial.avatar}
-                alt={testimonial.name}
-                className="w-full h-full rounded-full object-cover"
-              />
-            ) : (
-              <span className="drop-shadow-sm">{initials}</span>
-            )}
-          </div>
+          <Avatar
+            src={testimonial.avatar}
+            name={testimonial.name}
+            size="md"
+            gradient={gradient}
+            ring
+          />
 
           {/* Name + Role + Location */}
           <div className="flex-1 min-w-0">

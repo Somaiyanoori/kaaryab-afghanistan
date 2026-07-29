@@ -27,6 +27,7 @@ import Button from "../../components/ui/Button.jsx";
 import Input from "../../components/ui/Input.jsx";
 import Textarea from "../../components/ui/Textarea.jsx";
 import Select from "../../components/ui/Select.jsx";
+import Card from "../../components/ui/Card.jsx";
 import ModernTemplate from "../../components/cv-builder/templates/ModernTemplate.jsx";
 import ClassicTemplate from "../../components/cv-builder/templates/ClassicTemplate.jsx";
 import MinimalTemplate from "../../components/cv-builder/templates/MinimalTemplate.jsx";
@@ -66,6 +67,12 @@ export default function CVBuilderPage() {
   }, []);
 
   const handleDownloadPDF = async () => {
+    // Auto-switch to preview tab on mobile
+    if (activeTab === "edit") {
+      setActiveTab("preview");
+      await new Promise((resolve) => setTimeout(resolve, 300));
+    }
+
     setIsDownloading(true);
     const loadingToast = toast.loading("Generating your PDF...");
 
@@ -113,7 +120,7 @@ export default function CVBuilderPage() {
         logging: false,
         useCORS: true,
         allowTaint: true,
-        width: 794, // A4 width in pixels at 96 DPI
+        width: 794,
         windowWidth: 794,
       });
 
@@ -319,7 +326,8 @@ export default function CVBuilderPage() {
                 activeTab === "edit" ? "block" : "hidden",
               )}
             >
-              <div className="bg-white dark:bg-slate-800 rounded-2xl p-2 mb-4 border border-gray-100 dark:border-slate-700">
+              {/* Section Tabs */}
+              <Card variant="default" padding="sm" className="mb-4">
                 <div className="hidden md:grid grid-cols-7 gap-1">
                   {SECTIONS.map((section) => {
                     const Icon = section.icon;
@@ -361,9 +369,10 @@ export default function CVBuilderPage() {
                     );
                   })}
                 </div>
-              </div>
+              </Card>
 
-              <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700">
+              {/* Form Content */}
+              <Card variant="default" padding="lg">
                 {activeSection === "personal" && (
                   <div className="space-y-4">
                     <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
@@ -839,7 +848,7 @@ export default function CVBuilderPage() {
                     )}
                   />
                 )}
-              </div>
+              </Card>
             </motion.div>
 
             {/* RIGHT: PREVIEW */}
@@ -852,6 +861,7 @@ export default function CVBuilderPage() {
                 activeTab === "preview" ? "block" : "hidden",
               )}
             >
+              {/* Preview Controls */}
               <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
                 <Button
                   variant="outline"
@@ -873,6 +883,7 @@ export default function CVBuilderPage() {
                 </Button>
               </div>
 
+              {/* Preview */}
               <div className="cv-preview-wrapper lg:sticky lg:top-24">
                 <div className="cv-preview-container">
                   <div className="cv-preview-scaled" id="cv-preview-content">
