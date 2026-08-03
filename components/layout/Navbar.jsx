@@ -4,7 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, PlusCircle, Bookmark, Search } from "lucide-react";
+import { Menu, PlusCircle, Bookmark, Search, LogIn } from "lucide-react";
+import { UserButton, useAuth } from "@clerk/nextjs";
 import Logo from "../shared/Logo.jsx";
 import ThemeToggle from "../shared/ThemeToggle.jsx";
 import MobileNav from "./MobileNav.jsx";
@@ -21,13 +22,35 @@ const NAV_ITEMS = [
   { label: "Contact", href: "/contact" },
 ];
 
+// Pages that have a dark hero section at top
+const PAGES_WITH_DARK_HERO = [
+  "/",
+  "/opportunities",
+  "/dashboard",
+  "/add-opportunity",
+  "/saved",
+  "/about",
+  "/contact",
+  "/cv-builder",
+];
+
 export default function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
+  const { isSignedIn, isLoaded } = useAuth();
   const savedCount = useSavedStore((state) => state.getSavedCount());
+
+  // Check if current page has dark hero
+  const hasDarkHero = PAGES_WITH_DARK_HERO.some((page) => {
+    if (page === "/") return pathname === "/";
+    return pathname.startsWith(page);
+  });
+
+  // Navbar shows scrolled style on light pages OR when scrolled
+  const shouldShowScrolled = scrolled || !hasDarkHero;
 
   useEffect(() => {
     setMounted(true);
@@ -61,7 +84,7 @@ export default function Navbar() {
           "fixed top-0 left-0 right-0",
           "z-50",
           "transition-all duration-300",
-          scrolled
+          shouldShowScrolled
             ? [
                 "bg-white/95 dark:bg-slate-900/95",
                 "backdrop-blur-md",
@@ -94,11 +117,11 @@ export default function Navbar() {
                     "transition-all duration-200",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500",
                     active
-                      ? scrolled
+                      ? shouldShowScrolled
                         ? "text-yellow-600 dark:text-yellow-400"
                         : "text-yellow-400"
                       : [
-                          scrolled
+                          shouldShowScrolled
                             ? "text-gray-700 dark:text-gray-300"
                             : "text-white/90",
                           "hover:text-yellow-600 dark:hover:text-yellow-400",
@@ -108,7 +131,6 @@ export default function Navbar() {
                 >
                   {item.label}
 
-                  {/* Active underline indicator */}
                   <AnimatePresence>
                     {active && (
                       <motion.div
@@ -166,10 +188,12 @@ export default function Navbar() {
               <motion.button
                 className={cn(
                   "relative w-9 h-9 rounded-lg flex items-center justify-center",
-                  scrolled
+                  shouldShowScrolled
                     ? "bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700"
                     : "bg-white/10 hover:bg-white/20 backdrop-blur-sm",
-                  scrolled ? "text-gray-600 dark:text-gray-300" : "text-white",
+                  shouldShowScrolled
+                    ? "text-gray-600 dark:text-gray-300"
+                    : "text-white",
                   "transition-colors duration-200",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500",
                 )}
@@ -186,7 +210,6 @@ export default function Navbar() {
                   }
                 />
 
-                {/* Count Badge */}
                 <AnimatePresence>
                   {mounted && savedCount > 0 && (
                     <motion.span
@@ -207,7 +230,7 @@ export default function Navbar() {
                         "rounded-full",
                         "flex items-center justify-center",
                         "border-2",
-                        scrolled
+                        shouldShowScrolled
                           ? "border-white dark:border-slate-900"
                           : "border-slate-900",
                       )}
@@ -219,24 +242,55 @@ export default function Navbar() {
               </motion.button>
             </Link>
 
-            {/* Add Opportunity Button - Desktop (USING REUSABLE BUTTON!) */}
-            <div className="hidden md:block">
-              <Button
-                href="/add-opportunity"
-                variant="primary"
-                size="md"
-                icon={PlusCircle}
-              >
-                Add Opportunity
-              </Button>
-            </div>
+            {/* Authentication Section */}
+            {isLoaded && (
+              <>
+                {isSignedIn ? (
+                  <>
+                    <div className="hidden md:block">
+                      <Button
+                        href="/add-opportunity"
+                        variant="primary"
+                        size="md"
+                        icon={PlusCircle}
+                      >
+                        Add Opportunity
+                      </Button>
+                    </div>
+
+                    <div className="ml-1">
+                      <UserButton
+                        appearance={{
+                          elements: {
+                            avatarBox:
+                              "w-9 h-9 border-2 border-yellow-500 hover:border-yellow-400",
+                          },
+                        }}
+                        afterSignOutUrl="/"
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <div className="hidden md:block">
+                    <Button
+                      href="/sign-in"
+                      variant="primary"
+                      size="md"
+                      icon={LogIn}
+                    >
+                      Sign In
+                    </Button>
+                  </div>
+                )}
+              </>
+            )}
 
             {/* Mobile Hamburger */}
             <motion.button
               onClick={() => setIsMobileMenuOpen(true)}
               className={cn(
                 "lg:hidden w-9 h-9 rounded-lg flex items-center justify-center",
-                scrolled
+                shouldShowScrolled
                   ? "bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-gray-300"
                   : "bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white",
                 "transition-colors duration-200",

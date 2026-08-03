@@ -14,7 +14,10 @@ import {
   Mail,
   PlusCircle,
   ChevronRight,
+  LogIn,
+  User,
 } from "lucide-react";
+import { UserButton, useAuth, useUser } from "@clerk/nextjs";
 import Logo from "../shared/Logo.jsx";
 import ThemeToggle from "../shared/ThemeToggle.jsx";
 import Button from "../ui/Button.jsx";
@@ -34,6 +37,8 @@ const iconMap = {
 export default function MobileNav({ isOpen, onClose }) {
   const pathname = usePathname();
   const savedCount = useSavedStore((state) => state.getSavedCount());
+  const { isSignedIn, isLoaded } = useAuth();
+  const { user } = useUser();
 
   // Close on route change
   useEffect(() => {
@@ -129,6 +134,33 @@ export default function MobileNav({ isOpen, onClose }) {
               </div>
             </div>
 
+            {/* USER SECTION - Show when signed in */}
+            {isLoaded && isSignedIn && user && (
+              <div className="p-4 border-b border-gray-100 dark:border-dark-border">
+                <div className="flex items-center gap-3 p-3 bg-yellow-50 dark:bg-yellow-500/10 rounded-xl">
+                  <div className="flex-shrink-0">
+                    <UserButton
+                      appearance={{
+                        elements: {
+                          avatarBox:
+                            "w-12 h-12 border-2 border-yellow-500 hover:border-yellow-400",
+                        },
+                      }}
+                      afterSignOutUrl="/"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-gray-900 dark:text-white truncate">
+                      {user?.firstName || user?.fullName || "User"}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                      {user?.primaryEmailAddress?.emailAddress}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Navigation Links */}
             <nav className="flex-1 overflow-y-auto py-4 px-3">
               <div className="space-y-1">
@@ -182,7 +214,6 @@ export default function MobileNav({ isOpen, onClose }) {
                         </div>
 
                         <div className="flex items-center gap-2">
-                          {/* Badge for saved count */}
                           {item.badge > 0 && (
                             <span className="bg-yellow-500 text-gray-900 text-xs font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center">
                               {item.badge}
@@ -205,18 +236,49 @@ export default function MobileNav({ isOpen, onClose }) {
               </div>
             </nav>
 
-            {/* Drawer Footer — USING REUSABLE BUTTON */}
+            {/* Drawer Footer - Different for signed in vs signed out */}
             <div className="p-4 border-t border-gray-100 dark:border-dark-border space-y-3">
-              <Button
-                href="/add-opportunity"
-                variant="primary"
-                size="md"
-                icon={PlusCircle}
-                fullWidth
-                onClick={onClose}
-              >
-                Add Opportunity
-              </Button>
+              {isLoaded && (
+                <>
+                  {isSignedIn ? (
+                    // SIGNED IN - Show Add Opportunity button
+                    <Button
+                      href="/add-opportunity"
+                      variant="primary"
+                      size="md"
+                      icon={PlusCircle}
+                      fullWidth
+                      onClick={onClose}
+                    >
+                      Add Opportunity
+                    </Button>
+                  ) : (
+                    // SIGNED OUT - Show Sign In & Sign Up buttons
+                    <div className="space-y-2">
+                      <Button
+                        href="/sign-in"
+                        variant="primary"
+                        size="md"
+                        icon={LogIn}
+                        fullWidth
+                        onClick={onClose}
+                      >
+                        Sign In
+                      </Button>
+                      <Button
+                        href="/sign-up"
+                        variant="outline"
+                        size="md"
+                        icon={User}
+                        fullWidth
+                        onClick={onClose}
+                      >
+                        Create Account
+                      </Button>
+                    </div>
+                  )}
+                </>
+              )}
 
               {/* App Version */}
               <p className="text-center text-xs text-gray-400 dark:text-gray-600">
