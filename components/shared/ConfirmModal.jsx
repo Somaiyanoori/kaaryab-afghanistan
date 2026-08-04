@@ -5,19 +5,6 @@ import Modal from "../ui/Modal.jsx";
 import Button from "../ui/Button.jsx";
 import { cn } from "../../lib/utils.js";
 
-/**
- * ConfirmModal - Uses reusable Modal + Button
- *
- * USAGE:
- * <ConfirmModal
- *   isOpen={showModal}
- *   onClose={() => setShowModal(false)}
- *   onConfirm={handleDelete}
- *   title="Delete this item?"
- *   message="This action cannot be undone"
- *   variant="danger"
- * />
- */
 export default function ConfirmModal({
   isOpen,
   onClose,
@@ -59,21 +46,27 @@ export default function ConfirmModal({
       size="sm"
       showCloseButton={false}
       footer={
-        <>
-          <Button variant="outline" size="md" onClick={onClose}>
+        <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto sm:justify-end">
+          <Button
+            variant="outline"
+            size="md"
+            onClick={onClose}
+            className="w-full sm:w-auto"
+          >
             {cancelText}
           </Button>
           <Button
             variant={styles.buttonVariant}
             size="md"
             onClick={handleConfirm}
+            className="w-full sm:w-auto"
           >
             {confirmText}
           </Button>
-        </>
+        </div>
       }
     >
-      <div className="flex items-start gap-4 py-2">
+      <div className="flex flex-col items-center text-center sm:flex-row sm:items-start sm:text-left gap-3 sm:gap-4 py-2">
         {/* Icon */}
         <div
           className={cn(
@@ -86,11 +79,11 @@ export default function ConfirmModal({
         </div>
 
         {/* Text */}
-        <div className="flex-1 pt-1">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
+        <div className="flex-1 min-w-0 pt-1">
+          <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-1 break-words">
             {title}
           </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 leading-relaxed break-words">
             {message}
           </p>
         </div>

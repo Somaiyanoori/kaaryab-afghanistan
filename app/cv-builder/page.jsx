@@ -17,6 +17,7 @@ import {
   Eye,
   Edit3,
   Check,
+  X,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -857,6 +858,7 @@ export default function CVBuilderPage() {
       <AnimatePresence>
         {showTemplateSelect && (
           <>
+            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -864,50 +866,72 @@ export default function CVBuilderPage() {
               onClick={() => setShowTemplateSelect(false)}
               className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
             />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-2xl bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-2xl z-[110]"
-            >
-              <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
-                Choose a Template
-              </h3>
-              <div className="grid grid-cols-2 gap-4">
-                {cvTemplates.map((template) => (
+
+            {/* Modal Container (centers modal) */}
+            <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 sm:p-6 pointer-events-none">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                className={cn(
+                  "relative w-full max-w-2xl pointer-events-auto",
+                  "bg-white dark:bg-slate-800",
+                  "rounded-2xl shadow-2xl",
+                  "max-h-[90vh] overflow-y-auto",
+                  "p-4 sm:p-6",
+                )}
+              >
+                {/* Header with Close */}
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                    Choose a Template
+                  </h3>
                   <button
-                    key={template.id}
-                    onClick={() => {
-                      setTemplate(template.id);
-                      setShowTemplateSelect(false);
-                      toast.success(`${template.name} template selected!`);
-                    }}
-                    className={cn(
-                      "p-4 rounded-xl border-2 text-left transition-all",
-                      selectedTemplate === template.id
-                        ? "border-yellow-500 bg-yellow-50 dark:bg-yellow-500/10"
-                        : "border-gray-200 dark:border-slate-700 hover:border-yellow-300",
-                    )}
+                    onClick={() => setShowTemplateSelect(false)}
+                    className="w-8 h-8 rounded-lg bg-gray-100 dark:bg-slate-700 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors"
+                    aria-label="Close"
                   >
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-bold text-gray-900 dark:text-white">
-                        {template.name}
-                      </h4>
-                      {selectedTemplate === template.id && (
-                        <Check size={18} className="text-yellow-500" />
-                      )}
-                    </div>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      {template.description}
-                    </p>
-                    <div
-                      className="mt-3 h-2 rounded-full"
-                      style={{ backgroundColor: template.color }}
-                    />
+                    <X size={16} />
                   </button>
-                ))}
-              </div>
-            </motion.div>
+                </div>
+
+                {/* Templates Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  {cvTemplates.map((template) => (
+                    <button
+                      key={template.id}
+                      onClick={() => {
+                        setTemplate(template.id);
+                        setShowTemplateSelect(false);
+                        toast.success(`${template.name} template selected!`);
+                      }}
+                      className={cn(
+                        "p-4 rounded-xl border-2 text-left transition-all",
+                        selectedTemplate === template.id
+                          ? "border-yellow-500 bg-yellow-50 dark:bg-yellow-500/10"
+                          : "border-gray-200 dark:border-slate-700 hover:border-yellow-300",
+                      )}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-bold text-gray-900 dark:text-white">
+                          {template.name}
+                        </h4>
+                        {selectedTemplate === template.id && (
+                          <Check size={18} className="text-yellow-500" />
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {template.description}
+                      </p>
+                      <div
+                        className="mt-3 h-2 rounded-full"
+                        style={{ backgroundColor: template.color }}
+                      />
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
           </>
         )}
       </AnimatePresence>
