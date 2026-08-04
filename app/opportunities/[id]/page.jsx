@@ -17,12 +17,12 @@ import {
   ChevronRight,
   AlertCircle,
 } from "lucide-react";
+
 import ErrorState from "../../../components/states/ErrorState.jsx";
 import ApplyCard from "../../../components/detail/ApplyCard.jsx";
 import SimilarOpportunities from "../../../components/detail/SimilarOpportunities.jsx";
 import CategoryBadge from "../../../components/opportunities/CategoryBadge.jsx";
-import { opportunities } from "../../../data/opportunities.js";
-import { useOpportunitiesStore } from "../../../store/index.js";
+import { getAllOpportunities } from "../../../lib/db.js";
 import {
   getCategoryColors,
   getInitials,
@@ -31,28 +31,99 @@ import {
   cn,
 } from "../../../lib/utils.js";
 
+// ============================================
+// NORMALIZE DB OPPORTUNITY
+// Maps snake_case → camelCase
+// ============================================
+function normalizeOpportunity(opp) {
+  return {
+    id: opp.id,
+    slug: opp.slug || opp.id,
+    title: opp.title,
+    organization: opp.organization,
+    category: opp.category,
+    location: opp.location,
+    type: opp.type,
+    deadline: opp.deadline,
+    shortDesc: opp.short_desc || opp.shortDesc,
+    description: opp.description,
+    requirements: opp.requirements || [],
+    applyLink: opp.apply_link || opp.applyLink,
+    tags: opp.tags || [],
+    contactEmail: opp.contact_email || opp.contactEmail,
+    contactPhone: opp.contact_phone || opp.contactPhone,
+    salary: opp.salary,
+    duration: opp.duration,
+    seats: opp.seats,
+    gender: opp.gender,
+    language: opp.language,
+    benefits: opp.benefits || [],
+    featured: opp.featured || false,
+    urgent: opp.urgent || false,
+    verified: opp.verified || false,
+    logo: opp.logo,
+    views: opp.views || 0,
+    saves: opp.saves || 0,
+    postedDate:
+      opp.posted_date || opp.postedDate || opp.created_at?.split("T")[0],
+  };
+}
+
+// ============================================
+// MAIN PAGE
+// ============================================
 export default function OpportunityDetailPage({ params }) {
   const { id } = use(params);
   const [mounted, setMounted] = useState(false);
-  const userOpportunities = useOpportunitiesStore(
-    (state) => state.userOpportunities,
-  );
+  const [dbOpportunities, setDbOpportunities] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
+  // ============================================
+  // FETCH DB OPPORTUNITIES
+  // ============================================
   useEffect(() => {
     setMounted(true);
+
+    const fetchData = async () => {
+      try {
+        const data = await getAllOpportunities();
+        setDbOpportunities(data || []);
+      } catch (error) {
+        console.error("Failed to fetch opportunities:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  // Combine mock data with user submissions
-  const allOpportunities = mounted
-    ? [...opportunities, ...userOpportunities]
-    : opportunities;
+  // MERGE ALL OPPORTUNITIES
+  const allOpportunities = dbOpportunities.map(normalizeOpportunity);
 
-  // Find opportunity by ID or slug
+  // FIND OPPORTUNITY BY ID OR SLUG
+
   const opportunity = allOpportunities.find(
     (opp) => opp.id === id || opp.slug === id,
   );
 
-  // Show 404 if not found (after mount)
+  // LOADING STATE
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-950">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin" />
+          <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+            Loading opportunity...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // ============================================
+  // NOT FOUND STATE
+  // ============================================
   if (mounted && !opportunity) {
     return (
       <ErrorState
@@ -65,25 +136,15 @@ export default function OpportunityDetailPage({ params }) {
     );
   }
 
-  // Loading state
-  if (!opportunity) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
+  if (!opportunity) return null;
 
   const colors = getCategoryColors(opportunity.category);
   const initials = getInitials(opportunity.organization);
 
   return (
     <>
-      {/* ============================================
-          HERO HEADER
-      ============================================ */}
+      {/* HERO HEADER */}
       <section className="relative bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 pt-32 pb-12 md:pt-36 md:pb-16 overflow-hidden">
-        {/* Background decoration */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-20 left-10 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl" />
           <div className="absolute bottom-10 right-10 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
@@ -150,7 +211,6 @@ export default function OpportunityDetailPage({ params }) {
 
             {/* Title & Meta */}
             <div className="flex-1 min-w-0">
-              {/* Badges Row */}
               <div className="flex items-center flex-wrap gap-2 mb-3">
                 <CategoryBadge category={opportunity.category} />
 
@@ -176,7 +236,6 @@ export default function OpportunityDetailPage({ params }) {
                 )}
               </div>
 
-              {/* Title */}
               <h1
                 className="text-2xl md:text-4xl lg:text-5xl font-black text-white mb-3 leading-tight"
                 style={{ fontFamily: "Sora, sans-serif" }}
@@ -184,7 +243,6 @@ export default function OpportunityDetailPage({ params }) {
                 {opportunity.title}
               </h1>
 
-              {/* Organization */}
               <div className="flex items-center gap-2 text-gray-300 mb-4">
                 <Building2 size={16} />
                 <span className="text-base font-medium">
@@ -192,7 +250,6 @@ export default function OpportunityDetailPage({ params }) {
                 </span>
               </div>
 
-              {/* Quick Meta */}
               <div className="flex items-center flex-wrap gap-3 text-sm">
                 <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-lg text-white">
                   <MapPin size={14} />
@@ -226,17 +283,13 @@ export default function OpportunityDetailPage({ params }) {
         </div>
       </section>
 
-      {/* ============================================
-          MAIN CONTENT
-      ============================================ */}
+      {/* MAIN CONTENT */}
       <section className="bg-gray-50 dark:bg-slate-950 py-12 md:py-16 min-h-screen">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* ============================================
-                LEFT: MAIN CONTENT
-            ============================================ */}
+            {/* LEFT */}
             <div className="lg:col-span-2 space-y-8">
-              {/* About Section */}
+              {/* About */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -246,11 +299,9 @@ export default function OpportunityDetailPage({ params }) {
                 <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4">
                   About This Opportunity
                 </h2>
-                <div className="prose prose-sm md:prose-base dark:prose-invert max-w-none">
-                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
-                    {opportunity.description}
-                  </p>
-                </div>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+                  {opportunity.description}
+                </p>
               </motion.div>
 
               {/* Requirements */}
@@ -302,13 +353,7 @@ export default function OpportunityDetailPage({ params }) {
                   </h2>
                   <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {opportunity.benefits.map((benefit, index) => (
-                      <motion.li
-                        key={index}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05 }}
-                        className="flex items-start gap-3"
-                      >
+                      <li key={index} className="flex items-start gap-3">
                         <div className="flex-shrink-0 w-5 h-5 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center mt-0.5">
                           <Sparkles
                             size={12}
@@ -318,7 +363,7 @@ export default function OpportunityDetailPage({ params }) {
                         <span className="text-sm md:text-base text-gray-700 dark:text-gray-300">
                           {benefit}
                         </span>
-                      </motion.li>
+                      </li>
                     ))}
                   </ul>
                 </motion.div>
@@ -449,17 +494,13 @@ export default function OpportunityDetailPage({ params }) {
               )}
             </div>
 
-            {/* ============================================
-                RIGHT: STICKY APPLY CARD
-            ============================================ */}
+            {/* RIGHT: APPLY CARD */}
             <div className="lg:col-span-1">
               <ApplyCard opportunity={opportunity} />
             </div>
           </div>
 
-          {/* ============================================
-              SIMILAR OPPORTUNITIES
-          ============================================ */}
+          {/* SIMILAR */}
           <SimilarOpportunities
             current={opportunity}
             allOpportunities={allOpportunities}

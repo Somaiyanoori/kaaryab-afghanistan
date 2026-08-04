@@ -4,6 +4,7 @@ import { Suspense, useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, SearchX } from "lucide-react";
+
 import PageHeader from "../../components/layout/PageHeader.jsx";
 import SearchInput from "../../components/opportunities/SearchInput.jsx";
 import CategoryTabs from "../../components/opportunities/CategoryTabs.jsx";
@@ -14,11 +15,12 @@ import Pagination from "../../components/opportunities/Pagination.jsx";
 import OpportunityCard from "../../components/opportunities/OpportunityCard.jsx";
 import OpportunityCardSkeleton from "../../components/opportunities/OpportunityCardSkeleton.jsx";
 import EmptyState from "../../components/states/EmptyState.jsx";
-
-import { opportunities } from "../../data/opportunities.js";
-import { useOpportunitiesStore } from "../../store/index.js";
+import { getAllOpportunities } from "../../lib/db.js";
 import { filterOpportunities, paginateData, cn } from "../../lib/utils.js";
 
+// ============================================
+// LOADING FALLBACK
+// ============================================
 function LoadingFallback() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-950 pt-32">
@@ -32,6 +34,9 @@ function LoadingFallback() {
   );
 }
 
+// ============================================
+// MAIN CONTENT
+// ============================================
 function OpportunitiesContent() {
   const searchParams = useSearchParams();
 
@@ -39,6 +44,10 @@ function OpportunitiesContent() {
   const [mounted, setMounted] = useState(false);
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
   const [viewMode, setViewMode] = useState("grid");
+
+  // Database opportunities (from Supabase)
+  const [dbOpportunities, setDbOpportunities] = useState([]);
+  const [dbError, setDbError] = useState(null);
 
   const [filters, setFilters] = useState({
     search: searchParams.get("search") || "",
@@ -51,18 +60,35 @@ function OpportunitiesContent() {
   });
 
   const perPage = 12;
-  const userOpportunities = useOpportunitiesStore(
-    (state) => state.userOpportunities,
-  );
 
+  // ============================================
+  // FETCH FROM SUPABASE
+  // ============================================
   useEffect(() => {
     setMounted(true);
-    const timer = setTimeout(() => setIsLoading(false), 500);
-    return () => clearTimeout(timer);
+
+    const fetchOpportunities = async () => {
+      try {
+        const data = await getAllOpportunities();
+        setDbOpportunities(data || []);
+      } catch (error) {
+        console.error("Failed to fetch from database:", error);
+        setDbError(error.message);
+        // Fallback to mock data silently
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchOpportunities();
   }, []);
 
+  // ============================================
+  // UPDATE URL PARAMS
+  // ============================================
   useEffect(() => {
     if (!mounted) return;
+
     const params = new URLSearchParams();
     if (filters.search) params.set("search", filters.search);
     if (filters.category !== "All") params.set("category", filters.category);
@@ -77,11 +103,44 @@ function OpportunitiesContent() {
     window.history.replaceState({}, "", `/opportunities${newUrl}`);
   }, [filters, mounted]);
 
-  const allOpportunities = useMemo(() => {
-    if (!mounted) return opportunities;
-    return [...opportunities, ...userOpportunities];
-  }, [mounted, userOpportunities]);
+  // ============================================
+  // NORMALIZE DB OPPORTUNITIES
+  // Maps Supabase snake_case to camelCase for components
+  // ============================================
+  const normalizedDbOpps = useMemo(() => {
+    return dbOpportunities.map((opp) => ({
+      id: opp.id,
+      slug: opp.slug || opp.id,
+      title: opp.title,
+      organization: opp.organization,
+      category: opp.category,
+      location: opp.location,
+      type: opp.type,
+      deadline: opp.deadline,
+      shortDesc: opp.short_desc,
+      description: opp.description,
+      requirements: opp.requirements || [],
+      applyLink: opp.apply_link,
+      tags: opp.tags || [],
+      contactEmail: opp.contact_email,
+      salary: opp.salary,
+      duration: opp.duration,
+      seats: opp.seats,
+      gender: opp.gender,
+      language: opp.language,
+      featured: opp.featured || false,
+      urgent: opp.urgent || false,
+      verified: opp.verified || false,
+      views: opp.views || 0,
+      saves: opp.saves || 0,
+      postedDate: opp.posted_date || opp.created_at?.split("T")[0],
+    }));
+  }, [dbOpportunities]);
 
+  const allOpportunities = useMemo(() => {
+    return normalizedDbOpps;
+  }, [normalizedDbOpps]);
+  // FILTER + PAGINATE
   const filteredOpportunities = useMemo(() => {
     return filterOpportunities(allOpportunities, filters);
   }, [allOpportunities, filters]);
@@ -106,6 +165,9 @@ function OpportunitiesContent() {
     return count;
   }, [filters]);
 
+  // ============================================
+  // HANDLERS
+  // ============================================
   const updateFilter = (key, value) => {
     setFilters((prev) => ({
       ...prev,
@@ -133,14 +195,13 @@ function OpportunitiesContent() {
 
   return (
     <>
+      {/* PAGE HEADER */}
       <PageHeader
         badge="Explore All Opportunities"
         badgeIcon={Sparkles}
         title="Find Your Next"
         highlightedText="Opportunity"
-        description={`Browse through ${
-          mounted ? allOpportunities.length : opportunities.length
-        }+ opportunities across Afghanistan.`}
+        description={`Browse through ${allOpportunities.length}+ opportunities across Afghanistan.`}
         centered
       >
         <div className="max-w-2xl mx-auto">
@@ -154,6 +215,7 @@ function OpportunitiesContent() {
 
       <section className="bg-gray-50 dark:bg-slate-950 py-8 md:py-12 min-h-screen">
         <div className="container-custom">
+          {/* Category Tabs */}
           <div className="mb-6">
             <CategoryTabs
               selectedCategory={filters.category}
@@ -163,6 +225,7 @@ function OpportunitiesContent() {
           </div>
 
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+            {/* Desktop Sidebar */}
             <aside className="hidden lg:block w-64 flex-shrink-0">
               <div className="sticky top-24">
                 <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700 shadow-sm">
@@ -178,6 +241,7 @@ function OpportunitiesContent() {
               </div>
             </aside>
 
+            {/* Main Content */}
             <div className="flex-1 min-w-0">
               <div className="mb-4">
                 <Toolbar
@@ -199,6 +263,7 @@ function OpportunitiesContent() {
                 />
               </div>
 
+              {/* Cards Grid */}
               {isLoading ? (
                 <div
                   className={cn(
@@ -255,6 +320,7 @@ function OpportunitiesContent() {
         </div>
       </section>
 
+      {/* Mobile Filter Drawer */}
       <AnimatePresence>
         {isMobileFiltersOpen && (
           <>
@@ -287,6 +353,9 @@ function OpportunitiesContent() {
   );
 }
 
+// ============================================
+// EXPORT WITH SUSPENSE
+// ============================================
 export default function OpportunitiesPage() {
   return (
     <Suspense fallback={<LoadingFallback />}>
