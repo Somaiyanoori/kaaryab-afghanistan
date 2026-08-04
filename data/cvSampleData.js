@@ -1,6 +1,4 @@
-// ============================================
 // SAMPLE CV DATA
-// ============================================
 export const sampleCVData = {
   personal: {
     fullName: "Ahmad Karimi",
@@ -103,9 +101,7 @@ export const sampleCVData = {
   ],
 };
 
-// ============================================
 // CV TEMPLATES
-// ============================================
 export const cvTemplates = [
   {
     id: "modern",

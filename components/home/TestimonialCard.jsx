@@ -46,24 +46,18 @@ export default function TestimonialCard({ testimonial, index }) {
           "group",
         )}
       >
-        {/* ============================================
-            Large Decorative Quote (Background)
-        ============================================ */}
+        {/* Large Decorative Quote (Background) */}
         <div className="absolute top-4 right-4 opacity-10 group-hover:opacity-20 transition-opacity duration-300">
           <Quote size={80} className="text-yellow-500 rotate-180" />
         </div>
 
-        {/* ============================================
-            Top Colored Accent Line
-        ============================================ */}
+        {/* Top Colored Accent Line */}
         <div
           className="absolute top-0 left-0 right-0 h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           style={{ background: gradient }}
         />
 
-        {/* ============================================
-            Star Rating
-        ============================================ */}
+        {/* Star Rating */}
         <div className="flex items-center gap-1 mb-4 relative z-10">
           {[...Array(5)].map((_, i) => (
             <motion.div
@@ -92,18 +86,14 @@ export default function TestimonialCard({ testimonial, index }) {
           </span>
         </div>
 
-        {/* ============================================
-            Testimonial Text
-        ============================================ */}
+        {/* Testimonial Text */}
         <blockquote className="relative z-10 mb-6 flex-1">
           <p className="text-gray-700 dark:text-gray-300 text-sm md:text-base leading-relaxed italic">
             "{testimonial.text}"
           </p>
         </blockquote>
 
-        {/* ============================================
-            Opportunity Found Badge
-        ============================================ */}
+        {/* Opportunity Found Badge */}
         {testimonial.opportunity && (
           <div
             className={cn(
@@ -120,9 +110,7 @@ export default function TestimonialCard({ testimonial, index }) {
           </div>
         )}
 
-        {/* ============================================
-            User Info (Avatar + Name + Details)
-        ============================================ */}
+        {/* User Info (Avatar + Name + Details) */}
         <div className="flex items-center gap-3 relative z-10 pt-4 border-t border-gray-100 dark:border-slate-700">
           {/* Avatar with Initials */}
           <Avatar

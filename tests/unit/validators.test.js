@@ -5,9 +5,7 @@ import {
   cvPersonalSchema,
 } from "../../lib/validators.js";
 
-// ============================================
-// OPPORTUNITY SCHEMA TESTS
-// ============================================
+// Opportunity schema tests
 describe("opportunitySchema", () => {
   const validOpportunity = {
     title: "Frontend Developer Intern",
@@ -105,9 +103,7 @@ describe("opportunitySchema", () => {
   });
 });
 
-// ============================================
-// CONTACT SCHEMA TESTS
-// ============================================
+// Contact schema tests
 describe("contactSchema", () => {
   const validContact = {
     fullName: "Ahmad Karimi",
@@ -154,9 +150,7 @@ describe("contactSchema", () => {
   });
 });
 
-// ============================================
-// CV PERSONAL SCHEMA TESTS
-// ============================================
+// CV personal schema tests
 describe("cvPersonalSchema", () => {
   const validCV = {
     fullName: "Ahmad Karimi",

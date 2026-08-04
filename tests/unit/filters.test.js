@@ -50,9 +50,7 @@ const mockOpportunities = [
   },
 ];
 
-// ============================================
 // SEARCH FILTER TESTS
-// ============================================
 describe("filterOpportunities - Search", () => {
   it("should return all opportunities when no filters", () => {
     const result = filterOpportunities(mockOpportunities, {});
@@ -95,9 +93,7 @@ describe("filterOpportunities - Search", () => {
   });
 });
 
-// ============================================
 // CATEGORY FILTER TESTS
-// ============================================
 describe("filterOpportunities - Category", () => {
   it("should filter by Job category", () => {
     const result = filterOpportunities(mockOpportunities, { category: "Job" });
@@ -125,9 +121,7 @@ describe("filterOpportunities - Category", () => {
   });
 });
 
-// ============================================
 // LOCATION FILTER TESTS
-// ============================================
 describe("filterOpportunities - Location", () => {
   it("should filter by Kabul", () => {
     const result = filterOpportunities(mockOpportunities, {
@@ -149,9 +143,7 @@ describe("filterOpportunities - Location", () => {
   });
 });
 
-// ============================================
 // TYPE FILTER TESTS
-// ============================================
 describe("filterOpportunities - Type", () => {
   it("should filter by Remote type", () => {
     const result = filterOpportunities(mockOpportunities, { type: "Remote" });
@@ -164,9 +156,7 @@ describe("filterOpportunities - Type", () => {
   });
 });
 
-// ============================================
 // COMBINED FILTERS TESTS
-// ============================================
 describe("filterOpportunities - Combined", () => {
   it("should combine category and location filters", () => {
     const result = filterOpportunities(mockOpportunities, {
@@ -194,9 +184,7 @@ describe("filterOpportunities - Combined", () => {
   });
 });
 
-// ============================================
 // SORT TESTS
-// ============================================
 describe("filterOpportunities - Sort", () => {
   it("should sort by newest", () => {
     const result = filterOpportunities(mockOpportunities, { sort: "newest" });
@@ -219,9 +207,8 @@ describe("filterOpportunities - Sort", () => {
   });
 });
 
-// ============================================
 // CALCULATE STATS TESTS
-// ============================================
+
 describe("calculateStats", () => {
   it("should calculate total count", () => {
     const stats = calculateStats(mockOpportunities);

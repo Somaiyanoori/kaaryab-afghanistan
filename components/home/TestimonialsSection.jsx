@@ -43,9 +43,7 @@ export default function TestimonialsSection() {
 
   return (
     <section className="relative py-16 md:py-24 overflow-hidden bg-white dark:bg-slate-900">
-      {/* ============================================
-          DECORATIVE BACKGROUND
-      ============================================ */}
+      {/* DECORATIVE BACKGROUND */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-500/5 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
@@ -59,9 +57,7 @@ export default function TestimonialsSection() {
         }}
       />
 
-      {/* ============================================
-          CONTENT CONTAINER
-      ============================================ */}
+      {/* CONTENT CONTAINER */}
       <div className="relative container-custom">
         {/* Section Header */}
         <SectionHeader
@@ -72,9 +68,7 @@ export default function TestimonialsSection() {
           description="Real stories from real users who found their next opportunity through KaarYab. Your success story could be next!"
         />
 
-        {/* ============================================
-            DESKTOP: GRID LAYOUT (3 columns)
-        ============================================ */}
+        {/* DESKTOP: GRID LAYOUT (3 columns) */}
         <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
           {testimonials.slice(0, 6).map((testimonial, index) => (
             <TestimonialCard
@@ -85,9 +79,7 @@ export default function TestimonialsSection() {
           ))}
         </div>
 
-        {/* ============================================
-            MOBILE: CAROUSEL
-        ============================================ */}
+        {/* MOBILE: CAROUSEL */}
         <div className="md:hidden mb-12">
           <div className="relative">
             {/* Current Card */}
@@ -168,9 +160,7 @@ export default function TestimonialsSection() {
           </div>
         </div>
 
-        {/* ============================================
-            TRUST STATS
-        ============================================ */}
+        {/* TRUST STATS */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -189,9 +179,7 @@ export default function TestimonialsSection() {
           <TrustStats />
         </motion.div>
 
-        {/* ============================================
-            SHARE YOUR STORY CTA
-        ============================================ */}
+        {/* SHARE YOUR STORY CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

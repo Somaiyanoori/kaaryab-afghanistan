@@ -1,18 +1,12 @@
-/* ============================================
-   GOOGLE FONTS IMPORT (MUST BE FIRST!)
-   ============================================ */
+/* GOOGLE FONTS IMPORT (MUST BE FIRST!) */
 @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Sora:wght@400;600;700;800&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap");
 
-/* ============================================
-   TAILWIND DIRECTIVES
-   ============================================ */
+/* TAILWIND DIRECTIVES */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ============================================
-   CSS CUSTOM PROPERTIES
-   ============================================ */
+/* CSS CUSTOM PROPERTIES */
 :root {
   --color-bg: #f9fafb;
   --color-card: #ffffff;
@@ -36,9 +30,7 @@
   --color-text-muted: #64748b;
 }
 
-/* ============================================
-   BASE STYLES
-   ============================================ */
+/* BASE STYLES */
 * {
   box-sizing: border-box;
   padding: 0;
@@ -57,9 +49,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ============================================
-   CUSTOM SCROLLBAR
-   ============================================ */
+/* CUSTOM SCROLLBAR */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -78,26 +68,20 @@ body {
   background: #ca8a04;
 }
 
-/* ============================================
-   TEXT SELECTION
-   ============================================ */
+/* TEXT SELECTION */
 ::selection {
   background-color: #fde047;
   color: #111827;
 }
 
-/* ============================================
-   FOCUS STYLES
-   ============================================ */
+/* FOCUS STYLES */
 :focus-visible {
   outline: 2px solid #eab308;
   outline-offset: 2px;
   border-radius: 4px;
 }
 
-/* ============================================
-   UTILITY CLASSES
-   ============================================ */
+/* UTILITY CLASSES */
 
 /* Container */
 .container-custom {
@@ -190,9 +174,7 @@ body {
   display: none;
 }
 
-/* ============================================
-   BUTTON STYLES
-   ============================================ */
+/* BUTTON STYLES */
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -271,9 +253,7 @@ body {
   color: #fde047;
 }
 
-/* ============================================
-   ANIMATIONS
-   ============================================ */
+/* ANIMATIONS */
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
@@ -323,16 +303,12 @@ body {
   animation: float 3s ease-in-out infinite;
 }
 
-/* ============================================
-   RTL SUPPORT
-   ============================================ */
+/* RTL SUPPORT */
 [dir="rtl"] body {
   font-family: "Noto Naskh Arabic", serif;
 }
 
-/* ============================================
-   REDUCED MOTION
-   ============================================ */
+/* REDUCED MOTION */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -343,9 +319,7 @@ body {
   }
 }
 
-/* ============================================
-   CV BUILDER PREVIEW SCALE (SCROLLABLE)
-   ============================================ */
+/* CV BUILDER PREVIEW SCALE (SCROLLABLE) */
 .cv-preview-scaled {
   transform: scale(0.5);
   transform-origin: top left;
@@ -446,9 +420,7 @@ body {
   display: none;
 }
 
-/* ============================================
-   PRINT STYLES
-   ============================================ */
+/* PRINT STYLES */
 @media print {
   /* Reset colors */
   * {
@@ -463,7 +435,6 @@ body {
   }
 
   /* Show ONLY the print area */
-  /* Hidden print area — only shows when printing */
   #cv-print-area {
     position: absolute;
     left: -9999px;

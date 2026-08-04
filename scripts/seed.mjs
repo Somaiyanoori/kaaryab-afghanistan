@@ -4,23 +4,18 @@ import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import dotenv from "dotenv";
 
-// ============================================
 // LOAD ENVIRONMENT VARIABLES
-// ============================================
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const rootDir = join(__dirname, "..");
 
 dotenv.config({ path: join(rootDir, ".env.local") });
 
-// ============================================
 // SUPABASE CLIENT
-// ============================================
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
-  console.error("❌ Missing Supabase credentials in .env.local");
   process.exit(1);
 }
 
@@ -412,9 +407,7 @@ const opportunities = [
   },
 ];
 
-// ============================================
 // SEED FUNCTION
-// ============================================
 async function seed() {
   console.log("\n Starting database seed...\n");
   console.log(` Total opportunities to insert: ${opportunities.length}\n`);

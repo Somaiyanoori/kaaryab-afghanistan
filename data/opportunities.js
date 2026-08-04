@@ -159,9 +159,7 @@ export const testimonials = [
   },
 ];
 
-// ============================================
 // TRUST STATS
-// ============================================
 export const trustStats = [
   {
     id: "stat_001",

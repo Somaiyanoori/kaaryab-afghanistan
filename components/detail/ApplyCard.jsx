@@ -15,6 +15,7 @@ import SaveButton from "../opportunities/SaveButton.jsx";
 import ShareButtons from "./ShareButtons.jsx";
 import { cn } from "../../lib/utils.js";
 import Button from "../ui/Button.jsx";
+
 export default function ApplyCard({ opportunity }) {
   const isExpired = (() => {
     try {
@@ -39,14 +40,10 @@ export default function ApplyCard({ opportunity }) {
           "space-y-5",
         )}
       >
-        {/* ============================================
-            Countdown Timer
-        ============================================ */}
+        {/* Countdown Timer */}
         <CountdownTimer deadline={opportunity.deadline} />
 
-        {/* ============================================
-            Apply Button
-        ============================================ */}
+        {/* Apply Button */}
         {isExpired ? (
           <div
             className={cn(
@@ -73,18 +70,14 @@ export default function ApplyCard({ opportunity }) {
           </Button>
         )}
 
-        {/* ============================================
-            Info Note
-        ============================================ */}
+        {/* Info Note */}
         <p className="text-xs text-center text-gray-500 dark:text-gray-400">
           {isExpired
             ? "The application deadline has passed"
             : `You'll be redirected to ${opportunity.organization}'s website`}
         </p>
 
-        {/* ============================================
-            Action Buttons Row
-        ============================================ */}
+        {/* Action Buttons Row */}
         <div className="flex items-center gap-2 pt-3 border-t border-gray-100 dark:border-slate-700">
           <SaveButton
             opportunity={opportunity}
@@ -106,9 +99,7 @@ export default function ApplyCard({ opportunity }) {
           </div>
         </div>
 
-        {/* ============================================
-            Contact Info (if available)
-        ============================================ */}
+        {/* Contact Info (if available) */}
         {(opportunity.contactEmail || opportunity.contactPhone) && (
           <div
             className={cn(
