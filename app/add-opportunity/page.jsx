@@ -22,10 +22,10 @@ import {
   Sparkles,
   Send,
   Eye,
-  ArrowLeft,
 } from "lucide-react";
-import Link from "next/link";
 import toast from "react-hot-toast";
+import { useUser } from "@clerk/nextjs";
+
 import PageHeader from "../../components/layout/PageHeader.jsx";
 import Input from "../../components/ui/Input.jsx";
 import Textarea from "../../components/ui/Textarea.jsx";
@@ -37,9 +37,12 @@ import OpportunityCard from "../../components/opportunities/OpportunityCard.jsx"
 
 import { opportunitySchema } from "../../lib/validators.js";
 import { categories, locations } from "../../data/opportunities.js";
-import { useOpportunitiesStore } from "../../store/index.js";
+import { createOpportunity } from "../../lib/db.js";
+import { slugify, generateId } from "../../lib/utils.js";
 
-// Form section header component
+// ============================================
+// SECTION HEADER
+// ============================================
 function SectionHeader({ number, title, subtitle, color }) {
   return (
     <div className="flex items-center gap-3 mb-6">
@@ -58,13 +61,16 @@ function SectionHeader({ number, title, subtitle, color }) {
   );
 }
 
+// ============================================
+// MAIN PAGE
+// ============================================
 export default function AddOpportunityPage() {
   const router = useRouter();
+  const { user, isLoaded } = useUser();
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [requirements, setRequirements] = useState([]);
   const [tags, setTags] = useState([]);
-
-  const addOpportunity = useOpportunitiesStore((state) => state.addOpportunity);
 
   const {
     register,
@@ -98,6 +104,7 @@ export default function AddOpportunityPage() {
 
   const formValues = watch();
 
+  // Sync requirements and tags to form
   useEffect(() => {
     setValue("requirements", requirements);
   }, [requirements, setValue]);
@@ -106,6 +113,7 @@ export default function AddOpportunityPage() {
     setValue("tags", tags);
   }, [tags, setValue]);
 
+  // Live preview data
   const previewData = {
     id: "preview",
     slug: "preview",
@@ -121,8 +129,8 @@ export default function AddOpportunityPage() {
         .split("T")[0],
     shortDesc: formValues.shortDesc || "Short description will appear here...",
     description: formValues.description || "",
-    requirements: requirements,
-    tags: tags,
+    requirements,
+    tags,
     featured: false,
     urgent: false,
     verified: false,
@@ -131,24 +139,66 @@ export default function AddOpportunityPage() {
     postedDate: new Date().toISOString().split("T")[0],
   };
 
+  // ============================================
+  // SUBMIT HANDLER → SUPABASE
+  // ============================================
   const onSubmit = async (data) => {
+    // Guard: must be signed in
+    if (!isLoaded) return;
+
+    if (!user) {
+      toast.error("You must be signed in to submit an opportunity");
+      router.push("/sign-in");
+      return;
+    }
+
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 800));
 
     try {
-      const newOpp = addOpportunity({
-        ...data,
+      // Build slug
+      const slug = `${slugify(data.title)}-${Date.now()}`;
+
+      // Prepare data for Supabase
+      const opportunityData = {
+        user_id: user.id,
+        title: data.title,
+        organization: data.organization,
+        category: data.category,
+        location: data.location,
+        type: data.type,
+        deadline: data.deadline,
+        short_desc: data.shortDesc,
+        description: data.description,
         requirements: requirements,
+        apply_link: data.applyLink,
         tags: tags,
+        contact_email: data.contactEmail || null,
+        salary: data.salary || null,
+        duration: data.duration || null,
+        seats: data.seats ? parseInt(data.seats) : null,
+        gender: data.gender || "Any",
+        language: data.language || "Any",
+        featured: false,
+        urgent: false,
+        verified: false,
+        slug,
+        posted_date: new Date().toISOString().split("T")[0],
+      };
+
+      // Save to Supabase
+      const newOpp = await createOpportunity(opportunityData);
+
+      toast.success("Opportunity submitted successfully! 🎉", {
+        duration: 3000,
       });
 
-      toast.success("Opportunity submitted successfully!", { duration: 3000 });
-
+      // Redirect to new opportunity
       setTimeout(() => {
         router.push(`/opportunities/${newOpp.slug || newOpp.id}`);
       }, 1000);
     } catch (error) {
-      toast.error("Failed to submit. Please try again.");
+      console.error("Submit error:", error);
+      toast.error(error.message || "Failed to submit. Please try again.");
       setIsSubmitting(false);
     }
   };
@@ -176,7 +226,9 @@ export default function AddOpportunityPage() {
       <section className="bg-gray-50 dark:bg-slate-950 py-12 min-h-screen">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* LEFT: FORM */}
+            {/* ============================================
+                LEFT: FORM
+            ============================================ */}
             <div className="lg:col-span-2">
               <form
                 onSubmit={handleSubmit(onSubmit, onError)}
@@ -194,7 +246,6 @@ export default function AddOpportunityPage() {
                       subtitle="Tell us about the opportunity"
                       color="from-yellow-500 to-orange-500"
                     />
-
                     <div className="space-y-4">
                       <Input
                         label="Opportunity Title"
@@ -205,7 +256,6 @@ export default function AddOpportunityPage() {
                         required
                         icon={FileText}
                       />
-
                       <Input
                         label="Organization Name"
                         name="organization"
@@ -215,7 +265,6 @@ export default function AddOpportunityPage() {
                         required
                         icon={Building2}
                       />
-
                       <Textarea
                         label="Short Description"
                         name="shortDesc"
@@ -245,7 +294,6 @@ export default function AddOpportunityPage() {
                       subtitle="Help users find your opportunity"
                       color="from-blue-500 to-indigo-600"
                     />
-
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <Select
                         label="Category"
@@ -259,7 +307,6 @@ export default function AddOpportunityPage() {
                           label: c.name,
                         }))}
                       />
-
                       <Select
                         label="Location"
                         name="location"
@@ -272,7 +319,6 @@ export default function AddOpportunityPage() {
                           label: l.name,
                         }))}
                       />
-
                       <Select
                         label="Work Type"
                         name="type"
@@ -286,7 +332,6 @@ export default function AddOpportunityPage() {
                           { value: "Hybrid", label: "Hybrid" },
                         ]}
                       />
-
                       <Input
                         label="Deadline"
                         name="deadline"
@@ -313,7 +358,6 @@ export default function AddOpportunityPage() {
                       subtitle="Describe the opportunity in detail"
                       color="from-purple-500 to-pink-600"
                     />
-
                     <div className="space-y-4">
                       <Textarea
                         label="Full Description"
@@ -327,7 +371,6 @@ export default function AddOpportunityPage() {
                         maxLength={2000}
                         value={formValues.description}
                       />
-
                       <DynamicListInput
                         label="Requirements"
                         items={requirements}
@@ -339,7 +382,6 @@ export default function AddOpportunityPage() {
                         error={errors.requirements?.message}
                         maxItems={15}
                       />
-
                       <DynamicListInput
                         label="Tags"
                         items={tags}
@@ -366,7 +408,6 @@ export default function AddOpportunityPage() {
                       subtitle="How can candidates apply?"
                       color="from-green-500 to-teal-600"
                     />
-
                     <div className="space-y-4">
                       <Input
                         label="Apply Link"
@@ -379,7 +420,6 @@ export default function AddOpportunityPage() {
                         icon={LinkIcon}
                         helper="URL where candidates can apply"
                       />
-
                       <Input
                         label="Contact Email"
                         name="contactEmail"
@@ -407,7 +447,6 @@ export default function AddOpportunityPage() {
                       subtitle="Optional but helpful"
                       color="from-amber-500 to-orange-600"
                     />
-
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <Input
                         label="Salary / Stipend"
@@ -417,7 +456,6 @@ export default function AddOpportunityPage() {
                         placeholder="e.g., $500-800/month"
                         icon={DollarSign}
                       />
-
                       <Input
                         label="Duration"
                         name="duration"
@@ -426,7 +464,6 @@ export default function AddOpportunityPage() {
                         placeholder="e.g., 3 months"
                         icon={Clock}
                       />
-
                       <Input
                         label="Available Seats"
                         name="seats"
@@ -436,7 +473,6 @@ export default function AddOpportunityPage() {
                         placeholder="e.g., 5"
                         icon={Users}
                       />
-
                       <Select
                         label="Gender"
                         name="gender"
@@ -449,7 +485,6 @@ export default function AddOpportunityPage() {
                           { value: "Female", label: "Female" },
                         ]}
                       />
-
                       <Select
                         label="Language"
                         name="language"
@@ -478,7 +513,11 @@ export default function AddOpportunityPage() {
                     type="button"
                     variant="outline"
                     size="md"
-                    onClick={() => reset()}
+                    onClick={() => {
+                      reset();
+                      setRequirements([]);
+                      setTags([]);
+                    }}
                   >
                     Reset Form
                   </Button>
@@ -497,7 +536,9 @@ export default function AddOpportunityPage() {
               </form>
             </div>
 
-            {/* RIGHT: LIVE PREVIEW */}
+            {/* ============================================
+                RIGHT: LIVE PREVIEW
+            ============================================ */}
             <div className="lg:col-span-1">
               <div className="lg:sticky lg:top-24 space-y-4">
                 <div className="flex items-center gap-2 mb-3">
@@ -523,6 +564,19 @@ export default function AddOpportunityPage() {
                     </p>
                   </div>
                 </Card>
+
+                {/* Sign In Notice */}
+                {isLoaded && !user && (
+                  <div className="p-4 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 rounded-xl">
+                    <p className="text-xs text-red-600 dark:text-red-400 font-medium">
+                      ⚠️ You need to{" "}
+                      <a href="/sign-in" className="underline font-bold">
+                        sign in
+                      </a>{" "}
+                      to submit an opportunity.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -1,16 +1,17 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { LayoutGrid, ArrowRight } from "lucide-react";
+
 import SectionHeader from "../shared/SectionHeader.jsx";
 import CategoryCard from "./CategoryCard.jsx";
-import { categories, opportunities } from "../../data/opportunities.js";
-import { useOpportunitiesStore } from "../../store/index.js";
-import { cn } from "../../lib/utils.js";
-import { useEffect, useState } from "react";
 import Button from "../ui/Button.jsx";
-// Fixed particle positions (no more Math.random hydration errors)
+import { categories } from "../../data/opportunities.js";
+import { getAllOpportunities } from "../../lib/db.js";
+import { cn } from "../../lib/utils.js";
+
 const SPARKLES = [
   { top: 15, left: 20, duration: 2 },
   { top: 40, left: 75, duration: 2.5 },
@@ -21,18 +22,23 @@ const SPARKLES = [
 ];
 
 export default function CategoriesSection() {
-  const [mounted, setMounted] = useState(false);
-  const userOpportunities = useOpportunitiesStore(
-    (state) => state.userOpportunities,
-  );
+  const [allOpportunities, setAllOpportunities] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    const fetchData = async () => {
+      try {
+        const data = await getAllOpportunities();
+        setAllOpportunities(data || []);
+      } catch (error) {
+        console.error("Failed to load categories:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const allOpportunities = mounted
-    ? [...opportunities, ...userOpportunities]
-    : opportunities;
+    fetchData();
+  }, []);
 
   const getCategoryCount = (categoryName) => {
     return allOpportunities.filter((opp) => opp.category === categoryName)
@@ -60,7 +66,7 @@ export default function CategoriesSection() {
           badgeIcon={LayoutGrid}
           title="Find Opportunities by"
           highlightedText="Category"
-          description="Browse through diverse opportunity types tailored to your career goals, skills, and interests. Every path starts with a choice."
+          description="Browse through diverse opportunity types tailored to your career goals, skills, and interests."
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6">
@@ -78,10 +84,7 @@ export default function CategoriesSection() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{
-              duration: 0.5,
-              delay: categories.length * 0.08,
-            }}
+            transition={{ duration: 0.5, delay: categories.length * 0.08 }}
           >
             <Link href="/opportunities" className="block group h-full">
               <motion.div
@@ -90,15 +93,11 @@ export default function CategoriesSection() {
                 className={cn(
                   "relative overflow-hidden",
                   "bg-gradient-to-br from-yellow-500 via-orange-500 to-blue-600",
-                  "rounded-2xl p-6",
-                  "shadow-xl hover:shadow-2xl",
-                  "transition-shadow duration-300",
-                  "cursor-pointer",
-                  "h-full",
+                  "rounded-2xl p-6 shadow-xl hover:shadow-2xl",
+                  "transition-shadow duration-300 cursor-pointer h-full",
                   "flex flex-col justify-between",
                 )}
               >
-                {/* FIXED Sparkles */}
                 <div className="absolute inset-0 opacity-20 pointer-events-none">
                   {SPARKLES.map((sparkle, i) => (
                     <motion.div
@@ -137,9 +136,9 @@ export default function CategoriesSection() {
                   </h3>
 
                   <p className="text-sm text-white/90 mb-5 line-clamp-2">
-                    Explore all{" "}
-                    {mounted ? allOpportunities.length : opportunities.length}{" "}
-                    opportunities in one place
+                    {loading
+                      ? "Loading opportunities..."
+                      : `Explore all ${allOpportunities.length} opportunities in one place`}
                   </p>
                 </div>
 

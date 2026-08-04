@@ -1,26 +1,62 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Star, ArrowRight, Sparkles } from "lucide-react";
+import { isPast, parseISO } from "date-fns";
+
 import SectionHeader from "../shared/SectionHeader.jsx";
 import OpportunityCard from "../opportunities/OpportunityCard.jsx";
 import OpportunityCardSkeleton from "../opportunities/OpportunityCardSkeleton.jsx";
-import { opportunities } from "../../data/opportunities.js";
-import { cn } from "../../lib/utils.js";
-import { isPast, parseISO } from "date-fns";
 import Button from "../ui/Button.jsx";
+import { getAllOpportunities } from "../../lib/db.js";
+import { cn } from "../../lib/utils.js";
+
+// Normalize DB opportunity
+function normalizeOpp(opp) {
+  return {
+    id: opp.id,
+    slug: opp.slug || opp.id,
+    title: opp.title,
+    organization: opp.organization,
+    category: opp.category,
+    location: opp.location,
+    type: opp.type,
+    deadline: opp.deadline,
+    shortDesc: opp.short_desc,
+    description: opp.description,
+    requirements: opp.requirements || [],
+    applyLink: opp.apply_link,
+    tags: opp.tags || [],
+    featured: opp.featured || false,
+    urgent: opp.urgent || false,
+    verified: opp.verified || false,
+    views: opp.views || 0,
+    saves: opp.saves || 0,
+    postedDate: opp.posted_date || opp.created_at?.split("T")[0],
+  };
+}
+
 export default function FeaturedOpportunities() {
   const [mounted, setMounted] = useState(false);
+  const [opportunities, setOpportunities] = useState([]);
 
   useEffect(() => {
-    // Simulate loading for skeleton demo
-    const timer = setTimeout(() => setMounted(true), 300);
-    return () => clearTimeout(timer);
+    const fetchData = async () => {
+      try {
+        const data = await getAllOpportunities();
+        const normalized = data.map(normalizeOpp);
+        setOpportunities(normalized);
+      } catch (error) {
+        console.error("Failed to load:", error);
+      } finally {
+        setMounted(true);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  // Filter featured opportunities that haven't expired
   const featuredOpportunities = opportunities
     .filter((opp) => {
       try {
@@ -33,17 +69,12 @@ export default function FeaturedOpportunities() {
 
   return (
     <section className="relative py-16 md:py-24 overflow-hidden bg-white dark:bg-slate-900">
-      {/* Decorative Background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-40 right-10 w-72 h-72 bg-yellow-500/5 rounded-full blur-3xl" />
         <div className="absolute bottom-40 left-10 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl" />
       </div>
 
-      {/* ============================================
-          Content Container
-      ============================================ */}
       <div className="relative container-custom">
-        {/* Section Header with View All */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 md:mb-16">
           <div className="flex-1">
             <SectionHeader
@@ -57,7 +88,6 @@ export default function FeaturedOpportunities() {
             />
           </div>
 
-          {/* View All Link (Desktop) */}
           <div className="hidden md:block flex-shrink-0">
             <Button
               href="/opportunities"
@@ -71,18 +101,13 @@ export default function FeaturedOpportunities() {
           </div>
         </div>
 
-        {/* ============================================
-            Opportunities Grid
-        ============================================ */}
         {!mounted ? (
-          // Loading State
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
             {[...Array(6)].map((_, i) => (
               <OpportunityCardSkeleton key={i} />
             ))}
           </div>
         ) : featuredOpportunities.length > 0 ? (
-          // Real Cards
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
             {featuredOpportunities.map((opportunity, index) => (
               <OpportunityCard
@@ -93,7 +118,6 @@ export default function FeaturedOpportunities() {
             ))}
           </div>
         ) : (
-          // Empty State (in case no featured opportunities)
           <div className="text-center py-16">
             <Sparkles size={48} className="mx-auto text-gray-300 mb-4" />
             <p className="text-gray-500 dark:text-gray-400">
@@ -102,9 +126,6 @@ export default function FeaturedOpportunities() {
           </div>
         )}
 
-        {/* ============================================
-            Bottom View All Button (Mobile)
-        ============================================ */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -124,32 +145,20 @@ export default function FeaturedOpportunities() {
           </Button>
         </motion.div>
 
-        {/* ============================================
-            Info Banner (bottom)
-        ============================================ */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
           className={cn(
-            "mt-12 md:mt-16",
-            "p-6 md:p-8",
+            "mt-12 md:mt-16 p-6 md:p-8",
             "bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-blue-500/10",
-            "border border-yellow-500/20",
-            "rounded-2xl",
+            "border border-yellow-500/20 rounded-2xl",
             "flex flex-col md:flex-row items-center gap-6",
           )}
         >
           <div className="flex-shrink-0">
-            <div
-              className={cn(
-                "w-16 h-16 rounded-2xl",
-                "bg-gradient-to-br from-yellow-500 to-orange-500",
-                "flex items-center justify-center",
-                "shadow-lg",
-              )}
-            >
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center shadow-lg">
               <Sparkles size={28} className="text-white" />
             </div>
           </div>
