@@ -100,8 +100,7 @@ export default function Navbar() {
           aria-label="Main navigation"
         >
           {/* Logo */}
-          <Logo />
-
+          <Logo variant={shouldShowScrolled ? "auto" : "light"} />
           {/* Desktop Nav Links */}
           <div className="hidden lg:flex items-center gap-1">
             {NAV_ITEMS.map((item) => {
