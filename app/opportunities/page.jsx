@@ -18,9 +18,7 @@ import EmptyState from "../../components/states/EmptyState.jsx";
 import { getAllOpportunities } from "../../lib/db.js";
 import { filterOpportunities, paginateData, cn } from "../../lib/utils.js";
 
-// ============================================
 // LOADING FALLBACK
-// ============================================
 function LoadingFallback() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-950 pt-32">
@@ -34,9 +32,7 @@ function LoadingFallback() {
   );
 }
 
-// ============================================
 // MAIN CONTENT
-// ============================================
 function OpportunitiesContent() {
   const searchParams = useSearchParams();
 
@@ -61,9 +57,7 @@ function OpportunitiesContent() {
 
   const perPage = 12;
 
-  // ============================================
   // FETCH FROM SUPABASE
-  // ============================================
   useEffect(() => {
     setMounted(true);
 
@@ -83,9 +77,7 @@ function OpportunitiesContent() {
     fetchOpportunities();
   }, []);
 
-  // ============================================
   // UPDATE URL PARAMS
-  // ============================================
   useEffect(() => {
     if (!mounted) return;
 
@@ -102,11 +94,8 @@ function OpportunitiesContent() {
     const newUrl = queryString ? `?${queryString}` : "";
     window.history.replaceState({}, "", `/opportunities${newUrl}`);
   }, [filters, mounted]);
-
-  // ============================================
   // NORMALIZE DB OPPORTUNITIES
   // Maps Supabase snake_case to camelCase for components
-  // ============================================
   const normalizedDbOpps = useMemo(() => {
     return dbOpportunities.map((opp) => ({
       id: opp.id,
@@ -165,9 +154,7 @@ function OpportunitiesContent() {
     return count;
   }, [filters]);
 
-  // ============================================
   // HANDLERS
-  // ============================================
   const updateFilter = (key, value) => {
     setFilters((prev) => ({
       ...prev,

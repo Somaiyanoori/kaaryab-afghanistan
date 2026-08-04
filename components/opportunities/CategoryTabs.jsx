@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { LayoutGrid } from "lucide-react";
 import { categories } from "../../data/opportunities.js";
 import { cn } from "../../lib/utils.js";
 

@@ -7,9 +7,7 @@ import {
   getCategoryColors,
 } from "../../lib/utils.js";
 
-// ============================================
 // GET INITIALS TESTS
-// ============================================
 describe("getInitials", () => {
   it("should get initials from full name", () => {
     expect(getInitials("Ahmad Karimi")).toBe("AK");
@@ -40,9 +38,7 @@ describe("getInitials", () => {
   });
 });
 
-// ============================================
 // TRUNCATE TEXT TESTS
-// ============================================
 describe("truncateText", () => {
   it("should not truncate short text", () => {
     expect(truncateText("Hello", 100)).toBe("Hello");
@@ -69,9 +65,7 @@ describe("truncateText", () => {
   });
 });
 
-// ============================================
 // SLUGIFY TESTS
-// ============================================
 describe("slugify", () => {
   it("should convert text to lowercase slug", () => {
     expect(slugify("Hello World")).toBe("hello-world");
@@ -102,9 +96,7 @@ describe("slugify", () => {
   });
 });
 
-// ============================================
 // GENERATE ID TESTS
-// ============================================
 describe("generateId", () => {
   it("should generate an ID with default prefix", () => {
     const id = generateId();
@@ -131,9 +123,7 @@ describe("generateId", () => {
   });
 });
 
-// ============================================
 // GET CATEGORY COLORS TESTS
-// ============================================
 describe("getCategoryColors", () => {
   it("should return colors for Job category", () => {
     const colors = getCategoryColors("Job");

@@ -26,9 +26,7 @@ export default function StepCard({ step, index, isLast }) {
           isEven ? "md:flex-row" : "md:flex-row-reverse",
         )}
       >
-        {/* ============================================
-            LEFT/RIGHT: BIG NUMBER + ICON CIRCLE
-        ============================================ */}
+        {/* LEFT/RIGHT: BIG NUMBER + ICON CIRCLE */}
         <motion.div
           whileHover={{ scale: 1.05, rotate: isEven ? -5 : 5 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -127,9 +125,7 @@ export default function StepCard({ step, index, isLast }) {
           </div>
         </motion.div>
 
-        {/* ============================================
-            RIGHT/LEFT: CONTENT
-        ============================================ */}
+        {/* RIGHT/LEFT: CONTENT */}
         <div
           className={cn(
             "flex-1 text-center",
@@ -220,9 +216,7 @@ export default function StepCard({ step, index, isLast }) {
         </div>
       </div>
 
-      {/* ============================================
-          CONNECTOR LINE (Only if not last step)
-      ============================================ */}
+      {/* CONNECTOR LINE (Only if not last step) */}
       {!isLast && (
         <div className="relative h-16 md:h-20 flex items-center justify-center my-4">
           <motion.div

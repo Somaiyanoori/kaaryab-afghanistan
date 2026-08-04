@@ -35,16 +35,13 @@ export default function SaveButton({
   // Prevent hydration mismatch
   const saved = mounted ? isSaved(opportunity.id) : false;
 
-  // ============================================
-  // TOGGLE SAVE
-  // ============================================
+  // Toggle save
   const handleToggle = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
     // If not signed in → save locally only
     if (isLoaded && !user) {
-      // Save locally
       if (saved) {
         unsaveOpportunity(opportunity.id);
         toast("Removed from saved", {
@@ -68,11 +65,9 @@ export default function SaveButton({
 
     try {
       if (saved) {
-        // UNSAVE
-        // 1. Remove from local store immediately (optimistic)
+        // UNSAVE - Remove from local store (optimistic) then Supabase
         unsaveOpportunity(opportunity.id);
 
-        // 2. Remove from Supabase
         if (user) {
           await removeSavedOpportunityDB(user.id, opportunity.id);
         }
@@ -82,11 +77,9 @@ export default function SaveButton({
           duration: 2000,
         });
       } else {
-        // SAVE
-        // 1. Save to local store immediately (optimistic)
+        // SAVE - Save to local store (optimistic) then Supabase
         saveOpportunity(opportunity);
 
-        // 2. Save to Supabase
         if (user) {
           await saveOpportunityDB(user.id, opportunity);
         }
@@ -102,9 +95,9 @@ export default function SaveButton({
 
       // Rollback optimistic update on error
       if (saved) {
-        saveOpportunity(opportunity); // re-add
+        saveOpportunity(opportunity);
       } else {
-        unsaveOpportunity(opportunity.id); // re-remove
+        unsaveOpportunity(opportunity.id);
       }
 
       toast.error("Failed to save. Please try again.");
@@ -114,9 +107,7 @@ export default function SaveButton({
     }
   };
 
-  // ============================================
-  // SIZE CLASSES
-  // ============================================
+  // Size classes
   const sizeClasses = {
     small: "w-8 h-8",
     default: "w-10 h-10",
@@ -129,9 +120,7 @@ export default function SaveButton({
     large: 22,
   };
 
-  // ============================================
-  // VARIANT CLASSES
-  // ============================================
+  // Variant classes
   const variantClasses = {
     default: cn(
       "bg-gray-100 hover:bg-gray-200",
@@ -145,9 +134,7 @@ export default function SaveButton({
     ),
   };
 
-  // ============================================
-  // BUTTON JSX
-  // ============================================
+  // Button JSX
   const button = (
     <motion.button
       onClick={handleToggle}
@@ -165,9 +152,7 @@ export default function SaveButton({
       )}
       aria-label={saved ? "Remove from saved" : "Save opportunity"}
     >
-      {/* ============================================
-          SYNCING SPINNER
-      ============================================ */}
+      {/* Syncing spinner */}
       {isSyncing ? (
         <div
           className={cn(
@@ -176,9 +161,7 @@ export default function SaveButton({
           )}
         />
       ) : (
-        /* ============================================
-            BOOKMARK ICON WITH ANIMATION
-        ============================================ */
+        /* Bookmark icon with animation */
         <AnimatePresence mode="wait" initial={false}>
           {saved ? (
             <motion.div
@@ -218,9 +201,7 @@ export default function SaveButton({
         </AnimatePresence>
       )}
 
-      {/* ============================================
-          PARTICLE BURST EFFECT ON SAVE
-      ============================================ */}
+      {/* Particle burst effect on save */}
       <AnimatePresence>
         {isAnimating && !saved && (
           <>
@@ -245,9 +226,7 @@ export default function SaveButton({
     </motion.button>
   );
 
-  // ============================================
-  // TOOLTIP WRAPPER
-  // ============================================
+  // Tooltip wrapper
   if (!showTooltip) {
     return button;
   }

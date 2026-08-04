@@ -34,9 +34,7 @@ import {
 import { SORT_OPTIONS } from "../../lib/constants.js";
 import { filterOpportunities, cn } from "../../lib/utils.js";
 
-// ============================================
 // MAIN PAGE
-// ============================================
 export default function SavedPage() {
   const { user, isLoaded } = useUser();
 
@@ -56,9 +54,7 @@ export default function SavedPage() {
   const localSaved = useSavedStore((state) => state.savedOpportunities);
   const clearLocalSaved = useSavedStore((state) => state.clearAllSaved);
 
-  // ============================================
   // FETCH SAVED FROM SUPABASE (if signed in)
-  // ============================================
   useEffect(() => {
     setMounted(true);
 
@@ -82,20 +78,16 @@ export default function SavedPage() {
     loadSaved();
   }, [user, isLoaded]);
 
-  // ============================================
   // DECIDE WHICH SAVED TO SHOW
   // Signed in → use DB
   // Not signed in → use local store
-  // ============================================
   const savedOpportunities = useMemo(() => {
     if (!mounted) return [];
     if (user) return dbSaved;
     return localSaved;
   }, [user, dbSaved, localSaved, mounted]);
 
-  // ============================================
   // FILTER AND SORT
-  // ============================================
   const filteredSaved = useMemo(() => {
     if (!mounted) return [];
     return filterOpportunities(savedOpportunities, {
@@ -114,9 +106,7 @@ export default function SavedPage() {
     return counts;
   }, [savedOpportunities]);
 
-  // ============================================
   // CLEAR ALL HANDLER
-  // ============================================
   const handleClearAll = async () => {
     try {
       if (user) {

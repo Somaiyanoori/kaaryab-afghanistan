@@ -60,9 +60,7 @@ const CONTACT_INFO = [
   },
 ];
 
-// ============================================
 // SUBJECT OPTIONS
-// ============================================
 const SUBJECT_OPTIONS = [
   { value: "General Inquiry", label: "General Inquiry" },
   { value: "Feedback", label: "Submit Feedback" },
@@ -73,9 +71,7 @@ const SUBJECT_OPTIONS = [
   { value: "Other", label: "Other" },
 ];
 
-// ============================================
 // SOCIAL LINKS
-// ============================================
 const SOCIAL_LINKS = [
   {
     icon: FaFacebook,
@@ -99,9 +95,7 @@ const SOCIAL_LINKS = [
   { icon: FaGithub, name: "GitHub", href: "#", color: "hover:text-white" },
 ];
 
-// ============================================
 // FAQ DATA
-// ============================================
 const FAQS = [
   {
     question: "Is KaarYab really free?",
@@ -135,9 +129,7 @@ const FAQS = [
   },
 ];
 
-// ============================================
 // FAQ ITEM COMPONENT
-// ============================================
 function FAQItem({ faq, isOpen, onClick }) {
   return (
     <motion.div
@@ -185,9 +177,7 @@ function FAQItem({ faq, isOpen, onClick }) {
   );
 }
 
-// ============================================
 // MAIN CONTACT PAGE
-// ============================================
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -304,15 +294,11 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* ============================================
-          CONTACT FORM + INFO
-      ============================================ */}
+      {/*  CONTACT FORM + INFO*/}
       <section className="py-16 md:py-24 bg-gray-50 dark:bg-slate-950">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* ============================================
-                LEFT: FORM
-            ============================================ */}
+            {/*  LEFT: FORM */}
             <div className="lg:col-span-2">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -408,9 +394,7 @@ export default function ContactPage() {
               </motion.div>
             </div>
 
-            {/* ============================================
-                RIGHT: INFO SIDEBAR
-            ============================================ */}
+            {/*  RIGHT: INFO SIDEBAR*/}
             <div className="lg:col-span-1 space-y-6">
               {/* Quick Response Card */}
               <motion.div
@@ -558,9 +542,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* ============================================
-          FAQ SECTION
-      ============================================ */}
+      {/*  FAQ SECTION */}
       <section className="py-16 md:py-24 bg-white dark:bg-slate-900">
         <div className="container-custom">
           <motion.div

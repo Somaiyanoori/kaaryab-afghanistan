@@ -5,9 +5,7 @@ import {
   getDeadlineStatus,
 } from "../../lib/utils.js";
 
-// ============================================
 // FORMAT DATE TESTS
-// ============================================
 describe("formatDate", () => {
   it("should format a valid ISO date correctly", () => {
     const result = formatDate("2026-12-25");
@@ -33,9 +31,7 @@ describe("formatDate", () => {
   });
 });
 
-// ============================================
 // FORMAT RELATIVE DATE TESTS
-// ============================================
 describe("formatRelativeDate", () => {
   it("should return 'X weeks ago' for less than a month", () => {
     // Use a fixed date approach
@@ -77,9 +73,7 @@ describe("formatRelativeDate", () => {
   });
 });
 
-// ============================================
 // GET DEADLINE STATUS TESTS
-// ============================================
 describe("getDeadlineStatus", () => {
   // Helper: Create date X days from now
   const daysFromNow = (days) => {

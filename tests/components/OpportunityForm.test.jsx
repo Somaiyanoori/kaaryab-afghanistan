@@ -6,9 +6,7 @@ import Select from "../../components/ui/Select.jsx";
 
 // Test the reusable form components
 describe("Form Components", () => {
-  // ============================================
   // INPUT COMPONENT TESTS
-  // ============================================
   describe("Input", () => {
     it("should render with label", () => {
       render(<Input label="Full Name" name="name" />);
@@ -91,9 +89,7 @@ describe("Form Components", () => {
     });
   });
 
-  // ============================================
   // TEXTAREA COMPONENT TESTS
-  // ============================================
   describe("Textarea", () => {
     it("should render with label", () => {
       render(<Textarea label="Description" name="desc" onChange={() => {}} />);
@@ -156,9 +152,7 @@ describe("Form Components", () => {
     });
   });
 
-  // ============================================
   // SELECT COMPONENT TESTS
-  // ============================================
   describe("Select", () => {
     const options = [
       { value: "job", label: "Job" },

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { SearchX, Sparkles } from "lucide-react";
 import { cn } from "../../lib/utils.js";

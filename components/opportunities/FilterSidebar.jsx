@@ -20,9 +20,7 @@ export default function FilterSidebar({
 
   return (
     <div className={cn("flex flex-col", isMobile ? "h-full" : "space-y-6")}>
-      {/* ============================================
-          Header (Mobile Only)
-      ============================================ */}
+      {/* Header (Mobile Only) */}
       {isMobile && (
         <div className="flex items-center justify-between p-4 border-b border-gray-100 dark:border-slate-700">
           <h3 className="text-lg font-bold text-gray-900 dark:text-white">
@@ -38,18 +36,14 @@ export default function FilterSidebar({
         </div>
       )}
 
-      {/* ============================================
-          Filter Content
-      ============================================ */}
+      {/* Filter Content */}
       <div
         className={cn(
           "flex flex-col gap-6",
           isMobile && "p-4 overflow-y-auto flex-1",
         )}
       >
-        {/* ============================================
-            Location Filter
-        ============================================ */}
+        {/* Location Filter */}
         <div>
           <div className="flex items-center gap-2 mb-3">
             <MapPin size={16} className="text-yellow-500" />
@@ -78,9 +72,7 @@ export default function FilterSidebar({
           </select>
         </div>
 
-        {/* ============================================
-            Work Type Filter
-        ============================================ */}
+        {/* Work Type Filter */}
         <div>
           <div className="flex items-center gap-2 mb-3">
             <Briefcase size={16} className="text-yellow-500" />
@@ -126,9 +118,7 @@ export default function FilterSidebar({
           </div>
         </div>
 
-        {/* ============================================
-            Deadline Filter
-        ============================================ */}
+        {/* Deadline Filter */}
         <div>
           <div className="flex items-center gap-2 mb-3">
             <Calendar size={16} className="text-yellow-500" />
@@ -164,9 +154,7 @@ export default function FilterSidebar({
           </div>
         </div>
 
-        {/* ============================================
-            Clear All Button
-        ============================================ */}
+        {/* Clear All Button */}
         {hasActiveFilters && (
           <motion.button
             initial={{ opacity: 0 }}

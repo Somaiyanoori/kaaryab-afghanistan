@@ -83,9 +83,7 @@ export default function DashboardPage() {
   const [dbOpportunities, setDbOpportunities] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // ============================================
   // FETCH FROM SUPABASE
-  // ============================================
   const fetchOpportunities = async () => {
     try {
       const data = await getAllOpportunities();
@@ -102,9 +100,7 @@ export default function DashboardPage() {
     fetchOpportunities();
   }, []);
 
-  // ============================================
   // NORMALIZE AND COMBINE
-  // ============================================
   const normalizedDb = dbOpportunities.map(normalizeOpp);
 
   const allOpportunities = useMemo(() => {
@@ -172,9 +168,7 @@ export default function DashboardPage() {
       .slice(0, 5);
   }, [allOpportunities]);
 
-  // ============================================
   // DELETE HANDLER
-  // ============================================
   const handleDelete = async () => {
     if (!deleteId) return;
 

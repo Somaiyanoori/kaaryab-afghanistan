@@ -40,9 +40,7 @@ import { categories, locations } from "../../data/opportunities.js";
 import { createOpportunity } from "../../lib/db.js";
 import { slugify, generateId } from "../../lib/utils.js";
 
-// ============================================
 // SECTION HEADER
-// ============================================
 function SectionHeader({ number, title, subtitle, color }) {
   return (
     <div className="flex items-center gap-3 mb-6">
@@ -61,9 +59,8 @@ function SectionHeader({ number, title, subtitle, color }) {
   );
 }
 
-// ============================================
 // MAIN PAGE
-// ============================================
+
 export default function AddOpportunityPage() {
   const router = useRouter();
   const { user, isLoaded } = useUser();
@@ -139,9 +136,7 @@ export default function AddOpportunityPage() {
     postedDate: new Date().toISOString().split("T")[0],
   };
 
-  // ============================================
   // SUBMIT HANDLER → SUPABASE
-  // ============================================
   const onSubmit = async (data) => {
     // Guard: must be signed in
     if (!isLoaded) return;
@@ -536,9 +531,7 @@ export default function AddOpportunityPage() {
               </form>
             </div>
 
-            {/* ============================================
-                RIGHT: LIVE PREVIEW
-            ============================================ */}
+            {/*  RIGHT: LIVE PREVIEW */}
             <div className="lg:col-span-1">
               <div className="lg:sticky lg:top-24 space-y-4">
                 <div className="flex items-center gap-2 mb-3">

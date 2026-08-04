@@ -20,8 +20,9 @@ import SectionHeader from "../../components/shared/SectionHeader.jsx";
 
 import Button from "../../components/ui/Button.jsx";
 import PageHeader from "../../components/layout/PageHeader.jsx";
+
 // VALUES DATA
-// ============================================
+
 const VALUES = [
   {
     icon: Heart,
@@ -53,9 +54,8 @@ const VALUES = [
   },
 ];
 
-// ============================================
 // STATS DATA
-// ============================================
+
 const STATS = [
   { value: "500+", label: "Opportunities Listed", icon: Sparkles },
   { value: "30+", label: "Partner Organizations", icon: HandshakeIcon },
@@ -63,9 +63,8 @@ const STATS = [
   { value: "1,200+", label: "Youth Helped", icon: Users },
 ];
 
-// ============================================
 // FEATURES DATA
-// ============================================
+
 const FEATURES = [
   {
     icon: Zap,
@@ -92,9 +91,8 @@ const FEATURES = [
   },
 ];
 
-// ============================================
 // TIMELINE DATA
-// ============================================
+
 const TIMELINE = [
   {
     year: "2024",
@@ -126,9 +124,7 @@ const TIMELINE = [
   },
 ];
 
-// ============================================
 // TEAM DATA
-// ============================================
 const TEAM = [
   {
     name: "The Vision",
@@ -171,9 +167,7 @@ export default function AboutPage() {
         showGrid
       />
 
-      {/* ============================================
-          MISSION SECTION
-      ============================================ */}
+      {/* MISSION SECTION*/}
       <section className="py-16 md:py-24 bg-white dark:bg-slate-900">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -301,9 +295,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ============================================
-          STATISTICS BANNER
-      ============================================ */}
+      {/*STATISTICS BANNER*/}
       <section className="py-16 md:py-20 bg-gray-50 dark:bg-slate-950">
         <div className="container-custom">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
@@ -352,9 +344,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ============================================
-          CORE VALUES
-      ============================================ */}
+      {/* CORE VALUES */}
       <section className="py-16 md:py-24 bg-white dark:bg-slate-900">
         <div className="container-custom">
           <SectionHeader
@@ -408,9 +398,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ============================================
-          TIMELINE
-      ============================================ */}
+      {/* TIMELINE */}
       <section className="py-16 md:py-24 bg-gray-50 dark:bg-slate-950">
         <div className="container-custom">
           <SectionHeader
@@ -460,9 +448,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ============================================
-          FEATURES GRID
-      ============================================ */}
+      {/* FEATURES GRID*/}
       <section className="py-16 md:py-24 bg-white dark:bg-slate-900">
         <div className="container-custom">
           <SectionHeader
@@ -505,9 +491,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ============================================
-          TEAM / PILLARS SECTION
-      ============================================ */}
+      {/* TEAM / PILLARS SECTION */}
       <section className="py-16 md:py-24 bg-gray-50 dark:bg-slate-950">
         <div className="container-custom">
           <SectionHeader
@@ -552,9 +536,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ============================================
-          CTA SECTION
-      ============================================ */}
+      {/*  CTA SECTION*/}
       <section className="py-16 md:py-24 bg-white dark:bg-slate-900">
         <div className="container-custom">
           <motion.div

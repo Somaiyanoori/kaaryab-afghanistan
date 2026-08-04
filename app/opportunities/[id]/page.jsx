@@ -31,10 +31,8 @@ import {
   cn,
 } from "../../../lib/utils.js";
 
-// ============================================
 // NORMALIZE DB OPPORTUNITY
 // Maps snake_case → camelCase
-// ============================================
 function normalizeOpportunity(opp) {
   return {
     id: opp.id,
@@ -69,18 +67,14 @@ function normalizeOpportunity(opp) {
   };
 }
 
-// ============================================
 // MAIN PAGE
-// ============================================
 export default function OpportunityDetailPage({ params }) {
   const { id } = use(params);
   const [mounted, setMounted] = useState(false);
   const [dbOpportunities, setDbOpportunities] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // ============================================
   // FETCH DB OPPORTUNITIES
-  // ============================================
   useEffect(() => {
     setMounted(true);
 
@@ -121,9 +115,7 @@ export default function OpportunityDetailPage({ params }) {
     );
   }
 
-  // ============================================
   // NOT FOUND STATE
-  // ============================================
   if (mounted && !opportunity) {
     return (
       <ErrorState
