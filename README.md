@@ -188,31 +188,31 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
 ---
 
-## Database Setup
+4. **Set up Supabase database**
 
-Create a new Supabase project.
+Run the SQL schema in Supabase SQL Editor:
 
-Open the SQL Editor and execute the schema found in:
-
-```text
-supabase/schema.sql
+```bash
+# The full schema is in supabase/schema.sql
 ```
 
-Optionally seed the database:
+**Steps:**
+1. Go to your Supabase project dashboard
+2. Click "SQL Editor" in sidebar
+3. Click "New query"
+4. Copy content from `supabase/schema.sql`
+5. Paste and click "Run"
+6. Verify tables in "Table Editor"
+
+5. **Seed the database (optional)**
+
+Import sample opportunities to test the app:
 
 ```bash
 npm run seed
 ```
 
----
-
-## Running the Project
-
-Start the development server:
-
-```bash
-npm run dev
-```
+This will add 12 sample opportunities to your database.
 
 Visit:
 
