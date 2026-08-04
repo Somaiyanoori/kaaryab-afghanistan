@@ -84,22 +84,22 @@ KaarYab Afghanistan is designed to make educational and career opportunities mor
 
 ## Tech Stack
 
-| Category | Technology |
-|-----------|------------|
-| Framework | Next.js 14 (App Router) |
-| UI Library | React 19 |
-| Language | JavaScript |
-| Styling | Tailwind CSS |
-| Database | Supabase (PostgreSQL) |
-| Authentication | Clerk |
-| State Management | Zustand |
-| Forms | React Hook Form + Zod |
-| Animations | Framer Motion |
-| Charts | Recharts |
-| PDF Generation | jsPDF + html2canvas |
-| Icons | Lucide React, React Icons |
-| Testing | Vitest, Playwright |
-| Deployment | Vercel |
+| Category         | Technology                |
+| ---------------- | ------------------------- |
+| Framework        | Next.js 14 (App Router)   |
+| UI Library       | React 19                  |
+| Language         | JavaScript                |
+| Styling          | Tailwind CSS              |
+| Database         | Supabase (PostgreSQL)     |
+| Authentication   | Clerk                     |
+| State Management | Zustand                   |
+| Forms            | React Hook Form + Zod     |
+| Animations       | Framer Motion             |
+| Charts           | Recharts                  |
+| PDF Generation   | jsPDF + html2canvas       |
+| Icons            | Lucide React, React Icons |
+| Testing          | Vitest, Playwright        |
+| Deployment       | Vercel                    |
 
 ---
 
@@ -129,7 +129,42 @@ public/screenshots/dashboard.png
 public/screenshots/cv-builder.png
 ```
 
-Replace these placeholders with actual screenshots after deployment.
+## Sign-in
+
+```text
+public/screenshots/sign-in.png
+```
+
+## Saved
+
+```text
+public/screenshots/saved.png
+```
+
+## Details opportunity
+
+```text
+public/screenshots/details-opportunity.png
+
+```
+
+## About us
+
+```text
+public/screenshots/about-us.png
+```
+
+## Create Account
+
+```text
+public/screenshots/account.png
+```
+
+## Contact
+
+```text
+public/screenshots/contact.png
+```
 
 ---
 
@@ -197,6 +232,7 @@ Run the SQL schema in Supabase SQL Editor:
 ```
 
 **Steps:**
+
 1. Go to your Supabase project dashboard
 2. Click "SQL Editor" in sidebar
 3. Click "New query"
@@ -204,7 +240,7 @@ Run the SQL schema in Supabase SQL Editor:
 5. Paste and click "Run"
 6. Verify tables in "Table Editor"
 
-5. **Seed the database (optional)**
+7. **Seed the database (optional)**
 
 Import sample opportunities to test the app:
 
