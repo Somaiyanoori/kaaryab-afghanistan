@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Bookmark,
@@ -14,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useUser } from "@clerk/nextjs";
 
 import OpportunityCard from "../../components/opportunities/OpportunityCard.jsx";
 import OpportunityCardSkeleton from "../../components/opportunities/OpportunityCardSkeleton.jsx";
@@ -23,31 +23,79 @@ import CategoryTabs from "../../components/opportunities/CategoryTabs.jsx";
 import ConfirmModal from "../../components/shared/ConfirmModal.jsx";
 import SavedStats from "../../components/saved/SavedStats.jsx";
 import PageHeader from "../../components/layout/PageHeader.jsx";
+import Button from "../../components/ui/Button.jsx";
+
 import { useSavedStore } from "../../store/index.js";
+import {
+  getSavedOpportunitiesDB,
+  removeSavedOpportunityDB,
+  clearAllSavedDB,
+} from "../../lib/db.js";
 import { SORT_OPTIONS } from "../../lib/constants.js";
 import { filterOpportunities, cn } from "../../lib/utils.js";
-import Button from "../../components/ui/Button.jsx";
+
+// ============================================
+// MAIN PAGE
+// ============================================
 export default function SavedPage() {
+  const { user, isLoaded } = useUser();
+
   const [mounted, setMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showClearModal, setShowClearModal] = useState(false);
+
+  // DB saved opportunities (from Supabase)
+  const [dbSaved, setDbSaved] = useState([]);
 
   // Filters
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [sort, setSort] = useState("newest");
 
-  // Get saved data from store
-  const savedOpportunities = useSavedStore((state) => state.savedOpportunities);
-  const clearAllSaved = useSavedStore((state) => state.clearAllSaved);
+  // Local store (fallback for non-signed-in users)
+  const localSaved = useSavedStore((state) => state.savedOpportunities);
+  const clearLocalSaved = useSavedStore((state) => state.clearAllSaved);
 
+  // ============================================
+  // FETCH SAVED FROM SUPABASE (if signed in)
+  // ============================================
   useEffect(() => {
     setMounted(true);
-    const timer = setTimeout(() => setIsLoading(false), 500);
-    return () => clearTimeout(timer);
-  }, []);
 
-  // Filter and sort saved opportunities
+    const loadSaved = async () => {
+      if (!isLoaded) return;
+
+      try {
+        if (user) {
+          // Signed in → load from Supabase
+          const data = await getSavedOpportunitiesDB(user.id);
+          setDbSaved(data || []);
+        }
+      } catch (error) {
+        console.error("Failed to load saved:", error);
+        toast.error("Could not load saved items");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadSaved();
+  }, [user, isLoaded]);
+
+  // ============================================
+  // DECIDE WHICH SAVED TO SHOW
+  // Signed in → use DB
+  // Not signed in → use local store
+  // ============================================
+  const savedOpportunities = useMemo(() => {
+    if (!mounted) return [];
+    if (user) return dbSaved;
+    return localSaved;
+  }, [user, dbSaved, localSaved, mounted]);
+
+  // ============================================
+  // FILTER AND SORT
+  // ============================================
   const filteredSaved = useMemo(() => {
     if (!mounted) return [];
     return filterOpportunities(savedOpportunities, {
@@ -66,9 +114,24 @@ export default function SavedPage() {
     return counts;
   }, [savedOpportunities]);
 
-  const handleClearAll = () => {
-    clearAllSaved();
-    toast.success("All saved opportunities cleared! 🗑️");
+  // ============================================
+  // CLEAR ALL HANDLER
+  // ============================================
+  const handleClearAll = async () => {
+    try {
+      if (user) {
+        // Signed in → clear from Supabase
+        await clearAllSavedDB(user.id);
+        setDbSaved([]);
+      } else {
+        // Not signed in → clear local
+        clearLocalSaved();
+      }
+      toast.success("All saved opportunities cleared! 🗑️");
+    } catch (error) {
+      console.error("Clear failed:", error);
+      toast.error("Failed to clear saved items");
+    }
   };
 
   const hasFilters = search || category !== "All";
@@ -76,9 +139,7 @@ export default function SavedPage() {
 
   return (
     <>
-      {/* ============================================
-          HERO HEADER
-      ============================================ */}
+      {/* HERO HEADER */}
       <PageHeader
         badge="Your Collection"
         badgeIcon={Bookmark}
@@ -97,52 +158,46 @@ export default function SavedPage() {
         showGrid
       />
 
-      {/* ============================================
-          MAIN CONTENT
-      ============================================ */}
+      {/* MAIN CONTENT */}
       <section className="bg-gray-50 dark:bg-slate-950 py-8 md:py-12 min-h-screen">
         <div className="container-custom">
-          {/* ============================================
-              LOADING STATE
-          ============================================ */}
+          {/* LOADING */}
           {isLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {[...Array(6)].map((_, i) => (
                 <OpportunityCardSkeleton key={i} />
               ))}
             </div>
-          ) : /* ============================================
-              EMPTY STATE (No saved items)
-          ============================================ */
+          ) : /* EMPTY STATE */
           !hasSaved ? (
             <div className="max-w-md mx-auto">
               <EmptyState
                 icon={BookmarkX}
                 title="No saved opportunities yet"
-                description="Start browsing opportunities and click the bookmark icon to save the ones you're interested in. They'll appear here for easy access later."
+                description={
+                  user
+                    ? "Start browsing and save opportunities. They'll sync across all your devices!"
+                    : "Sign in to save opportunities across devices, or start bookmarking below."
+                }
                 actionLabel="Browse Opportunities"
                 actionHref="/opportunities"
               />
             </div>
           ) : (
+            /* HAS SAVED ITEMS */
             <>
-              {/* ============================================
-                  STATISTICS CARDS
-              ============================================ */}
+              {/* Stats */}
               <div className="mb-8">
                 <SavedStats savedOpportunities={savedOpportunities} />
               </div>
 
-              {/* ============================================
-                  SEARCH + ACTIONS BAR
-              ============================================ */}
+              {/* Search + Actions */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
                 className="mb-6 flex flex-col md:flex-row gap-3"
               >
-                {/* Search */}
                 <div className="flex-1">
                   <SearchInput
                     value={search}
@@ -151,7 +206,7 @@ export default function SavedPage() {
                   />
                 </div>
 
-                {/* Sort Dropdown */}
+                {/* Sort */}
                 <div className="relative">
                   <select
                     value={sort}
@@ -179,7 +234,7 @@ export default function SavedPage() {
                   />
                 </div>
 
-                {/* Clear All Button */}
+                {/* Clear All */}
                 <Button
                   variant="danger"
                   size="md"
@@ -190,9 +245,7 @@ export default function SavedPage() {
                 </Button>
               </motion.div>
 
-              {/* ============================================
-                  CATEGORY TABS
-              ============================================ */}
+              {/* Category Tabs */}
               <div className="mb-6">
                 <CategoryTabs
                   selectedCategory={category}
@@ -201,9 +254,7 @@ export default function SavedPage() {
                 />
               </div>
 
-              {/* ============================================
-                  ACTIVE FILTERS
-              ============================================ */}
+              {/* Active Filters */}
               {hasFilters && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
@@ -219,7 +270,7 @@ export default function SavedPage() {
                       <span>"{search}"</span>
                       <button
                         onClick={() => setSearch("")}
-                        className="w-5 h-5 rounded-full hover:bg-yellow-200 dark:hover:bg-yellow-500/30 flex items-center justify-center ml-1"
+                        className="w-5 h-5 rounded-full hover:bg-yellow-200 flex items-center justify-center ml-1"
                       >
                         <X size={12} />
                       </button>
@@ -231,7 +282,7 @@ export default function SavedPage() {
                       <span>{category}</span>
                       <button
                         onClick={() => setCategory("All")}
-                        className="w-5 h-5 rounded-full hover:bg-yellow-200 dark:hover:bg-yellow-500/30 flex items-center justify-center ml-1"
+                        className="w-5 h-5 rounded-full hover:bg-yellow-200 flex items-center justify-center ml-1"
                       >
                         <X size={12} />
                       </button>
@@ -250,9 +301,7 @@ export default function SavedPage() {
                 </motion.div>
               )}
 
-              {/* ============================================
-                  RESULTS COUNT
-              ============================================ */}
+              {/* Results Count */}
               <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
                 Showing{" "}
                 <span className="font-bold text-gray-900 dark:text-white">
@@ -265,15 +314,13 @@ export default function SavedPage() {
                 saved
               </div>
 
-              {/* ============================================
-                  RESULTS GRID or Empty Filter State
-              ============================================ */}
+              {/* Cards Grid */}
               {filteredSaved.length === 0 ? (
                 <div className="max-w-md mx-auto">
                   <EmptyState
                     icon={Search}
                     title="No matches found"
-                    description="Try adjusting your search or clearing filters to see all your saved opportunities."
+                    description="Try adjusting your search or clearing filters."
                     actionLabel="Clear Filters"
                     onAction={() => {
                       setSearch("");
@@ -294,10 +341,7 @@ export default function SavedPage() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9 }}
-                        transition={{
-                          duration: 0.3,
-                          delay: index * 0.05,
-                        }}
+                        transition={{ duration: 0.3, delay: index * 0.05 }}
                       >
                         <OpportunityCard
                           opportunity={opportunity}
@@ -309,9 +353,7 @@ export default function SavedPage() {
                 </AnimatePresence>
               )}
 
-              {/* ============================================
-                  CTA: Discover More
-              ============================================ */}
+              {/* Bottom CTA */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -326,18 +368,10 @@ export default function SavedPage() {
                 )}
               >
                 <div className="flex-shrink-0">
-                  <div
-                    className={cn(
-                      "w-16 h-16 rounded-2xl",
-                      "bg-gradient-to-br from-yellow-500 to-orange-500",
-                      "flex items-center justify-center",
-                      "shadow-lg",
-                    )}
-                  >
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center shadow-lg">
                     <Sparkles size={28} className="text-white" />
                   </div>
                 </div>
-
                 <div className="flex-1 text-center md:text-left">
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
                     Discover More Opportunities
@@ -347,7 +381,6 @@ export default function SavedPage() {
                     save your favorites.
                   </p>
                 </div>
-
                 <div className="flex-shrink-0">
                   <Button
                     href="/opportunities"
@@ -365,15 +398,15 @@ export default function SavedPage() {
         </div>
       </section>
 
-      {/* ============================================
-          CLEAR ALL CONFIRMATION MODAL
-      ============================================ */}
+      {/* CLEAR ALL MODAL */}
       <ConfirmModal
         isOpen={showClearModal}
         onClose={() => setShowClearModal(false)}
         onConfirm={handleClearAll}
         title="Clear all saved opportunities?"
-        message={`You will remove all ${savedOpportunities.length} saved ${savedOpportunities.length === 1 ? "opportunity" : "opportunities"} from your collection. This action cannot be undone.`}
+        message={`You will remove all ${savedOpportunities.length} saved ${
+          savedOpportunities.length === 1 ? "opportunity" : "opportunities"
+        } from your collection. This cannot be undone.`}
         confirmText="Yes, Clear All"
         cancelText="Cancel"
         variant="danger"

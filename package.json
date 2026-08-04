@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "seed": "node scripts/seed.mjs",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
@@ -17,7 +18,10 @@
     "test:e2e:headed": "playwright test --headed"
   },
   "dependencies": {
+    "@clerk/nextjs": "^7.6.4",
+    "@clerk/themes": "^2.4.57",
     "@hookform/resolvers": "^5.4.0",
+    "@supabase/supabase-js": "^2.112.0",
     "@tanstack/react-query": "^5.101.2",
     "clsx": "^2.1.1",
     "date-fns": "^4.4.0",
@@ -48,6 +52,7 @@
     "@types/node": "^26.1.1",
     "@types/react": "19.2.17",
     "autoprefixer": "^10.4.17",
+    "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
     "jsdom": "^29.1.1",

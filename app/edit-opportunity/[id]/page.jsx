@@ -4,7 +4,7 @@ import { use, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { motion } from "framer-motion";
+import { useUser } from "@clerk/nextjs";
 import {
   FileText,
   Building2,
@@ -22,10 +22,9 @@ import {
   Sparkles,
   Save,
   Trash2,
-  ArrowLeft,
 } from "lucide-react";
-import Link from "next/link";
 import toast from "react-hot-toast";
+
 import PageHeader from "../../../components/layout/PageHeader.jsx";
 import Input from "../../../components/ui/Input.jsx";
 import Textarea from "../../../components/ui/Textarea.jsx";
@@ -38,39 +37,27 @@ import ConfirmModal from "../../../components/shared/ConfirmModal.jsx";
 
 import { opportunitySchema } from "../../../lib/validators.js";
 import { categories, locations } from "../../../data/opportunities.js";
-import { useOpportunitiesStore } from "../../../store/index.js";
+import {
+  getAllOpportunities,
+  updateOpportunityById,
+  deleteOpportunityById,
+} from "../../../lib/db.js";
 
 export default function EditOpportunityPage({ params }) {
   const { id } = use(params);
   const router = useRouter();
+  const { user, isLoaded } = useUser();
 
-  // ============================================
-  // ALL STATE DECLARATIONS
-  // ============================================
   const [mounted, setMounted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [requirements, setRequirements] = useState([]);
   const [tags, setTags] = useState([]);
   const [notFound, setNotFound] = useState(false);
+  const [opportunity, setOpportunity] = useState(null);
 
-  // ============================================
-  // ZUSTAND STORE
-  // ============================================
-  const userOpportunities = useOpportunitiesStore(
-    (state) => state.userOpportunities,
-  );
-  const updateOpportunity = useOpportunitiesStore(
-    (state) => state.updateOpportunity,
-  );
-  const deleteOpportunity = useOpportunitiesStore(
-    (state) => state.deleteOpportunity,
-  );
-
-  // ============================================
-  // REACT HOOK FORM
-  // ============================================
   const {
     register,
     handleSubmit,
@@ -81,110 +68,145 @@ export default function EditOpportunityPage({ params }) {
     resolver: zodResolver(opportunitySchema),
   });
 
-  // Mount check
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // ============================================
-  // LOAD OPPORTUNITY DATA
-  // ============================================
+  // Load opportunity from DB
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || !isLoaded) return;
 
-    const opportunity = userOpportunities.find(
-      (opp) => opp.id === id || opp.slug === id,
-    );
+    const loadOpportunity = async () => {
+      try {
+        const allOpps = await getAllOpportunities();
+        const found = allOpps.find((opp) => opp.id === id || opp.slug === id);
 
-    if (!opportunity) {
-      setNotFound(true);
-      return;
-    }
+        if (!found) {
+          setNotFound(true);
+          setIsLoading(false);
+          return;
+        }
 
-    // Pre-fill form with existing data
-    reset({
-      title: opportunity.title,
-      organization: opportunity.organization,
-      category: opportunity.category,
-      location: opportunity.location,
-      type: opportunity.type,
-      deadline: opportunity.deadline,
-      shortDesc: opportunity.shortDesc,
-      description: opportunity.description,
-      applyLink: opportunity.applyLink,
-      contactEmail: opportunity.contactEmail || "",
-      salary: opportunity.salary || "",
-      duration: opportunity.duration || "",
-      seats: opportunity.seats || "",
-      gender: opportunity.gender || "Any",
-      language: opportunity.language || "Any",
-    });
+        setOpportunity(found);
 
-    setRequirements(opportunity.requirements || []);
-    setTags(opportunity.tags || []);
-  }, [mounted, id, userOpportunities, reset]);
+        // Pre-fill form
+        reset({
+          title: found.title,
+          organization: found.organization,
+          category: found.category,
+          location: found.location,
+          type: found.type,
+          deadline: found.deadline,
+          shortDesc: found.short_desc || found.shortDesc,
+          description: found.description,
+          applyLink: found.apply_link || found.applyLink,
+          contactEmail: found.contact_email || "",
+          salary: found.salary || "",
+          duration: found.duration || "",
+          seats: found.seats ? String(found.seats) : "",
+          gender: found.gender || "Any",
+          language: found.language || "Any",
+        });
 
-  // Sync requirements to form
+        setRequirements(found.requirements || []);
+        setTags(found.tags || []);
+      } catch (error) {
+        console.error("Load error:", error);
+        setNotFound(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadOpportunity();
+  }, [mounted, isLoaded, id, reset]);
+
   useEffect(() => {
     setValue("requirements", requirements);
   }, [requirements, setValue]);
 
-  // Sync tags to form
   useEffect(() => {
     setValue("tags", tags);
   }, [tags, setValue]);
 
-  // ============================================
-  // SUBMIT HANDLER
-  // ============================================
+  // SUBMIT
   const onSubmit = async (data) => {
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 800));
 
     try {
-      updateOpportunity(id, {
-        ...data,
+      await updateOpportunityById(opportunity.id, {
+        title: data.title,
+        organization: data.organization,
+        category: data.category,
+        location: data.location,
+        type: data.type,
+        deadline: data.deadline,
+        short_desc: data.shortDesc,
+        description: data.description,
         requirements,
+        apply_link: data.applyLink,
         tags,
+        contact_email: data.contactEmail || null,
+        salary: data.salary || null,
+        duration: data.duration || null,
+        seats: data.seats ? parseInt(data.seats) : null,
+        gender: data.gender || "Any",
+        language: data.language || "Any",
+        updated_at: new Date().toISOString(),
       });
+
       toast.success("Opportunity updated successfully!");
-      setTimeout(() => router.push(`/opportunities/${id}`), 800);
-    } catch {
+      setTimeout(
+        () =>
+          router.push(`/opportunities/${opportunity.slug || opportunity.id}`),
+        800,
+      );
+    } catch (error) {
+      console.error("Update error:", error);
       toast.error("Failed to update. Please try again.");
       setIsSubmitting(false);
     }
   };
 
-  // DELETE HANDLER
+  // DELETE
   const handleDelete = async () => {
     setIsDeleting(true);
-    await new Promise((resolve) => setTimeout(resolve, 500));
 
-    deleteOpportunity(id);
-    toast.success("Opportunity deleted");
-    router.push("/dashboard");
+    try {
+      await deleteOpportunityById(opportunity.id);
+      toast.success("Opportunity deleted");
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Delete error:", error);
+      toast.error("Failed to delete");
+      setIsDeleting(false);
+    }
   };
 
-  // NOT FOUND STATE
-  if (mounted && notFound) {
+  // Loading
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-950">
+        <div className="w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  // Not Found
+  if (notFound) {
     return (
       <ErrorState
         fullPage
         title="Opportunity Not Found"
-        description="You can only edit opportunities you have submitted."
+        description="This opportunity doesn't exist or has been removed."
         actionLabel="Go to Dashboard"
         actionHref="/dashboard"
       />
     );
   }
 
-  if (!mounted) {
-    return null;
-  }
-
   return (
     <>
-      {/* HERO HEADER */}
       <PageHeader
         backHref="/dashboard"
         backLabel="Back to Dashboard"
@@ -193,10 +215,9 @@ export default function EditOpportunityPage({ params }) {
         badgeColor="blue"
         title="Edit"
         highlightedText="Opportunity"
-        description="Update the details of your opportunity below."
+        description="Update the details below."
       />
 
-      {/* FORM CONTENT */}
       <section className="bg-gray-50 dark:bg-slate-950 py-12 min-h-screen">
         <div className="container-custom max-w-4xl">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -350,7 +371,7 @@ export default function EditOpportunityPage({ params }) {
               </div>
             </Card>
 
-            {/* Optional Details */}
+            {/* Optional */}
             <Card variant="default" padding="lg">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6">
                 Additional Details
@@ -406,7 +427,7 @@ export default function EditOpportunityPage({ params }) {
               </div>
             </Card>
 
-            {/* Action Buttons */}
+            {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-3">
               <Button
                 type="button"
@@ -415,9 +436,8 @@ export default function EditOpportunityPage({ params }) {
                 icon={Trash2}
                 onClick={() => setShowDeleteModal(true)}
               >
-                Delete Opportunity
+                Delete
               </Button>
-
               <Button
                 type="submit"
                 variant="primary"
@@ -433,13 +453,12 @@ export default function EditOpportunityPage({ params }) {
         </div>
       </section>
 
-      {/* Delete Confirmation Modal */}
       <ConfirmModal
         isOpen={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
         onConfirm={handleDelete}
         title="Delete this opportunity?"
-        message="This action cannot be undone. The opportunity will be permanently removed."
+        message="This action cannot be undone."
         confirmText={isDeleting ? "Deleting..." : "Yes, Delete"}
         variant="danger"
         icon={Trash2}

@@ -5,8 +5,10 @@ import { ThemeProvider } from "next-themes";
 import { Toaster } from "react-hot-toast";
 import Navbar from "../components/layout/Navbar.jsx";
 import Footer from "../components/layout/Footer.jsx";
-import "./globals.css";
 import ScrollToTop from "../components/ui/ScrollToTop.jsx";
+import ClerkThemeProvider from "../components/providers/ClerkThemeProvider.jsx";
+import "./globals.css";
+
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
@@ -20,6 +22,7 @@ const sora = Sora({
   variable: "--font-sora",
   display: "swap",
 });
+
 export default function RootLayout({ children }) {
   return (
     <html
@@ -28,16 +31,9 @@ export default function RootLayout({ children }) {
       className={`${plusJakarta.variable} ${sora.variable}`}
     >
       <head>
-        {/* Modern browsers: SVG favicon (looks perfect at any size!) */}
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-
-        {/* Apple devices */}
         <link rel="apple-touch-icon" href="/favicon.svg" />
-
-        {/* Theme color for browser UI */}
         <meta name="theme-color" content="#EAB308" />
-
-        {/* Viewport */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body
@@ -50,47 +46,38 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange={false}
         >
-          <Navbar />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
-          <ScrollToTop />
-          <Toaster
-            position="top-right"
-            containerStyle={{
-              top: 80,
-            }}
-            toastOptions={{
-              duration: 3000,
-              style: {
-                background: "#1E293B",
-                color: "#F1F5F9",
-                border: "1px solid #334155",
-                borderRadius: "12px",
-                fontSize: "14px",
-                fontWeight: "500",
-                padding: "12px 16px",
-                maxWidth: "400px",
-              },
-              success: {
-                iconTheme: {
-                  primary: "#EAB308",
-                  secondary: "#1E293B",
+          <ClerkThemeProvider>
+            <Navbar />
+            <main className="min-h-screen">{children}</main>
+            <Footer />
+            <ScrollToTop />
+            <Toaster
+              position="top-right"
+              containerStyle={{ top: 80 }}
+              toastOptions={{
+                duration: 3000,
+                style: {
+                  background: "#1E293B",
+                  color: "#F1F5F9",
+                  border: "1px solid #334155",
+                  borderRadius: "12px",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  padding: "12px 16px",
+                  maxWidth: "400px",
                 },
-              },
-              error: {
-                iconTheme: {
-                  primary: "#EF4444",
-                  secondary: "#1E293B",
+                success: {
+                  iconTheme: { primary: "#EAB308", secondary: "#1E293B" },
                 },
-              },
-              loading: {
-                iconTheme: {
-                  primary: "#3B82F6",
-                  secondary: "#1E293B",
+                error: {
+                  iconTheme: { primary: "#EF4444", secondary: "#1E293B" },
                 },
-              },
-            }}
-          />
+                loading: {
+                  iconTheme: { primary: "#3B82F6", secondary: "#1E293B" },
+                },
+              }}
+            />
+          </ClerkThemeProvider>
         </ThemeProvider>
       </body>
     </html>
