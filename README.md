@@ -102,70 +102,47 @@ KaarYab Afghanistan is designed to make educational and career opportunities mor
 | Deployment       | Vercel                    |
 
 ---
-
 ## Screenshots
 
 ### Home Page
 
-```text
-public/screenshots/home.png
-```
+![Home Page](./public/screenshots/home.png)
 
 ### Opportunities Page
 
-```text
-public/screenshots/opportunities.png
-```
+![Opportunities Page](./public/screenshots/opportunity.png)
 
 ### Dashboard
 
-```text
-public/screenshots/dashboard.png
-```
+![Dashboard](./public/screenshots/dashboard.png)
 
 ### CV Builder
 
-```text
-public/screenshots/cv-builder.png
-```
+![CV Builder](./public/screenshots/cv-builder.png)
 
-## Sign-in
+### Sign In
 
-```text
-public/screenshots/sign-in.png
-```
+![Sign In](./public/screenshots/sign-in.png)
 
-## Saved
+### Saved Opportunities
 
-```text
-public/screenshots/saved.png
-```
+![Saved Opportunities](./public/screenshots/saved.png)
 
-## Details opportunity
+### Opportunity Details
 
-```text
-public/screenshots/details-opportunity.png
+![Opportunity Details](./public/screenshots/details-opportunity.png)
 
-```
+### About Us
 
-## About us
+![About Us](./public/screenshots/about-us.png)
 
-```text
-public/screenshots/about-us.png
-```
+### Create Account
 
-## Create Account
+![Create Account](./public/screenshots/account.png)
 
-```text
-public/screenshots/account.png
-```
+### Contact
 
-## Contact
-
-```text
-public/screenshots/contact.png
-```
-
+![Contact](./public/screenshots/contact.png)
 ---
 
 ## Getting Started
