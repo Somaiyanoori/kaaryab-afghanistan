@@ -375,7 +375,7 @@ This project includes:
 
 ---
 
-## 🚀 Deployment
+##  Deployment
 
 The application is deployed on **Vercel** with automatic deployments from the `main` branch.
 
