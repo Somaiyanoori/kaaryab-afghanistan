@@ -1,166 +1,150 @@
-<div align="center">
-
 # KaarYab Afghanistan
 
-### Opportunity Finder Platform for Afghan Youth
+> Opportunity Finder Platform for Afghan Youth
 
-[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
-[![Framer Motion](https://img.shields.io/badge/Framer_Motion-12-black?style=for-the-badge&logo=framer)](https://www.framer.com/motion/)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+A modern full-stack web application that connects Afghan youth with jobs, scholarships, internships, remote work opportunities, training programs, volunteer opportunities, and skill-building resources across Afghanistan.
 
-**A modern web platform helping Afghan youth discover jobs, scholarships, internships, and skill-building opportunities across Afghanistan.**
-
-[Live Demo](https://kaaryab-afghanistan-seven.vercel.app/) •
-[Report Bug](https://github.com/Somaiyanoori/kaaryab-afghanistan/issues) •
-[Request Feature](https://github.com/Somaiyanoori/kaaryab-afghanistan/issues)
-
-</div>
+![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)
+![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-38B2AC?style=flat-square&logo=tailwind-css)
+![Supabase](https://img.shields.io/badge/Supabase-Database-3ECF8E?style=flat-square&logo=supabase)
+![Clerk](https://img.shields.io/badge/Clerk-Authentication-6C47FF?style=flat-square&logo=clerk)
+![Vercel](https://img.shields.io/badge/Vercel-Deployed-black?style=flat-square&logo=vercel)
 
 ---
 
-# Screenshots
+## Overview
 
-<div align="center">
+KaarYab Afghanistan is designed to make educational and career opportunities more accessible for Afghan youth. The platform allows users to discover opportunities, manage their applications, and create professional CVs within a modern and responsive web interface.
 
-### Home Page
+---
 
-_Add screenshot: `/public/screenshots/home.png`_
+## Features
 
-### Browse Opportunities
+### Authentication
 
-_Add screenshot: `/public/screenshots/opportunities.png`_
+- Secure authentication using Clerk
+- User registration and login
+- Protected routes
+- User profile management
+- Theme-aware authentication pages
 
-### CV Builder
+### Opportunities
 
-_Add screenshot: `/public/screenshots/cv-builder.png`_
+- Browse jobs
+- Scholarships
+- Internships
+- Remote opportunities
+- Courses and training
+- Volunteer opportunities
+- Search by keyword
+- Filter by category
+- Filter by location
+- Filter by work type
+- Sort by newest
+- Sort by deadline
+- Save favorite opportunities
+- Deadline countdown timer
 
 ### Dashboard
 
-_Add screenshot: `/public/screenshots/dashboard.png`_
-
-### Dark Mode
-
-_Add screenshot: `/public/screenshots/dark-mode.png`_
-
-</div>
-
----
-
-# About the Project
-
-**KaarYab Afghanistan** is a comprehensive opportunity finder platform designed to empower Afghan youth by connecting them with jobs, scholarships, internships, and educational opportunities across Afghanistan and beyond.
-
-## The Problem
-
-Information about jobs, scholarships, and internships is scattered across social media, websites, and word of mouth. Many talented young people miss valuable opportunities because they never discover them.
-
-## The Solution
-
-KaarYab provides a single platform where users can:
-
-- Discover opportunities in one place
-- Save opportunities for later
-- Build professional CVs
-- Apply directly using official links
-- Access the platform in multiple languages
-
----
-
-# Features
-
-## Modern User Interface
-
-- Responsive design
-- Dark mode support
-- Mobile-first layout
-- Afghan-inspired color palette
-- Smooth animations
-
-## Search & Filtering
-
-- Real-time search
-- Category filtering
-- Location filtering
-- Work type filtering
-- Deadline filtering
-- Grid/List views
-
-## Opportunity Management
-
-- Seven opportunity categories
-- Detailed opportunity pages
-- Countdown timers
-- Social sharing
-- Save favorites using LocalStorage
-
-## Dashboard
-
+- Personal dashboard
+- Opportunity statistics
 - Analytics charts
-- Statistics cards
 - Recent activity
 - Expiring opportunities
 
-## CV Builder
+### CV Builder
 
 - Four professional templates
 - Live preview
 - PDF export
-- Experience
-- Education
-- Skills
-- Languages
-- Projects
-- Certifications
+- Sample data
+- Sections for:
+  - Personal Information
+  - Experience
+  - Education
+  - Skills
+  - Languages
+  - Projects
+  - Certifications
 
-## Forms
+### User Experience
 
-- Add opportunities
-- Edit opportunities
-- Delete opportunities
-- Live preview
-- Zod validation
-
-## Additional Features
-
-- Sample opportunities
-- Testimonials
-- FAQ
-- Newsletter
-- Custom 404 page
-- Error pages
+- Responsive design
+- Dark mode
+- Light mode
+- Framer Motion animations
+- Loading skeletons
+- Empty states
+- Error handling
+- Accessible interface
 
 ---
 
-# Built With
+## Tech Stack
 
-| Technology | Purpose | Version |
-|------------|---------|---------|
-| Next.js | React Framework | 16.2 |
-| React | UI Library | 19.2 |
-| Tailwind CSS | Styling | 3.4 |
-| Framer Motion | Animations | 12.4 |
-| Zustand | State Management | 5.0 |
-| React Hook Form | Form Handling | 7.x |
-| Zod | Validation | 4.x |
-| Recharts | Charts | 3.x |
-| Lucide React | Icons | Latest |
-| React Icons | Icons | Latest |
-| Next Themes | Theme Switching | Latest |
-| React Hot Toast | Notifications | Latest |
-| date-fns | Date Utilities | Latest |
-| html2canvas | Image Capture | Latest |
-| jsPDF | PDF Generation | Latest |
+| Category | Technology |
+|-----------|------------|
+| Framework | Next.js 14 (App Router) |
+| UI Library | React 19 |
+| Language | JavaScript |
+| Styling | Tailwind CSS |
+| Database | Supabase (PostgreSQL) |
+| Authentication | Clerk |
+| State Management | Zustand |
+| Forms | React Hook Form + Zod |
+| Animations | Framer Motion |
+| Charts | Recharts |
+| PDF Generation | jsPDF + html2canvas |
+| Icons | Lucide React, React Icons |
+| Testing | Vitest, Playwright |
+| Deployment | Vercel |
 
 ---
 
-# Getting Started
+## Screenshots
 
-## Prerequisites
+### Home Page
 
-- Node.js 18+
-- npm, yarn, or pnpm
+```text
+public/screenshots/home.png
+```
+
+### Opportunities Page
+
+```text
+public/screenshots/opportunities.png
+```
+
+### Dashboard
+
+```text
+public/screenshots/dashboard.png
+```
+
+### CV Builder
+
+```text
+public/screenshots/cv-builder.png
+```
+
+Replace these placeholders with actual screenshots after deployment.
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+Before running the project, make sure you have:
+
+- Node.js 18 or later
+- npm or Yarn
+- A Clerk account
+- A Supabase account
+
+---
 
 ## Installation
 
@@ -178,310 +162,163 @@ cd kaaryab-afghanistan
 npm install
 ```
 
-### Start the development server
+---
+
+## Environment Variables
+
+Create a `.env.local` file in the project root.
+
+```env
+# Clerk
+
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_publishable_key
+
+CLERK_SECRET_KEY=your_secret_key
+
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+
+# Supabase
+
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+---
+
+## Database Setup
+
+Create a new Supabase project.
+
+Open the SQL Editor and execute the schema found in:
+
+```text
+supabase/schema.sql
+```
+
+Optionally seed the database:
+
+```bash
+npm run seed
+```
+
+---
+
+## Running the Project
+
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-Open:
+Visit:
 
 ```
 http://localhost:3000
 ```
 
-## Production Build
+---
+
+## Testing
+
+Run unit tests:
 
 ```bash
-npm run build
-npm start
+npm run test:run
+```
+
+Run tests in UI mode:
+
+```bash
+npm run test:ui
+```
+
+Run end-to-end tests:
+
+```bash
+npm run test:e2e
 ```
 
 ---
 
-# Project Structure
+## Security
 
-```text
-kaaryab-afghanistan/
-│
-├── app/
-│   ├── page.jsx
-│   ├── layout.jsx
-│   ├── globals.css
-│   ├── loading.jsx
-│   ├── error.jsx
-│   ├── not-found.jsx
-│   │
-│   ├── opportunities/
-│   ├── saved/
-│   ├── dashboard/
-│   ├── cv-builder/
-│   ├── add-opportunity/
-│   ├── edit-opportunity/
-│   ├── about/
-│   └── contact/
-│
-├── components/
-│   ├── layout/
-│   ├── home/
-│   ├── opportunities/
-│   ├── dashboard/
-│   ├── cv-builder/
-│   ├── forms/
-│   ├── shared/
-│   └── states/
-│
-├── store/
-├── lib/
-├── data/
-├── hooks/
-├── public/
-│
-├── tailwind.config.js
-├── next.config.mjs
-├── postcss.config.js
-└── package.json
+This project includes:
+
+- Clerk authentication
+- Supabase Row Level Security (RLS)
+- Protected routes
+- Environment variables for secrets
+- SQL injection protection through Supabase
+- XSS protection through React
+
+---
+
+## Deployment
+
+The application is deployed on Vercel with automatic deployment from the `main` branch.
+
+**Live Demo**
+
+```
+[https://kaaryab-afghanistan.vercel.app](https://kaaryab-afghanistan-seven.vercel.app/)
 ```
 
 ---
 
-# Design System
+## Future Improvements
 
-## Colors
-
-| Purpose | Color |
-|---------|-------|
-| Opportunity | `#EAB308` |
-| Trust | `#2563EB` |
-| Success | `#16A34A` |
-
-### Category Colors
-
-| Category | Color |
-|----------|-------|
-| Job | `#2563EB` |
-| Internship | `#0D9488` |
-| Scholarship | `#9333EA` |
-| Online Course | `#4F46E5` |
-| Remote Work | `#16A34A` |
-| Training | `#D97706` |
-| Volunteer | `#DB2777` |
-
-## Typography
-
-- Plus Jakarta Sans
-- Sora
-- Noto Naskh Arabic (RTL)
-
-## Layout
-
-- Mobile-first responsive design
-- Maximum container width: 1280px
-
----
-
-# Pages
-
-| Route | Description |
-|--------|-------------|
-| `/` | Home |
-| `/opportunities` | Browse Opportunities |
-| `/opportunities/[id]` | Opportunity Details |
-| `/saved` | Saved Opportunities |
-| `/add-opportunity` | Add Opportunity |
-| `/edit-opportunity/[id]` | Edit Opportunity |
-| `/dashboard` | Dashboard |
-| `/cv-builder` | CV Builder |
-| `/about` | About |
-| `/contact` | Contact |
-
----
-
-# License
-
-This project is licensed under the MIT License.
----
-
-# Key Highlights
-
-## Performance
-
-- Fast page loads using Next.js App Router
-- Optimized bundle size with dynamic imports
-- Code splitting for CV templates
-- Lazy loading for images
-
----
-
-## Accessibility
-
-- Semantic HTML throughout the application
-- Full keyboard navigation support
-- High color contrast for better readability
-- Screen reader friendly
-- Right-to-left (RTL) language support
-
----
-
-## Developer Experience
-
-- ESLint configuration included
-- Prettier support
-- Custom design system
-- Well-organized component architecture
-- Hot Module Replacement (HMR)
-
----
-
-# Future Enhancements
-
-The following features are planned for future releases:
-
-- Backend integration with a real database
-- User authentication (Login & Registration)
-- Real-time notifications
-- Admin dashboard for opportunity management
-- Email notifications for saved opportunities
-- AI-powered search
-- Mobile application using React Native
 - Multi-language support (Dari and Pashto)
-- Analytics and tracking
-- Employer accounts
+- Email notifications
+- Admin dashboard
+- Role-based permissions
+- Real-time updates with Supabase
+- Mobile application
+- AI-powered recommendations
+- Application tracking
+- User ratings and reviews
 
 ---
 
-# Contributing
-
-Contributions are welcome and appreciated.
-
-If you would like to contribute, please follow these steps:
-
-1. Fork this repository.
-
-2. Create a new branch.
-
-```bash
-git checkout -b feature/AmazingFeature
-```
-
-3. Commit your changes.
-
-```bash
-git commit -m "Add AmazingFeature"
-```
-
-4. Push the branch.
-
-```bash
-git push origin feature/AmazingFeature
-```
-
-5. Open a Pull Request.
-
----
-
-# License
-
-This project is distributed under the MIT License.
-
-See the `LICENSE` file for more information.
-
----
-
-# Author
+## Author
 
 **Somaiya Noori**
 
-GitHub Profile
+GitHub
 
-https://github.com/Somaiyanoori
-
-Project Repository
-
-https://github.com/Somaiyanoori/kaaryab-afghanistan
-
----
-
-# Acknowledgments
-
-This project was inspired by the need to provide Afghan youth with a centralized platform for discovering opportunities.
-
-Special thanks to:
-
-- The open-source community
-- Next.js
-- React
-- Tailwind CSS
-- Framer Motion
-- Recharts
-- Lucide React
-- React Icons
-- Google Fonts
-
----
-
-# Disclaimer
-
-This platform was created for educational and portfolio purposes.
-
-All opportunities displayed in this project are sample data and do not represent real job, scholarship, internship, or training opportunities.
-
-For official opportunities, please refer to trusted organizations and verified sources.
-
----
-
-# Screenshots
-
-Create the following folder inside the project:
-
-```text
-public/
-└── screenshots/
-    ├── home.png
-    ├── opportunities.png
-    ├── cv-builder.png
-    ├── dashboard.png
-    └── dark-mode.png
+```
+[https://github.com/Somaiyanoori](https://github.com/Somaiyanoori)
 ```
 
-Then add the screenshots to the README.
+LinkedIn
 
-## Home Page
-
-```md
-![Home Page](public/screenshots/home.png)
 ```
-
-## Opportunities
-
-```md
-![Opportunities](public/screenshots/opportunities.png)
-```
-
-## CV Builder
-
-```md
-![CV Builder](public/screenshots/cv-builder.png)
-```
-
-## Dashboard
-
-```md
-![Dashboard](public/screenshots/dashboard.png)
-```
-
-## Dark Mode
-
-```md
-![Dark Mode](public/screenshots/dark-mode.png)
+[https://linkedin.com/in/somaiya-noori](https://www.linkedin.com/in/somaiya-noori-aa7b50346?utm_source=share_via&utm_content=profile&utm_medium=member_ios)
 ```
 
 ---
 
-## Publishing
+## License
 
-```bash
-git add README.md
-git commit -m "docs: improve README"
-git push
-```
+This project is licensed under the MIT License.
+
+It is free to use for educational, learning, and portfolio purposes.
+
+---
+
+## Acknowledgments
+
+- Built to support Afghan youth in discovering educational and career opportunities.
+- Icons provided by Lucide.
+- Inspired by modern SaaS application design.
+
+---
+
+## Demo Notice
+
+This application uses demo data for educational and portfolio purposes.
+
+Some opportunities displayed may be fictional or sample records.
