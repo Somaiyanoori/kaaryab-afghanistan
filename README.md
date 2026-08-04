@@ -224,22 +224,26 @@ Before running the project, make sure you have:
 
 ---
 
-## Installation
+##  Installation
 
-### 1. Clone the repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/Somaiyanoori/kaaryab-afghanistan.git
 cd kaaryab-afghanistan
+```
 
-2. Install dependencies
+### 2. Install Dependencies
 
+```bash
 npm install
+```
 
-3. Set up environment variables
+### 3. Set Up Environment Variables
 
-Create a .env.local file in the project root:
+Create a `.env.local` file in the project root and add the following variables:
 
+```env
 # Clerk Authentication
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_publishable_key
 CLERK_SECRET_KEY=your_secret_key
@@ -251,265 +255,228 @@ NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL=/dashboard
 # Supabase Database
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
- See .env.example for a template.
+>  See `.env.example` for a complete template.
 
-4. Set up Supabase database
+### 4. Set Up the Supabase Database
 
-Run the SQL schema in Supabase SQL Editor:
+Run the SQL schema in the **Supabase SQL Editor**:
 
-Go to your Supabase project dashboard
+1. Go to your Supabase project dashboard.
+2. Open **SQL Editor**.
+3. Click **New Query**.
+4. Copy the contents of `supabase/schema.sql`.
+5. Paste the SQL into the editor.
+6. Click **Run**.
+7. Verify the tables in **Table Editor**.
 
-Click SQL Editor in the sidebar
+### 5. Seed the Database (Optional)
 
-Click New query
+Import sample opportunities for testing:
 
-Copy content from supabase/schema.sql
-
-Paste and click Run
-
-Verify tables in Table Editor
-
-5. Seed the database (optional)
-
-Import sample opportunities to test the app:
-
+```bash
 npm run seed
+```
 
-This will add 12 sample opportunities to your database.
+This command adds **12 sample opportunities** to your database.
 
-6. Run the development server
+### 6. Run the Development Server
 
+```bash
 npm run dev
+```
 
-Visit: http://localhost:3000
+Open your browser and visit:
 
- Testing
+```
+http://localhost:3000
+```
 
-The project includes 172+ passing tests covering unit, component, and E2E scenarios.
+---
 
-Run unit and component tests
+##  Testing
 
+The project includes **172+ passing tests** covering unit, component, and end-to-end (E2E) testing.
+
+### Run Unit & Component Tests
+
+```bash
 npm run test:run
+```
 
-Run tests in UI mode
+### Run Tests in UI Mode
 
+```bash
 npm run test:ui
+```
 
-Run end-to-end tests
+### Run End-to-End Tests
 
+```bash
 npm run test:e2e
+```
 
-Test Coverage
+### Test Coverage
 
-Type
+| Test Type | Count | Status |
+|-----------|------:|:------:|
+| Unit Tests | 84 |  All Passing |
+| Component Tests | 70 |  All Passing |
+| E2E Tests | 18 |  All Passing |
+| **Total** | **172** | ** 100% Pass Rate** |
 
-Count
+---
 
-Status
+##  Design System
 
-Unit Tests
+### Color Palette
 
-84
+| Color | Purpose |
+|--------|---------|
+|  **Primary** `#EAB308` | Energy, Opportunity, Hope |
+|  **Secondary** `#2563EB` | Trust, Professionalism, Knowledge |
+|  **Success** `#22C55E` | Success, Available, Remote |
+|  **Danger** `#EF4444` | Urgent Actions, Deadlines |
 
-✅ All Passing
+### Typography
 
-Component Tests
+| Type | Font |
+|------|------|
+| Body Text | Plus Jakarta Sans |
+| Headings | Sora |
+| Arabic / RTL | Noto Naskh Arabic |
 
-70
+### Category Colors
 
-✅ All Passing
+| Category | Color |
+|----------|-------|
+| Job | Blue |
+| Internship | Teal |
+| Scholarship | Purple |
+| Online Course | Indigo |
+| Remote Work | Green |
+| Training | Amber |
+| Volunteer | Pink |
 
-E2E Tests
+---
 
-18
-
-✅ All Passing
-
-Total
-
-172
-
-✅ 100% Pass Rate
-
-
- Design System
-
-Color Palette
-
-Primary: Yellow (#EAB308) — Energy, Opportunity, Hope
-
-Secondary: Blue (#2563EB) — Trust, Professional, Knowledge
-
-Success: Green (#22C55E) — Available, Remote, Success
-
-Danger: Red (#EF4444) — Urgent, Deadlines
-
-Typography
-
-Sans: Plus Jakarta Sans (body text)
-
-Display: Sora (headings)
-
-Arabic: Noto Naskh Arabic (RTL support)
-
-Category Colors
-
-Category
-
-Color
-
-Job
-
-Blue
-
-Internship
-
-Teal
-
-Scholarship
-
-Purple
-
-Online Course
-
-Indigo
-
-Remote Work
-
-Green
-
-Training
-
-Amber
-
-Volunteer
-
-Pink
-
- Security
+##  Security
 
 This project includes:
 
- Clerk authentication with session management
+-  Clerk authentication with session management
+-  Supabase Row Level Security (RLS)
+-  Protected routes via middleware
+-  Environment variables for sensitive credentials
+-  SQL injection protection through Supabase
+-  XSS protection through React
+-  CSRF protection via Next.js
 
- Supabase Row Level Security (RLS) on all tables
+---
 
-  Protected routes via middleware
+## 🚀 Deployment
 
- Environment variables for secrets
+The application is deployed on **Vercel** with automatic deployments from the `main` branch.
 
- SQL injection protection through Supabase client
+###  Live Demo
 
- XSS protection through React's built-in escaping
+https://kaaryab-afghanistan-seven.vercel.app/
 
- CSRF protection via Next.js
+---
 
- Deployment
+##  Roadmap
 
-The application is deployed on Vercel with automatic deployment from the main branch.
+###  Completed
 
-Live Demo: https://kaaryab-afghanistan-seven.vercel.app/
+- User authentication
+- CRUD operations for opportunities
+- Advanced search and filtering
+- Save favorite opportunities
+- CV Builder with PDF export
+- Dashboard with analytics
+- Dark mode
+- Responsive design
+- 172+ automated tests
 
- Roadmap
+###  Planned
 
- Completed
+- Multi-language support (Dari & Pashto)
+- Email notifications for deadlines
+- Admin dashboard
+- Role-based permissions
+- Real-time updates with Supabase
+- Application tracking
+- User ratings and reviews
+- AI-powered recommendations
 
-User authentication
+---
 
-CRUD operations for opportunities
-
-Advanced search and filtering
-
-Save favorites (synced)
-
-CV Builder with PDF export
-
-Dashboard with analytics
-
-Dark mode
-
-Responsive design
-
-172+ tests
-
- Planned
-Multi-language support (Dari and Pashto)
-
-Email notifications for deadlines
-
-Admin dashboard
-
-Role-based permissions
-
-Real-time updates with Supabase
-
-Application tracking
-
-User ratings and reviews
-
-AI-powered recommendations
-
-Mobile application (React Native)
-
- Contributing
+##  Contributing
 
 Contributions, issues, and feature requests are welcome!
 
-Fork the project
+1. Fork this repository.
+2. Create your feature branch.
 
-Create your feature branch (git checkout -b feature/AmazingFeature)
+```bash
+git checkout -b feature/AmazingFeature
+```
 
-Commit your changes (git commit -m 'Add some AmazingFeature')
+3. Commit your changes.
 
-Push to the branch (git push origin feature/AmazingFeature)
+```bash
+git commit -m "Add some AmazingFeature"
+```
 
-Open a Pull Request
+4. Push to your branch.
 
+```bash
+git push origin feature/AmazingFeature
+```
 
- Author
+5. Open a Pull Request.
 
-Somaiya Noori
+---
 
- GitHub: @Somaiyanoori
+##  Author
 
- LinkedIn: Somaiya Noori
+**Somaiya Noori**
 
-🇦🇫 Location: Afghanistan
+---
 
- Available for opportunities
+##  Acknowledgments
 
- Acknowledgments
+- Built with ❤️ for Afghan youth.
+- Inspired by the need for accessible opportunities in Afghanistan.
+- Icons provided by **Lucide**.
+- Design inspired by modern SaaS applications.
+- Thanks to the amazing open-source community.
 
-Built with love for Afghan youth 🇦🇫
+---
 
-Inspired by the need for accessible opportunities in Afghanistan
+##  License
 
-Icons provided by Lucide
-
-Design inspired by modern SaaS applications
-
-Thanks to the open-source community
-
- License
-
-This project is licensed under the MIT License.
+This project is licensed under the **MIT License**.
 
 It is free to use for educational, learning, and portfolio purposes.
 
-See LICENSE file for details.
+See the **LICENSE** file for more information.
 
- Demo Notice
+---
 
-This application uses demo data for educational and portfolio purposes. Some opportunities displayed may be fictional or sample records. All authentication and data storage is fully functional and production-ready.
+##  Demo Notice
+
+This application uses demo data for educational and portfolio purposes. Some opportunities displayed may be fictional or sample records. All authentication and data storage features are fully functional and production-ready.
+
+---
 
 <div align="center">
 
- If you find this project helpful, please give it a star!
+###  If you found this project helpful, please consider giving it a star!
 
 Made with ❤️ in Afghanistan for Afghan Youth
 
-⬆ Back to Top
+[⬆ Back to Top](#-kaaryab-afghanistan)
 
 </div>
-```
