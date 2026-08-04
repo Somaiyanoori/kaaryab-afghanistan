@@ -91,7 +91,7 @@ export default function Footer() {
             transition={{ duration: 0.5 }}
             className="space-y-4"
           >
-            <Logo size="default" />
+            <Logo size="default" variant="light" />
 
             <p className="text-sm text-gray-400 leading-relaxed">
               The opportunity finder platform designed to help Afghan youth
