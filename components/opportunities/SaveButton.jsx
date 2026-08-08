@@ -40,6 +40,9 @@ export default function SaveButton({
     e.preventDefault();
     e.stopPropagation();
 
+    // Prevent double-clicks
+    if (isSyncing) return;
+
     // If not signed in → save locally only
     if (isLoaded && !user) {
       if (saved) {
@@ -63,9 +66,12 @@ export default function SaveButton({
     setIsAnimating(true);
     setIsSyncing(true);
 
+    // Store the current saved state BEFORE any changes
+    const wasSaved = saved;
+
     try {
-      if (saved) {
-        // UNSAVE - Remove from local store (optimistic) then Supabase
+      if (wasSaved) {
+        // UNSAVE
         unsaveOpportunity(opportunity.id);
 
         if (user) {
@@ -77,7 +83,7 @@ export default function SaveButton({
           duration: 2000,
         });
       } else {
-        // SAVE - Save to local store (optimistic) then Supabase
+        // SAVE
         saveOpportunity(opportunity);
 
         if (user) {
@@ -89,18 +95,24 @@ export default function SaveButton({
         });
       }
 
-      if (onSaveChange) onSaveChange(!saved);
+      if (onSaveChange) onSaveChange(!wasSaved);
     } catch (error) {
       console.error("Save error:", error);
 
       // Rollback optimistic update on error
-      if (saved) {
+      if (wasSaved) {
         saveOpportunity(opportunity);
       } else {
         unsaveOpportunity(opportunity.id);
       }
 
-      toast.error("Failed to save. Please try again.");
+      // Show more helpful error
+      if (error.code === "23505") {
+        // Duplicate — silently succeed since it's already saved
+        toast.success("Already saved!");
+      } else {
+        toast.error("Failed to save. Please try again.");
+      }
     } finally {
       setIsSyncing(false);
       setTimeout(() => setIsAnimating(false), 600);
