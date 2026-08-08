@@ -6,6 +6,7 @@ A modern full-stack web application that connects Afghan youth with
 jobs, scholarships, internships, remote work, training programs,
 volunteer opportunities, and skill-building resources across
 Afghanistan.
+
 [![CI](https://github.com/Somaiyanoori/kaaryab-afghanistan/actions/workflows/ci.yml/badge.svg)](https://github.com/Somaiyanoori/kaaryab-afghanistan/actions/workflows/ci.yml)
 [![Vercel](https://vercelbadge.vercel.app/api/Somaiyanoori/kaaryab-afghanistan)](https://kaaryab-afghanistan-seven.vercel.app/)
 [![Tests](https://img.shields.io/badge/Tests-172_Passing-success?style=flat-square)](https://github.com/Somaiyanoori/kaaryab-afghanistan)
