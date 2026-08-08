@@ -6,16 +6,16 @@ A modern full-stack web application that connects Afghan youth with
 jobs, scholarships, internships, remote work, training programs,
 volunteer opportunities, and skill-building resources across
 Afghanistan.
+[![CI](https://github.com/Somaiyanoori/kaaryab-afghanistan/actions/workflows/ci.yml/badge.svg)](https://github.com/Somaiyanoori/kaaryab-afghanistan/actions/workflows/ci.yml)
+[![Vercel](https://vercelbadge.vercel.app/api/Somaiyanoori/kaaryab-afghanistan)](https://kaaryab-afghanistan-seven.vercel.app/)
+[![Tests](https://img.shields.io/badge/Tests-172_Passing-success?style=flat-square)](https://github.com/Somaiyanoori/kaaryab-afghanistan)
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
 [![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)](https://react.dev/)
-[![Tailwind
-CSS](https://img.shields.io/badge/Tailwind_CSS-3-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
 [![Supabase](https://img.shields.io/badge/Supabase-Database-3ECF8E?style=flat-square&logo=supabase)](https://supabase.com/)
 [![Clerk](https://img.shields.io/badge/Clerk-Authentication-6C47FF?style=flat-square&logo=clerk)](https://clerk.com/)
-[![Vercel](https://img.shields.io/badge/Vercel-Deployed-black?style=flat-square&logo=vercel)](https://vercel.com/)
-[![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-172_Passing-success?style=flat-square)](https://github.com/Somaiyanoori/kaaryab-afghanistan)
 
 ---
 
@@ -224,7 +224,7 @@ Before running the project, make sure you have:
 
 ---
 
-##  Installation
+## Installation
 
 ### 1. Clone the Repository
 
@@ -257,7 +257,7 @@ NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
->  See `.env.example` for a complete template.
+> See `.env.example` for a complete template.
 
 ### 4. Set Up the Supabase Database
 
@@ -295,7 +295,7 @@ http://localhost:3000
 
 ---
 
-##  Testing
+## Testing
 
 The project includes **172+ passing tests** covering unit, component, and end-to-end (E2E) testing.
 
@@ -319,75 +319,106 @@ npm run test:e2e
 
 ### Test Coverage
 
-| Test Type | Count | Status |
-|-----------|------:|:------:|
-| Unit Tests | 84 |  All Passing |
-| Component Tests | 70 |  All Passing |
-| E2E Tests | 18 |  All Passing |
-| **Total** | **172** | ** 100% Pass Rate** |
+| Test Type       |   Count |       Status        |
+| --------------- | ------: | :-----------------: |
+| Unit Tests      |      84 |     All Passing     |
+| Component Tests |      70 |     All Passing     |
+| E2E Tests       |      18 |     All Passing     |
+| **Total**       | **172** | ** 100% Pass Rate** |
 
 ---
 
-##  Design System
+## CI/CD Pipeline
+
+This project uses **GitHub Actions** for continuous integration and deployment.
+
+### Automated Workflows
+
+Every push and pull request triggers:
+
+- **Code Linting** — ESLint checks code quality
+- **Unit Tests** — 154 unit and component tests
+- **Build Verification** — Ensures Next.js builds successfully
+- **Automatic Deployment** — Vercel deploys on merge to main
+
+### Pipeline Status
+
+| Workflow       | Purpose               | Trigger              |
+| -------------- | --------------------- | -------------------- |
+| **CI**         | Lint, test, and build | Push to main/develop |
+| **Deploy**     | Deploy to Vercel      | Merge to main        |
+| **Dependabot** | Update dependencies   | Weekly               |
+
+### Quality Assurance
+
+- **Secret Management** — API keys stored securely in GitHub Secrets
+- **Dependabot** — Automatic dependency updates
+- **Automated Testing** — 172 tests run on every commit
+- **PR Templates** — Standardized pull request format
+- **Issue Templates** — Structured bug reports and feature requests
+
+---
+
+## Design System
 
 ### Color Palette
 
-| Color | Purpose |
-|--------|---------|
-|  **Primary** `#EAB308` | Energy, Opportunity, Hope |
-|  **Secondary** `#2563EB` | Trust, Professionalism, Knowledge |
-|  **Success** `#22C55E` | Success, Available, Remote |
-|  **Danger** `#EF4444` | Urgent Actions, Deadlines |
+| Color                   | Purpose                           |
+| ----------------------- | --------------------------------- |
+| **Primary** `#EAB308`   | Energy, Opportunity, Hope         |
+| **Secondary** `#2563EB` | Trust, Professionalism, Knowledge |
+| **Success** `#22C55E`   | Success, Available, Remote        |
+| **Danger** `#EF4444`    | Urgent Actions, Deadlines         |
 
 ### Typography
 
-| Type | Font |
-|------|------|
-| Body Text | Plus Jakarta Sans |
-| Headings | Sora |
+| Type         | Font              |
+| ------------ | ----------------- |
+| Body Text    | Plus Jakarta Sans |
+| Headings     | Sora              |
 | Arabic / RTL | Noto Naskh Arabic |
 
 ### Category Colors
 
-| Category | Color |
-|----------|-------|
-| Job | Blue |
-| Internship | Teal |
-| Scholarship | Purple |
+| Category      | Color  |
+| ------------- | ------ |
+| Job           | Blue   |
+| Internship    | Teal   |
+| Scholarship   | Purple |
 | Online Course | Indigo |
-| Remote Work | Green |
-| Training | Amber |
-| Volunteer | Pink |
+| Remote Work   | Green  |
+| Training      | Amber  |
+| Volunteer     | Pink   |
 
 ---
 
-##  Security
+## Security
 
 This project includes:
 
--  Clerk authentication with session management
--  Supabase Row Level Security (RLS)
--  Protected routes via middleware
--  Environment variables for sensitive credentials
--  SQL injection protection through Supabase
--  XSS protection through React
--  CSRF protection via Next.js
+- Clerk authentication with session management
+- Supabase Row Level Security (RLS)
+- Protected routes via middleware
+- Environment variables for sensitive credentials
+- SQL injection protection through Supabase
+- XSS protection through React
+- CSRF protection via Next.js
 
 ---
 
-##  Deployment
+## Deployment
 
 The application is deployed on **Vercel** with automatic deployments from the `main` branch.
 
-###  Live Demo
+### Live Demo
 
 https://kaaryab-afghanistan-seven.vercel.app/
 
 ---
 
-##  Roadmap
+## Roadmap
 
-###  Completed
+### Completed
 
 - User authentication
 - CRUD operations for opportunities
@@ -399,7 +430,7 @@ https://kaaryab-afghanistan-seven.vercel.app/
 - Responsive design
 - 172+ automated tests
 
-###  Planned
+### Planned
 
 - Multi-language support (Dari & Pashto)
 - Email notifications for deadlines
@@ -412,7 +443,7 @@ https://kaaryab-afghanistan-seven.vercel.app/
 
 ---
 
-##  Contributing
+## Contributing
 
 Contributions, issues, and feature requests are welcome!
 
@@ -439,13 +470,13 @@ git push origin feature/AmazingFeature
 
 ---
 
-##  Author
+## Author
 
 **Somaiya Noori**
 
 ---
 
-##  Acknowledgments
+## Acknowledgments
 
 - Built with ❤️ for Afghan youth.
 - Inspired by the need for accessible opportunities in Afghanistan.
@@ -455,7 +486,7 @@ git push origin feature/AmazingFeature
 
 ---
 
-##  License
+## License
 
 This project is licensed under the **MIT License**.
 
@@ -465,7 +496,7 @@ See the **LICENSE** file for more information.
 
 ---
 
-##  Demo Notice
+## Demo Notice
 
 This application uses demo data for educational and portfolio purposes. Some opportunities displayed may be fictional or sample records. All authentication and data storage features are fully functional and production-ready.
 
@@ -473,7 +504,7 @@ This application uses demo data for educational and portfolio purposes. Some opp
 
 <div align="center">
 
-###  If you found this project helpful, please consider giving it a star!
+### If you found this project helpful, please consider giving it a star!
 
 Made with ❤️ in Afghanistan for Afghan Youth
 
