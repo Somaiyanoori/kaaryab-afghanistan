@@ -4,89 +4,23 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { cn } from "../../lib/utils.js";
-/**
- * PageHeader - Reusable hero header for all pages
- *
- * USAGE:
- *
- * // Basic
- * <PageHeader
- *   title="Dashboard"
- *   description="Manage your opportunities"
- * />
- *
- * // With badge
- * <PageHeader
- *   badge="Analytics & Management"
- *   badgeIcon={BarChart3}
- *   title="Dashboard"
- *   description="Manage opportunities and view analytics"
- * />
- *
- * // With highlighted text in title
- * <PageHeader
- *   badge="Free CV Builder"
- *   badgeIcon={Sparkles}
- *   title="Build Your"
- *   highlightedText="CV"
- *   description="Create a professional resume in minutes"
- * />
- *
- * // With back link
- * <PageHeader
- *   backHref="/dashboard"
- *   backLabel="Back to Dashboard"
- *   title="Edit Opportunity"
- * />
- *
- * // With actions on right
- * <PageHeader
- *   title="Dashboard"
- *   description="Manage opportunities"
- *   actions={
- *     <Button href="/add-opportunity" variant="primary" icon={Plus}>
- *       Add Opportunity
- *     </Button>
- *   }
- * />
- *
- * // Centered layout (like About/Contact)
- * <PageHeader
- *   badge="Our Story"
- *   badgeIcon={Heart}
- *   title="About"
- *   highlightedText="KaarYab"
- *   description="Our mission and story"
- *   centered
- * />
- *
- * // With grid pattern background
- * <PageHeader
- *   title="Contact Us"
- *   showGrid
- * />
- */
+
 export default function PageHeader({
-  // Content
   title,
   highlightedText,
   description,
   badge,
   badgeIcon: BadgeIcon,
   badgeColor = "yellow",
-  // Back navigation
   backHref,
   backLabel = "Back",
   actions,
-  // Layout options
   centered = false,
   showGrid = false,
-  // Size options
   size = "md",
   className,
   children,
 }) {
-  // Badge colors
   const badgeColors = {
     yellow: "bg-yellow-500/20 border-yellow-500/30 text-yellow-300",
     blue: "bg-blue-500/20 border-blue-500/30 text-blue-300",
@@ -103,14 +37,12 @@ export default function PageHeader({
     red: "text-red-400",
   };
 
-  // Size padding
   const paddings = {
     sm: "pt-28 pb-8 md:pt-32 md:pb-10",
     md: "pt-32 pb-12 md:pt-40 md:pb-16",
     lg: "pt-32 pb-16 md:pt-40 md:pb-24",
   };
 
-  // Title sizes
   const titleSizes = {
     sm: "text-2xl sm:text-3xl md:text-4xl",
     md: "text-3xl sm:text-4xl md:text-5xl",
@@ -120,31 +52,30 @@ export default function PageHeader({
   return (
     <section
       className={cn(
-        "relative overflow-hidden",
+        "relative",
         "bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900",
         paddings[size],
         className,
       )}
     >
-      {/* Background Decoration */}
-      <div className="absolute inset-0 pointer-events-none">
+      {/* Background decorations - wrapped separately with overflow-hidden */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-10 right-10 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
+
+        {showGrid && (
+          <div
+            className="absolute inset-0 opacity-10"
+            style={{
+              backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+              backgroundSize: "60px 60px",
+            }}
+          />
+        )}
       </div>
 
-      {/* Optional Grid Pattern */}
-      {showGrid && (
-        <div
-          className="absolute inset-0 opacity-10 pointer-events-none"
-          style={{
-            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-            backgroundSize: "60px 60px",
-          }}
-        />
-      )}
-
+      {/* Content - NO overflow-hidden here */}
       <div className="relative container-custom">
-        {/* Back Link */}
         {backHref && (
           <Link
             href={backHref}
@@ -155,10 +86,8 @@ export default function PageHeader({
           </Link>
         )}
 
-        {/* Centered Layout */}
         {centered ? (
           <div className="text-center max-w-4xl mx-auto flex flex-col items-center">
-            {/* Badge */}
             {badge && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -182,7 +111,6 @@ export default function PageHeader({
               </motion.div>
             )}
 
-            {/* Title */}
             {title && (
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
@@ -204,7 +132,6 @@ export default function PageHeader({
               </motion.h1>
             )}
 
-            {/* Description */}
             {description && (
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
@@ -216,20 +143,19 @@ export default function PageHeader({
               </motion.p>
             )}
 
-            {/* Custom children */}
             {children && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="mt-6 w-full"
+                className="mt-6 w-full relative"
+                style={{ zIndex: 40 }}
               >
                 {children}
               </motion.div>
             )}
           </div>
         ) : (
-          /* Split Layout (title left + actions right) */
           <div
             className={cn(
               actions
@@ -237,9 +163,7 @@ export default function PageHeader({
                 : "max-w-3xl",
             )}
           >
-            {/* Left: Content */}
             <div>
-              {/* Badge */}
               {badge && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -263,7 +187,6 @@ export default function PageHeader({
                 </motion.div>
               )}
 
-              {/* Title */}
               {title && (
                 <motion.h1
                   initial={{ opacity: 0, y: 20 }}
@@ -285,7 +208,6 @@ export default function PageHeader({
                 </motion.h1>
               )}
 
-              {/* Description */}
               {description && (
                 <motion.p
                   initial={{ opacity: 0, y: 20 }}
@@ -297,20 +219,19 @@ export default function PageHeader({
                 </motion.p>
               )}
 
-              {/* Custom children */}
               {children && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
-                  className="mt-6"
+                  className="mt-6 relative"
+                  style={{ zIndex: 100 }}
                 >
                   {children}
                 </motion.div>
               )}
             </div>
 
-            {/* Right: Actions */}
             {actions && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}

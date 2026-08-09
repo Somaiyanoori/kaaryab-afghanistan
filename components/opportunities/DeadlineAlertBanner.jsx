@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { AlertCircle, X, Clock, Zap, ArrowRight } from "lucide-react";
+import { AlertCircle, X, ArrowRight, Clock, Zap } from "lucide-react";
 import {
   differenceInHours,
   differenceInDays,
@@ -43,7 +43,6 @@ export default function DeadlineAlertBanner({
     }
   };
 
-  // Filter expiring
   const expiringIn24Hours = opportunities.filter((opp) => {
     try {
       const deadline = parseISO(opp.deadline);
@@ -171,7 +170,6 @@ export default function DeadlineAlertBanner({
         >
           <div className="px-4 md:px-5 py-3">
             <div className="flex items-center gap-3">
-              {/* Icon */}
               <div
                 className={cn(
                   "flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center",
@@ -182,7 +180,6 @@ export default function DeadlineAlertBanner({
                 <Icon size={18} className={colors.text} strokeWidth={2.5} />
               </div>
 
-              {/* Message */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center flex-wrap gap-x-2 gap-y-0">
                   <span
@@ -204,7 +201,6 @@ export default function DeadlineAlertBanner({
                 </div>
               </div>
 
-              {/* Count Badge */}
               <div
                 className={cn(
                   "flex-shrink-0 hidden sm:flex items-center gap-1.5",
@@ -222,7 +218,6 @@ export default function DeadlineAlertBanner({
                 />
               </div>
 
-              {/* Dismiss Button */}
               <motion.button
                 onClick={handleDismiss}
                 whileHover={{ scale: 1.1 }}
@@ -240,7 +235,6 @@ export default function DeadlineAlertBanner({
             </div>
           </div>
 
-          {/* Emergency animated line */}
           {message.color === "red" && (
             <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/30 overflow-hidden">
               <motion.div

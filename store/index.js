@@ -250,3 +250,40 @@ export const useCVStore = create(
     { name: STORAGE_KEYS.CV },
   ),
 );
+// TRACKER STORE
+export const useTrackerStore = create((set, get) => ({
+  items: [],
+  isLoading: false,
+
+  setItems: (items) => set({ items }),
+
+  addItem: (item) => set((state) => ({ items: [item, ...state.items] })),
+
+  updateItem: (id, updates) =>
+    set((state) => ({
+      items: state.items.map((item) =>
+        item.id === id ? { ...item, ...updates } : item,
+      ),
+    })),
+
+  removeItem: (id) =>
+    set((state) => ({
+      items: state.items.filter((item) => item.id !== id),
+    })),
+
+  getByStatus: (status) => {
+    return get().items.filter((item) => item.status === status);
+  },
+
+  getStats: () => {
+    const items = get().items;
+    return {
+      total: items.length,
+      interested: items.filter((i) => i.status === "interested").length,
+      applied: items.filter((i) => i.status === "applied").length,
+      interview: items.filter((i) => i.status === "interview").length,
+      accepted: items.filter((i) => i.status === "accepted").length,
+      rejected: items.filter((i) => i.status === "rejected").length,
+    };
+  },
+}));

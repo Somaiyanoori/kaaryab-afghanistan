@@ -7,7 +7,7 @@ import { Sparkles, SearchX } from "lucide-react";
 
 import PageHeader from "../../components/layout/PageHeader.jsx";
 import DeadlineAlertBanner from "../../components/opportunities/DeadlineAlertBanner.jsx";
-import SearchInput from "../../components/opportunities/SearchInput.jsx";
+import AutocompleteSearch from "../../components/opportunities/AutocompleteSearch.jsx";
 import CategoryTabs from "../../components/opportunities/CategoryTabs.jsx";
 import FilterSidebar from "../../components/opportunities/FilterSidebar.jsx";
 import ActiveFilters from "../../components/opportunities/ActiveFilters.jsx";
@@ -15,12 +15,14 @@ import Toolbar from "../../components/opportunities/Toolbar.jsx";
 import Pagination from "../../components/opportunities/Pagination.jsx";
 import OpportunityCard from "../../components/opportunities/OpportunityCard.jsx";
 import OpportunityCardSkeleton from "../../components/opportunities/OpportunityCardSkeleton.jsx";
-import EmptyState from "../../components/states/EmptyState.jsx";
+import AnimatedEmptyState from "../../components/states/AnimatedEmptyState.jsx";
+import RecentlyViewed from "../../components/shared/RecentlyViewed.jsx";
 import { getAllOpportunities } from "../../lib/db.js";
 import { filterOpportunities, paginateData, cn } from "../../lib/utils.js";
-import RecentlyViewed from "../../components/shared/RecentlyViewed.jsx";
 
+// ============================================
 // LOADING FALLBACK
+// ============================================
 function LoadingFallback() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-950 pt-32">
@@ -43,7 +45,6 @@ function OpportunitiesContent() {
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
   const [viewMode, setViewMode] = useState("grid");
 
-  // Database opportunities (from Supabase)
   const [dbOpportunities, setDbOpportunities] = useState([]);
   const [dbError, setDbError] = useState(null);
 
@@ -70,7 +71,6 @@ function OpportunitiesContent() {
       } catch (error) {
         console.error("Failed to fetch from database:", error);
         setDbError(error.message);
-        // Fallback to mock data silently
       } finally {
         setIsLoading(false);
       }
@@ -97,7 +97,6 @@ function OpportunitiesContent() {
     window.history.replaceState({}, "", `/opportunities${newUrl}`);
   }, [filters, mounted]);
   // NORMALIZE DB OPPORTUNITIES
-  // Maps Supabase snake_case to camelCase for components
   const normalizedDbOpps = useMemo(() => {
     return dbOpportunities.map((opp) => ({
       id: opp.id,
@@ -131,7 +130,6 @@ function OpportunitiesContent() {
   const allOpportunities = useMemo(() => {
     return normalizedDbOpps;
   }, [normalizedDbOpps]);
-  // FILTER + PAGINATE
   const filteredOpportunities = useMemo(() => {
     return filterOpportunities(allOpportunities, filters);
   }, [allOpportunities, filters]);
@@ -156,7 +154,6 @@ function OpportunitiesContent() {
     return count;
   }, [filters]);
 
-  // HANDLERS
   const updateFilter = (key, value) => {
     setFilters((prev) => ({
       ...prev,
@@ -184,7 +181,9 @@ function OpportunitiesContent() {
 
   return (
     <>
-      {/* PAGE HEADER */}
+      {/* ============================================
+          PAGE HEADER WITH SEARCH BAR INSIDE
+      ============================================ */}
       <PageHeader
         badge="Explore All Opportunities"
         badgeIcon={Sparkles}
@@ -193,8 +192,9 @@ function OpportunitiesContent() {
         description={`Browse through ${allOpportunities.length}+ opportunities across Afghanistan.`}
         centered
       >
-        <div className="max-w-2xl mx-auto">
-          <SearchInput
+        <div className="max-w-2xl mx-auto w-full">
+          <AutocompleteSearch
+            opportunities={allOpportunities}
             value={filters.search}
             onChange={(value) => updateFilter("search", value)}
             placeholder="Search opportunities, organizations, skills..."
@@ -202,14 +202,18 @@ function OpportunitiesContent() {
         </div>
       </PageHeader>
 
-      <section className="bg-gray-50 dark:bg-slate-950 py-8 md:py-12 min-h-screen">
+      {/* ============================================
+          CONTENT SECTION
+      ============================================ */}
+      <section className="bg-gray-50 dark:bg-slate-950 py-8 md:py-12 min-h-screen relative">
         <div className="container-custom">
-          {/* Deadline Alert Banner */}
+          {/* DEADLINE ALERT BANNER */}
           <DeadlineAlertBanner
             opportunities={dbOpportunities}
             onFilterExpiring={() => updateFilter("deadline", "week")}
           />
-          {/* Category Tabs */}
+
+          {/* CATEGORY TABS */}
           <div className="mb-6">
             <CategoryTabs
               selectedCategory={filters.category}
@@ -218,9 +222,9 @@ function OpportunitiesContent() {
             />
           </div>
 
+          {/* MAIN LAYOUT: Sidebar + Content */}
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-            {/* Desktop Sidebar */}
-            {/* Desktop Sidebar */}
+            {/* DESKTOP SIDEBAR */}
             <aside className="hidden lg:block w-64 flex-shrink-0">
               <div className="sticky top-24 space-y-4">
                 {/* Filters */}
@@ -240,8 +244,9 @@ function OpportunitiesContent() {
               </div>
             </aside>
 
-            {/* Main Content */}
+            {/* MAIN CONTENT */}
             <div className="flex-1 min-w-0">
+              {/* Toolbar */}
               <div className="mb-4">
                 <Toolbar
                   totalResults={filteredOpportunities.length}
@@ -254,6 +259,7 @@ function OpportunitiesContent() {
                 />
               </div>
 
+              {/* Active Filters */}
               <div className="mb-6">
                 <ActiveFilters
                   filters={filters}
@@ -277,12 +283,15 @@ function OpportunitiesContent() {
                   ))}
                 </div>
               ) : filteredOpportunities.length === 0 ? (
-                <EmptyState
+                <AnimatedEmptyState
                   icon={SearchX}
+                  variant="search"
                   title="No opportunities found"
-                  description="Try adjusting your search or removing some filters."
+                  description="We couldn't find any opportunities matching your criteria. Try different filters or clear them all."
                   actionLabel="Clear All Filters"
                   onAction={clearAllFilters}
+                  secondaryLabel="Browse All"
+                  secondaryHref="/opportunities"
                 />
               ) : (
                 <>
@@ -319,7 +328,9 @@ function OpportunitiesContent() {
         </div>
       </section>
 
-      {/* Mobile Filter Drawer */}
+      {/* ============================================
+          MOBILE FILTER DRAWER
+      ============================================ */}
       <AnimatePresence>
         {isMobileFiltersOpen && (
           <>
@@ -352,7 +363,9 @@ function OpportunitiesContent() {
   );
 }
 
+// ============================================
 // EXPORT WITH SUSPENSE
+// ============================================
 export default function OpportunitiesPage() {
   return (
     <Suspense fallback={<LoadingFallback />}>

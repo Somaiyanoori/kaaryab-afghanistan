@@ -1,11 +1,22 @@
--- KaarYab Afghanistan - Supabase Database Schema
-
+-- KaarYab Afghanistan - Complete Database Schema
 -- Run this SQL in Supabase SQL Editor to set up your database
 -- Dashboard → SQL Editor → New query → Paste this → Run
 
 
+-- 1. AUTO-UPDATE TIMESTAMP FUNCTION
+-- MUST be created FIRST because tables use it
+-- Automatically updates updated_at when a row is modified
 
--- 1. OPPORTUNITIES TABLE
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- 2. OPPORTUNITIES TABLE
 -- Stores all opportunity postings (jobs, scholarships, internships, etc.)
 
 CREATE TABLE IF NOT EXISTS opportunities (
@@ -62,7 +73,8 @@ CREATE TABLE IF NOT EXISTS opportunities (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 2. SAVED OPPORTUNITIES TABLE
+
+-- 3. SAVED OPPORTUNITIES TABLE
 -- Stores user's saved/bookmarked opportunities
 
 CREATE TABLE IF NOT EXISTS saved_opportunities (
@@ -76,7 +88,44 @@ CREATE TABLE IF NOT EXISTS saved_opportunities (
   UNIQUE(user_id, opportunity_id)
 );
 
--- 3. INDEXES (for faster queries)
+
+-- 4. APPLICATION TRACKER TABLE
+-- Tracks user applications through different stages (Kanban board)
+
+CREATE TABLE IF NOT EXISTS application_tracker (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id TEXT NOT NULL,
+
+  -- Opportunity reference
+  opportunity_id TEXT NOT NULL,
+  opportunity_data JSONB NOT NULL,
+
+  -- Application status
+  status TEXT NOT NULL DEFAULT 'interested'
+    CHECK (status IN ('interested', 'applied', 'interview', 'accepted', 'rejected')),
+
+  -- Optional user notes
+  notes TEXT,
+
+  -- Timeline tracking
+  applied_date DATE,
+  interview_date DATE,
+  decision_date DATE,
+
+  -- Priority level
+  priority TEXT DEFAULT 'medium'
+    CHECK (priority IN ('low', 'medium', 'high')),
+
+  -- Timestamps
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+
+  -- Prevent duplicate tracking
+  UNIQUE(user_id, opportunity_id)
+);
+
+
+-- 5. INDEXES (for faster queries)
 
 -- Opportunities indexes
 CREATE INDEX IF NOT EXISTS idx_opportunities_user_id
@@ -113,48 +162,68 @@ CREATE INDEX IF NOT EXISTS idx_saved_opportunity_id
 CREATE INDEX IF NOT EXISTS idx_saved_created_at
   ON saved_opportunities(created_at DESC);
 
--- 4. AUTO-UPDATE TIMESTAMP TRIGGER
--- Automatically updates updated_at when a row is modified
+-- Application tracker indexes
+CREATE INDEX IF NOT EXISTS idx_tracker_user_id
+  ON application_tracker(user_id);
 
-CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
-BEGIN
-  NEW.updated_at = NOW();
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
+CREATE INDEX IF NOT EXISTS idx_tracker_status
+  ON application_tracker(status);
 
--- Apply trigger to opportunities table
+CREATE INDEX IF NOT EXISTS idx_tracker_opportunity_id
+  ON application_tracker(opportunity_id);
+
+CREATE INDEX IF NOT EXISTS idx_tracker_created_at
+  ON application_tracker(created_at DESC);
+
+
+-- 6. TRIGGERS (Auto-update timestamps)
+
+-- Opportunities trigger
 DROP TRIGGER IF EXISTS update_opportunities_updated_at ON opportunities;
 CREATE TRIGGER update_opportunities_updated_at
   BEFORE UPDATE ON opportunities
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
 
+-- Application tracker trigger
+DROP TRIGGER IF EXISTS update_tracker_updated_at ON application_tracker;
+CREATE TRIGGER update_tracker_updated_at
+  BEFORE UPDATE ON application_tracker
+  FOR EACH ROW
+  EXECUTE FUNCTION update_updated_at_column();
 
--- 5. ROW LEVEL SECURITY (RLS)
+
+-- 7. ROW LEVEL SECURITY (RLS)
 -- Enable RLS on all tables
 
 ALTER TABLE opportunities ENABLE ROW LEVEL SECURITY;
 ALTER TABLE saved_opportunities ENABLE ROW LEVEL SECURITY;
+ALTER TABLE application_tracker ENABLE ROW LEVEL SECURITY;
 
 
--- 6. SECURITY POLICIES
+-- 8. SECURITY POLICIES
 -- Note: Since we use Clerk for authentication (not Supabase Auth),
 -- security is enforced at the application layer.
--- These policies allow public access for the app to function.
 
--- Drop existing policies (if any) to avoid conflicts
+-- Drop existing opportunities policies
 DROP POLICY IF EXISTS "Anyone can read opportunities" ON opportunities;
 DROP POLICY IF EXISTS "Anyone can insert opportunities" ON opportunities;
 DROP POLICY IF EXISTS "Anyone can update opportunities" ON opportunities;
 DROP POLICY IF EXISTS "Anyone can delete opportunities" ON opportunities;
 
+-- Drop existing saved policies
 DROP POLICY IF EXISTS "Anyone can read saved" ON saved_opportunities;
 DROP POLICY IF EXISTS "Anyone can save" ON saved_opportunities;
 DROP POLICY IF EXISTS "Anyone can unsave" ON saved_opportunities;
 
--- OPPORTUNITIES POLICIES
+-- Drop existing tracker policies
+DROP POLICY IF EXISTS "Anyone can read tracker" ON application_tracker;
+DROP POLICY IF EXISTS "Anyone can insert tracker" ON application_tracker;
+DROP POLICY IF EXISTS "Anyone can update tracker" ON application_tracker;
+DROP POLICY IF EXISTS "Anyone can delete tracker" ON application_tracker;
+
+
+-- Opportunities policies
 CREATE POLICY "Anyone can read opportunities"
   ON opportunities FOR SELECT
   USING (true);
@@ -172,7 +241,8 @@ CREATE POLICY "Anyone can delete opportunities"
   ON opportunities FOR DELETE
   USING (true);
 
--- SAVED OPPORTUNITIES POLICIES
+
+-- Saved opportunities policies
 CREATE POLICY "Anyone can read saved"
   ON saved_opportunities FOR SELECT
   USING (true);
@@ -186,8 +256,31 @@ CREATE POLICY "Anyone can unsave"
   USING (true);
 
 
--- SETUP COMPLETE! 
--- ============================================================================
+-- Application tracker policies
+CREATE POLICY "Anyone can read tracker"
+  ON application_tracker FOR SELECT
+  USING (true);
+
+CREATE POLICY "Anyone can insert tracker"
+  ON application_tracker FOR INSERT
+  WITH CHECK (true);
+
+CREATE POLICY "Anyone can update tracker"
+  ON application_tracker FOR UPDATE
+  USING (true)
+  WITH CHECK (true);
+
+CREATE POLICY "Anyone can delete tracker"
+  ON application_tracker FOR DELETE
+  USING (true);
+
+
+-- SETUP COMPLETE!
+-- Tables Created:
+--   opportunities        → Main opportunity postings
+--   saved_opportunities  → User bookmarks
+--   application_tracker  → Kanban board tracking
+--
 -- Next steps:
 -- 1. Copy your Supabase URL and Anon Key to .env.local
 -- 2. Run: npm run seed (to add sample opportunities)

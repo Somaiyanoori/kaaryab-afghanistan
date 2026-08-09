@@ -8,6 +8,7 @@ import {
   X,
   Home,
   Briefcase,
+  Target,
   LayoutDashboard,
   FileUser,
   Info,
@@ -28,6 +29,7 @@ import { cn } from "../../lib/utils.js";
 const iconMap = {
   "/": Home,
   "/opportunities": Briefcase,
+  "/tracker": Target,
   "/dashboard": LayoutDashboard,
   "/cv-builder": FileUser,
   "/about": Info,
@@ -70,6 +72,7 @@ export default function MobileNav({ isOpen, onClose }) {
     { label: "Home", href: "/" },
     { label: "Opportunities", href: "/opportunities" },
     { label: "Saved", href: "/saved", badge: savedCount },
+    { label: "Tracker", href: "/tracker" },
     { label: "Dashboard", href: "/dashboard" },
     { label: "CV Builder", href: "/cv-builder" },
     { label: "About", href: "/about" },

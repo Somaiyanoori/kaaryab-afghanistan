@@ -17,7 +17,7 @@ import {
   ChevronRight,
   AlertCircle,
 } from "lucide-react";
-
+import TrackButton from "../../../components/tracker/TrackButton.jsx";
 import ErrorState from "../../../components/states/ErrorState.jsx";
 import ApplyCard from "../../../components/detail/ApplyCard.jsx";
 import SimilarOpportunities from "../../../components/detail/SimilarOpportunities.jsx";
