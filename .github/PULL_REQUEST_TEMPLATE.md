@@ -4,14 +4,14 @@ Brief description of changes in this PR.
 
 ## Type of Change
 
-- [ ] 🐛 Bug fix
-- [ ] ✨ New feature
-- [ ] 💥 Breaking change
-- [ ] 📝 Documentation update
-- [ ] 🎨 Style/UI update
-- [ ] ♻️ Refactor
-- [ ] ✅ Test update
-- [ ] 🔧 Configuration change
+- [ ] Bug fix
+- [ ] New feature
+- [ ] Breaking change
+- [ ] Documentation update
+- [ ] Style/UI update
+- [ ] Refactor
+- [ ] Test update
+- [ ] Configuration change
 
 ## Testing
 

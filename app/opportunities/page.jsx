@@ -340,9 +340,7 @@ function OpportunitiesContent() {
   );
 }
 
-// ============================================
 // EXPORT WITH SUSPENSE
-// ============================================
 export default function OpportunitiesPage() {
   return (
     <Suspense fallback={<LoadingFallback />}>
