@@ -22,7 +22,6 @@ const NAV_ITEMS = [
   { label: "Contact", href: "/contact" },
 ];
 
-// Pages that have a dark hero section at top
 const PAGES_WITH_DARK_HERO = [
   "/",
   "/opportunities",
@@ -43,13 +42,11 @@ export default function Navbar() {
   const { isSignedIn, isLoaded } = useAuth();
   const savedCount = useSavedStore((state) => state.getSavedCount());
 
-  // Check if current page has dark hero
   const hasDarkHero = PAGES_WITH_DARK_HERO.some((page) => {
     if (page === "/") return pathname === "/";
     return pathname.startsWith(page);
   });
 
-  // Navbar shows scrolled style on light pages OR when scrolled
   const shouldShowScrolled = scrolled || !hasDarkHero;
 
   useEffect(() => {
@@ -99,9 +96,8 @@ export default function Navbar() {
           className="container-custom flex items-center justify-between"
           aria-label="Main navigation"
         >
-          {/* Logo */}
           <Logo variant={shouldShowScrolled ? "auto" : "light"} />
-          {/* Desktop Nav Links */}
+
           <div className="hidden lg:flex items-center gap-1">
             {NAV_ITEMS.map((item) => {
               const active = isActive(item.href);
@@ -147,9 +143,7 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* Right Side Actions */}
           <div className="flex items-center gap-2">
-            {/* Search Button (shows on scroll) */}
             <AnimatePresence>
               {scrolled && (
                 <motion.div
@@ -179,10 +173,8 @@ export default function Navbar() {
               )}
             </AnimatePresence>
 
-            {/* Theme Toggle */}
             <ThemeToggle />
 
-            {/* Saved Button with Badge */}
             <Link href="/saved" className="relative focus-visible:outline-none">
               <motion.button
                 className={cn(
@@ -241,7 +233,6 @@ export default function Navbar() {
               </motion.button>
             </Link>
 
-            {/* Authentication Section */}
             {isLoaded && (
               <>
                 {isSignedIn ? (
@@ -284,7 +275,6 @@ export default function Navbar() {
               </>
             )}
 
-            {/* Mobile Hamburger */}
             <motion.button
               onClick={() => setIsMobileMenuOpen(true)}
               className={cn(
@@ -312,7 +302,6 @@ export default function Navbar() {
         </nav>
       </motion.header>
 
-      {/* Mobile Navigation Drawer */}
       <MobileNav
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
