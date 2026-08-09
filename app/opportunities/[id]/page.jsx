@@ -30,6 +30,7 @@ import {
   formatRelativeDate,
   cn,
 } from "../../../lib/utils.js";
+import { useRecentlyViewed } from "../../../hooks/useRecentlyViewed.js";
 
 // NORMALIZE DB OPPORTUNITY
 // Maps snake_case → camelCase
@@ -70,11 +71,13 @@ function normalizeOpportunity(opp) {
 // MAIN PAGE
 export default function OpportunityDetailPage({ params }) {
   const { id } = use(params);
+
   const [mounted, setMounted] = useState(false);
   const [dbOpportunities, setDbOpportunities] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { addToRecentlyViewed } = useRecentlyViewed();
 
-  // FETCH DB OPPORTUNITIES
+  // FETCH DATA FROM SUPABASE
   useEffect(() => {
     setMounted(true);
 
@@ -92,15 +95,19 @@ export default function OpportunityDetailPage({ params }) {
     fetchData();
   }, []);
 
-  // MERGE ALL OPPORTUNITIES
+  // NORMALIZE ALL OPPORTUNITIES
   const allOpportunities = dbOpportunities.map(normalizeOpportunity);
 
-  // FIND OPPORTUNITY BY ID OR SLUG
-
+  // FIND CURRENT OPPORTUNITY
   const opportunity = allOpportunities.find(
     (opp) => opp.id === id || opp.slug === id,
   );
 
+  useEffect(() => {
+    if (opportunity) {
+      addToRecentlyViewed(opportunity);
+    }
+  }, [opportunity?.id]);
   // LOADING STATE
   if (isLoading) {
     return (
@@ -130,13 +137,15 @@ export default function OpportunityDetailPage({ params }) {
 
   if (!opportunity) return null;
 
+  // RENDER
   const colors = getCategoryColors(opportunity.category);
   const initials = getInitials(opportunity.organization);
 
   return (
     <>
-      {/* HERO HEADER */}
+      {/*HERO HEADER */}
       <section className="relative bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 pt-32 pb-12 md:pt-36 md:pb-16 overflow-hidden">
+        {/* Background Blobs */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-20 left-10 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl" />
           <div className="absolute bottom-10 right-10 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
@@ -178,7 +187,7 @@ export default function OpportunityDetailPage({ params }) {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="flex flex-col md:flex-row items-start gap-6"
           >
-            {/* Logo */}
+            {/* Organization Logo */}
             <div
               className={cn(
                 "flex-shrink-0",
@@ -203,6 +212,7 @@ export default function OpportunityDetailPage({ params }) {
 
             {/* Title & Meta */}
             <div className="flex-1 min-w-0">
+              {/* Badges Row */}
               <div className="flex items-center flex-wrap gap-2 mb-3">
                 <CategoryBadge category={opportunity.category} />
 
@@ -228,6 +238,7 @@ export default function OpportunityDetailPage({ params }) {
                 )}
               </div>
 
+              {/* Title */}
               <h1
                 className="text-2xl md:text-4xl lg:text-5xl font-black text-white mb-3 leading-tight"
                 style={{ fontFamily: "Sora, sans-serif" }}
@@ -235,6 +246,7 @@ export default function OpportunityDetailPage({ params }) {
                 {opportunity.title}
               </h1>
 
+              {/* Organization */}
               <div className="flex items-center gap-2 text-gray-300 mb-4">
                 <Building2 size={16} />
                 <span className="text-base font-medium">
@@ -242,6 +254,7 @@ export default function OpportunityDetailPage({ params }) {
                 </span>
               </div>
 
+              {/* Meta Pills */}
               <div className="flex items-center flex-wrap gap-3 text-sm">
                 <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-lg text-white">
                   <MapPin size={14} />
@@ -275,11 +288,11 @@ export default function OpportunityDetailPage({ params }) {
         </div>
       </section>
 
-      {/* MAIN CONTENT */}
+      {/*MAIN CONTENT*/}
       <section className="bg-gray-50 dark:bg-slate-950 py-12 md:py-16 min-h-screen">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* LEFT */}
+            {/* ========== LEFT COLUMN ========== */}
             <div className="lg:col-span-2 space-y-8">
               {/* About */}
               <motion.div
@@ -486,13 +499,13 @@ export default function OpportunityDetailPage({ params }) {
               )}
             </div>
 
-            {/* RIGHT: APPLY CARD */}
+            {/* RIGHT COLUMN  */}
             <div className="lg:col-span-1">
               <ApplyCard opportunity={opportunity} />
             </div>
           </div>
 
-          {/* SIMILAR */}
+          {/* Similar Opportunities */}
           <SimilarOpportunities
             current={opportunity}
             allOpportunities={allOpportunities}

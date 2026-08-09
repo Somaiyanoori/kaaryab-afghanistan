@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, SearchX } from "lucide-react";
 
 import PageHeader from "../../components/layout/PageHeader.jsx";
+import DeadlineAlertBanner from "../../components/opportunities/DeadlineAlertBanner.jsx";
 import SearchInput from "../../components/opportunities/SearchInput.jsx";
 import CategoryTabs from "../../components/opportunities/CategoryTabs.jsx";
 import FilterSidebar from "../../components/opportunities/FilterSidebar.jsx";
@@ -17,6 +18,7 @@ import OpportunityCardSkeleton from "../../components/opportunities/OpportunityC
 import EmptyState from "../../components/states/EmptyState.jsx";
 import { getAllOpportunities } from "../../lib/db.js";
 import { filterOpportunities, paginateData, cn } from "../../lib/utils.js";
+import RecentlyViewed from "../../components/shared/RecentlyViewed.jsx";
 
 // LOADING FALLBACK
 function LoadingFallback() {
@@ -202,6 +204,11 @@ function OpportunitiesContent() {
 
       <section className="bg-gray-50 dark:bg-slate-950 py-8 md:py-12 min-h-screen">
         <div className="container-custom">
+          {/* Deadline Alert Banner */}
+          <DeadlineAlertBanner
+            opportunities={dbOpportunities}
+            onFilterExpiring={() => updateFilter("deadline", "week")}
+          />
           {/* Category Tabs */}
           <div className="mb-6">
             <CategoryTabs
@@ -213,8 +220,10 @@ function OpportunitiesContent() {
 
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
             {/* Desktop Sidebar */}
+            {/* Desktop Sidebar */}
             <aside className="hidden lg:block w-64 flex-shrink-0">
-              <div className="sticky top-24">
+              <div className="sticky top-24 space-y-4">
+                {/* Filters */}
                 <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700 shadow-sm">
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6">
                     Filters
@@ -225,6 +234,9 @@ function OpportunitiesContent() {
                     onClearAll={clearAllFilters}
                   />
                 </div>
+
+                {/* Recently Viewed */}
+                <RecentlyViewed maxShow={4} />
               </div>
             </aside>
 
