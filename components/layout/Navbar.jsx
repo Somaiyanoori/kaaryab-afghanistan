@@ -16,6 +16,7 @@ import { cn } from "../../lib/utils.js";
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
   { label: "Opportunities", href: "/opportunities" },
+  { label: "Tracker", href: "/tracker" },
   { label: "Dashboard", href: "/dashboard" },
   { label: "CV Builder", href: "/cv-builder" },
   { label: "About", href: "/about" },
@@ -28,6 +29,7 @@ const PAGES_WITH_DARK_HERO = [
   "/dashboard",
   "/add-opportunity",
   "/saved",
+  "/tracker",
   "/about",
   "/contact",
   "/cv-builder",

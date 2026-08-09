@@ -18,12 +18,14 @@ import { useUser } from "@clerk/nextjs";
 import OpportunityCard from "../../components/opportunities/OpportunityCard.jsx";
 import OpportunityCardSkeleton from "../../components/opportunities/OpportunityCardSkeleton.jsx";
 import EmptyState from "../../components/states/EmptyState.jsx";
+import AnimatedEmptyState from "../../components/states/AnimatedEmptyState.jsx";
 import SearchInput from "../../components/opportunities/SearchInput.jsx";
 import CategoryTabs from "../../components/opportunities/CategoryTabs.jsx";
 import ConfirmModal from "../../components/shared/ConfirmModal.jsx";
 import SavedStats from "../../components/saved/SavedStats.jsx";
 import PageHeader from "../../components/layout/PageHeader.jsx";
 import Button from "../../components/ui/Button.jsx";
+import ExportPDFButton from "../../components/saved/ExportPDFButton.jsx";
 
 import { useSavedStore } from "../../store/index.js";
 import {
@@ -33,7 +35,6 @@ import {
 } from "../../lib/db.js";
 import { SORT_OPTIONS } from "../../lib/constants.js";
 import { filterOpportunities, cn } from "../../lib/utils.js";
-
 // MAIN PAGE
 export default function SavedPage() {
   const { user, isLoaded } = useUser();
@@ -160,19 +161,20 @@ export default function SavedPage() {
             </div>
           ) : /* EMPTY STATE */
           !hasSaved ? (
-            <div className="max-w-md mx-auto">
-              <EmptyState
-                icon={BookmarkX}
-                title="No saved opportunities yet"
-                description={
-                  user
-                    ? "Start browsing and save opportunities. They'll sync across all your devices!"
-                    : "Sign in to save opportunities across devices, or start bookmarking below."
-                }
-                actionLabel="Browse Opportunities"
-                actionHref="/opportunities"
-              />
-            </div>
+            <AnimatedEmptyState
+              icon={BookmarkX}
+              variant="saved"
+              title="No saved opportunities yet"
+              description={
+                user
+                  ? "Start browsing and save opportunities. They'll sync across all your devices and never be lost!"
+                  : "Sign in to save opportunities across devices, or start bookmarking below."
+              }
+              actionLabel="Browse Opportunities"
+              actionHref="/opportunities"
+              secondaryLabel={user ? null : "Sign In"}
+              secondaryHref={user ? null : "/sign-in"}
+            />
           ) : (
             /* HAS SAVED ITEMS */
             <>
@@ -223,7 +225,8 @@ export default function SavedPage() {
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
                   />
                 </div>
-
+                {/* Export PDF */}
+                <ExportPDFButton opportunities={filteredSaved} />
                 {/* Clear All */}
                 <Button
                   variant="danger"
@@ -306,18 +309,17 @@ export default function SavedPage() {
 
               {/* Cards Grid */}
               {filteredSaved.length === 0 ? (
-                <div className="max-w-md mx-auto">
-                  <EmptyState
-                    icon={Search}
-                    title="No matches found"
-                    description="Try adjusting your search or clearing filters."
-                    actionLabel="Clear Filters"
-                    onAction={() => {
-                      setSearch("");
-                      setCategory("All");
-                    }}
-                  />
-                </div>
+                <AnimatedEmptyState
+                  icon={Search}
+                  variant="search"
+                  title="No matches found"
+                  description="Try adjusting your search or clearing filters to see more results."
+                  actionLabel="Clear Filters"
+                  onAction={() => {
+                    setSearch("");
+                    setCategory("All");
+                  }}
+                />
               ) : (
                 <AnimatePresence mode="popLayout">
                   <motion.div

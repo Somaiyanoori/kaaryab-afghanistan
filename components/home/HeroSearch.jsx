@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Search, TrendingUp } from "lucide-react";
+import { TrendingUp } from "lucide-react";
+import { useRouter } from "next/navigation";
+import AutocompleteSearch from "../opportunities/AutocompleteSearch.jsx";
+import { getAllOpportunities } from "../../lib/db.js";
 import { cn } from "../../lib/utils.js";
 
 // Quick filter suggestions
@@ -15,21 +17,38 @@ const QUICK_FILTERS = [
   { label: "Online Courses", category: "Online Course" },
 ];
 
+// Normalize function
+function normalizeOpp(opp) {
+  return {
+    id: opp.id,
+    slug: opp.slug || opp.id,
+    title: opp.title,
+    organization: opp.organization,
+    category: opp.category,
+    location: opp.location,
+    type: opp.type,
+    deadline: opp.deadline,
+    shortDesc: opp.short_desc || opp.shortDesc,
+    description: opp.description,
+    tags: opp.tags || [],
+  };
+}
+
 export default function HeroSearch() {
   const router = useRouter();
-  const [searchValue, setSearchValue] = useState("");
-  const [isFocused, setIsFocused] = useState(false);
+  const [opportunities, setOpportunities] = useState([]);
 
-  const handleSearch = (e) => {
-    e?.preventDefault();
-    if (searchValue.trim()) {
-      router.push(
-        `/opportunities?search=${encodeURIComponent(searchValue.trim())}`,
-      );
-    } else {
-      router.push("/opportunities");
-    }
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getAllOpportunities();
+        setOpportunities((data || []).map(normalizeOpp));
+      } catch (error) {
+        console.error("Hero search fetch error:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleQuickFilter = (category) => {
     router.push(`/opportunities?category=${encodeURIComponent(category)}`);
@@ -37,72 +56,12 @@ export default function HeroSearch() {
 
   return (
     <div className="w-full max-w-2xl mx-auto">
-      {/* Search Bar */}
-      <form onSubmit={handleSearch}>
-        <motion.div
-          className={cn(
-            "relative flex items-center",
-            "bg-white/95 dark:bg-slate-800/95",
-            "backdrop-blur-md",
-            "rounded-2xl",
-            "shadow-2xl",
-            "border-2 transition-all duration-300",
-            isFocused
-              ? "border-yellow-500 shadow-yellow-glow"
-              : "border-white/20 dark:border-white/10",
-          )}
-          whileHover={{ scale: 1.01 }}
-        >
-          {/* Search Icon */}
-          <div className="pl-5 pr-3 flex items-center pointer-events-none">
-            <Search
-              size={20}
-              className={cn(
-                "transition-colors duration-200",
-                isFocused ? "text-yellow-500" : "text-gray-400",
-              )}
-            />
-          </div>
-
-          {/* Input */}
-          <input
-            type="text"
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            placeholder="Search jobs, scholarships, internships..."
-            className={cn(
-              "flex-1 py-4 pr-4",
-              "bg-transparent",
-              "text-gray-900 dark:text-white",
-              "placeholder:text-gray-500 dark:placeholder:text-gray-400",
-              "text-base",
-              "focus:outline-none",
-            )}
-          />
-
-          {/* Search Button (Inline with input) */}
-          <motion.button
-            type="submit"
-            className={cn(
-              "m-2 px-6 py-3",
-              "bg-gradient-to-r from-yellow-500 to-yellow-600",
-              "hover:from-yellow-400 hover:to-yellow-500",
-              "text-gray-900 font-semibold",
-              "rounded-xl",
-              "flex items-center gap-2",
-              "shadow-md hover:shadow-yellow-glow",
-              "transition-all duration-200",
-            )}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            <span className="hidden sm:inline">Search</span>
-            <Search size={16} className="sm:hidden" />
-          </motion.button>
-        </motion.div>
-      </form>
+      {/* Autocomplete Search */}
+      <AutocompleteSearch
+        opportunities={opportunities}
+        placeholder="Search jobs, scholarships, internships..."
+        className="shadow-2xl"
+      />
 
       {/* Quick Filter Chips */}
       <motion.div

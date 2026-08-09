@@ -1,21 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  ExternalLink,
-  Eye,
-  Bookmark,
-  Building2,
-  Mail,
-  Phone,
-} from "lucide-react";
+import { ExternalLink, Eye, Bookmark, Mail, Phone } from "lucide-react";
 import { isPast, parseISO } from "date-fns";
 import CountdownTimer from "./CountdownTimer.jsx";
 import SaveButton from "../opportunities/SaveButton.jsx";
 import ShareButtons from "./ShareButtons.jsx";
 import { cn } from "../../lib/utils.js";
 import Button from "../ui/Button.jsx";
-
+import TrackButton from "../tracker/TrackButton.jsx";
 export default function ApplyCard({ opportunity }) {
   const isExpired = (() => {
     try {
@@ -76,7 +69,12 @@ export default function ApplyCard({ opportunity }) {
             ? "The application deadline has passed"
             : `You'll be redirected to ${opportunity.organization}'s website`}
         </p>
-
+        {/* Track Button */}
+        <div className="pt-3 border-t border-gray-100 dark:border-slate-700">
+          <div className="w-full flex justify-center">
+            <TrackButton opportunity={opportunity} size="md" />
+          </div>
+        </div>
         {/* Action Buttons Row */}
         <div className="flex items-center gap-2 pt-3 border-t border-gray-100 dark:border-slate-700">
           <SaveButton
