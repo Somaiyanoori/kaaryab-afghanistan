@@ -27,6 +27,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       suppressHydrationWarning={true}
       className={`${plusJakarta.variable} ${sora.variable}`}
     >

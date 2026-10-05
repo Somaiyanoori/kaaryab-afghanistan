@@ -1,5 +1,4 @@
 import { createClient } from "@supabase/supabase-js";
-import { readFileSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import dotenv from "dotenv";
@@ -16,6 +15,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
+  console.error("❌ Missing Supabase environment variables!");
   process.exit(1);
 }
 
@@ -23,9 +23,7 @@ console.log("🔗 Connecting to:", supabaseUrl);
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// ============================================
-// MOCK DATA (paste your opportunities here)
-// ============================================
+// FUTURE-PROOF SAMPLE DATA (Deadlines in 2027-2028)
 const opportunities = [
   {
     slug: "frontend-developer-intern-kabul-tech",
@@ -34,9 +32,9 @@ const opportunities = [
     category: "Internship",
     location: "Kabul",
     type: "Remote",
-    deadline: "2026-08-15",
-    postedDate: "2025-01-10",
-    shortDesc:
+    deadline: "2027-12-31",
+    posted_date: "2025-01-10",
+    short_desc:
       "A beginner-friendly internship for students who know React and Next.js basics.",
     description:
       "This internship is designed for Afghan youth who want to gain real-world experience in frontend development. You will work on real projects, learn from senior developers, and build your portfolio.",
@@ -47,8 +45,8 @@ const opportunities = [
       "Good communication skills",
       "Ability to work 4 hours per day",
     ],
-    applyLink: "https://example.com/apply/frontend-intern",
-    contactEmail: "hr@kabultech.af",
+    apply_link: "https://example.com/apply/frontend-intern",
+    contact_email: "hr@kabultech.af",
     tags: ["React", "Next.js", "Internship", "Remote"],
     featured: true,
     urgent: false,
@@ -61,14 +59,14 @@ const opportunities = [
   },
   {
     slug: "women-in-tech-scholarship-2026",
-    title: "Women in Tech Scholarship 2026",
+    title: "Women in Tech Scholarship 2027",
     organization: "Global Learning Foundation",
     category: "Scholarship",
     location: "Online",
     type: "Remote",
-    deadline: "2026-07-10",
-    postedDate: "2025-01-08",
-    shortDesc:
+    deadline: "2027-11-30",
+    posted_date: "2025-01-08",
+    short_desc:
       "Full scholarship for Afghan women who want to study technology online.",
     description:
       "The Women in Tech Scholarship is a fully-funded program for Afghan women who want to build a career in technology. Scholars receive access to online courses, mentorship, and a monthly stipend.",
@@ -79,8 +77,8 @@ const opportunities = [
       "Internet access",
       "Age 18-35",
     ],
-    applyLink: "https://example.com/apply/women-tech",
-    contactEmail: "scholarships@glf.org",
+    apply_link: "https://example.com/apply/women-tech",
+    contact_email: "scholarships@glf.org",
     tags: ["Scholarship", "Women", "Online", "Technology"],
     featured: true,
     urgent: true,
@@ -98,9 +96,9 @@ const opportunities = [
     category: "Job",
     location: "Herat",
     type: "On-site",
-    deadline: "2026-09-01",
-    postedDate: "2025-01-12",
-    shortDesc:
+    deadline: "2027-10-15",
+    posted_date: "2025-01-12",
+    short_desc:
       "Looking for a talented graphic designer to join our creative team in Herat.",
     description:
       "Herat Creative Studio is looking for a skilled graphic designer to create stunning visuals for local and international clients.",
@@ -111,8 +109,8 @@ const opportunities = [
       "Team player",
       "Attention to detail",
     ],
-    applyLink: "https://example.com/apply/graphic-designer",
-    contactEmail: "jobs@heratcreative.af",
+    apply_link: "https://example.com/apply/graphic-designer",
+    contact_email: "jobs@heratcreative.af",
     tags: ["Design", "Graphic Design", "Herat", "Creative"],
     featured: false,
     urgent: false,
@@ -130,9 +128,9 @@ const opportunities = [
     category: "Online Course",
     location: "Online",
     type: "Remote",
-    deadline: "2026-10-30",
-    postedDate: "2025-01-05",
-    shortDesc:
+    deadline: "2028-01-30",
+    posted_date: "2025-01-05",
+    short_desc:
       "Learn Python from scratch to advanced level with Afghan instructors in Dari.",
     description:
       "This comprehensive Python course is taught entirely in Dari by experienced Afghan developers. Perfect for beginners with no prior coding experience.",
@@ -142,8 +140,8 @@ const opportunities = [
       "Internet connection",
       "Willingness to practice daily",
     ],
-    applyLink: "https://example.com/enroll/python",
-    contactEmail: "courses@afghancoders.af",
+    apply_link: "https://example.com/enroll/python",
+    contact_email: "courses@afghancoders.af",
     tags: ["Python", "Programming", "Online", "Dari", "Beginner"],
     featured: true,
     urgent: false,
@@ -161,9 +159,9 @@ const opportunities = [
     category: "Remote Work",
     location: "Online",
     type: "Remote",
-    deadline: "2026-08-20",
-    postedDate: "2025-01-14",
-    shortDesc:
+    deadline: "2027-09-20",
+    posted_date: "2025-01-14",
+    short_desc:
       "Work from home as a data entry specialist. No experience required.",
     description:
       "We are looking for detail-oriented individuals to join our remote data entry team. Flexible hours, perfect for students.",
@@ -174,8 +172,8 @@ const opportunities = [
       "Internet access",
       "4-6 hours availability per day",
     ],
-    applyLink: "https://example.com/apply/data-entry",
-    contactEmail: "remote@intldatacorp.com",
+    apply_link: "https://example.com/apply/data-entry",
+    contact_email: "remote@intldatacorp.com",
     tags: ["Remote", "Data Entry", "Work From Home", "No Experience"],
     featured: false,
     urgent: true,
@@ -193,9 +191,9 @@ const opportunities = [
     category: "Training Program",
     location: "Kabul",
     type: "Hybrid",
-    deadline: "2026-07-25",
-    postedDate: "2025-01-11",
-    shortDesc:
+    deadline: "2027-08-25",
+    posted_date: "2025-01-11",
+    short_desc:
       "Free 3-month digital marketing training for young Afghan entrepreneurs.",
     description:
       "Free digital marketing training including SEO, social media, Google Ads, and content creation for young Afghan entrepreneurs.",
@@ -205,8 +203,8 @@ const opportunities = [
       "Business idea preferred",
       "Full attendance commitment",
     ],
-    applyLink: "https://example.com/apply/digital-marketing",
-    contactEmail: "training@kbi.af",
+    apply_link: "https://example.com/apply/digital-marketing",
+    contact_email: "training@kbi.af",
     tags: ["Marketing", "Digital", "Training", "Free"],
     featured: false,
     urgent: true,
@@ -224,9 +222,9 @@ const opportunities = [
     category: "Volunteer Work",
     location: "Mazar-i-Sharif",
     type: "On-site",
-    deadline: "2026-09-15",
-    postedDate: "2025-01-09",
-    shortDesc:
+    deadline: "2027-11-15",
+    posted_date: "2025-01-09",
+    short_desc:
       "Volunteer to help deliver basic health education in Balkh communities.",
     description:
       "Volunteers will assist in delivering health awareness sessions and supporting local health workers in Balkh province.",
@@ -236,8 +234,8 @@ const opportunities = [
       "3 days per week availability",
       "Basic Dari or Pashto literacy",
     ],
-    applyLink: "https://example.com/volunteer/health",
-    contactEmail: "volunteers@ahf.af",
+    apply_link: "https://example.com/volunteer/health",
+    contact_email: "volunteers@ahf.af",
     tags: ["Volunteer", "Health", "Community", "Balkh"],
     featured: false,
     urgent: false,
@@ -255,9 +253,9 @@ const opportunities = [
     category: "Job",
     location: "Kabul",
     type: "Hybrid",
-    deadline: "2026-08-30",
-    postedDate: "2025-01-13",
-    shortDesc:
+    deadline: "2027-12-15",
+    posted_date: "2025-01-13",
+    short_desc:
       "Join our growing tech team as a junior software engineer in Kabul.",
     description:
       "AfghanTech Solutions is looking for passionate junior software engineers to work on web and mobile applications serving thousands of Afghan users.",
@@ -268,8 +266,8 @@ const opportunities = [
       "Problem-solving mindset",
       "Team player",
     ],
-    applyLink: "https://example.com/apply/software-engineer",
-    contactEmail: "careers@afghantechsolutions.af",
+    apply_link: "https://example.com/apply/software-engineer",
+    contact_email: "careers@afghantechsolutions.af",
     tags: ["Software", "Engineering", "JavaScript", "Kabul"],
     featured: true,
     urgent: false,
@@ -287,9 +285,9 @@ const opportunities = [
     category: "Scholarship",
     location: "Online",
     type: "Remote",
-    deadline: "2026-07-05",
-    postedDate: "2025-01-06",
-    shortDesc:
+    deadline: "2027-10-30",
+    posted_date: "2025-01-06",
+    short_desc:
       "Free online English language program for Afghan youth aged 18-30.",
     description:
       "Free English language improvement program for young Afghans with internationally recognized certificate upon completion.",
@@ -300,8 +298,8 @@ const opportunities = [
       "Motivation statement",
       "Afghan national",
     ],
-    applyLink: "https://example.com/apply/english-scholarship",
-    contactEmail: "programs@usembassy.af",
+    apply_link: "https://example.com/apply/english-scholarship",
+    contact_email: "programs@usembassy.af",
     tags: ["English", "Scholarship", "Online", "Language", "Free"],
     featured: true,
     urgent: true,
@@ -319,9 +317,10 @@ const opportunities = [
     category: "Remote Work",
     location: "Online",
     type: "Remote",
-    deadline: "2026-09-20",
-    postedDate: "2025-01-15",
-    shortDesc: "Write articles and social media content in Dari from anywhere.",
+    deadline: "2027-11-20",
+    posted_date: "2025-01-15",
+    short_desc:
+      "Write articles and social media content in Dari from anywhere.",
     description:
       "Afghan Media Network is looking for talented Dari-language writers to create engaging content about technology, health, education, and business.",
     requirements: [
@@ -330,8 +329,8 @@ const opportunities = [
       "2-3 articles per week",
       "Writing samples portfolio",
     ],
-    applyLink: "https://example.com/apply/dari-writer",
-    contactEmail: "editorial@afghanmedia.af",
+    apply_link: "https://example.com/apply/dari-writer",
+    contact_email: "editorial@afghanmedia.af",
     tags: ["Writing", "Dari", "Remote", "Content", "Media"],
     featured: false,
     urgent: false,
@@ -349,9 +348,9 @@ const opportunities = [
     category: "Internship",
     location: "Kandahar",
     type: "On-site",
-    deadline: "2026-08-01",
-    postedDate: "2025-01-07",
-    shortDesc:
+    deadline: "2027-12-01",
+    posted_date: "2025-01-07",
+    short_desc:
       "Learn web design and UI/UX in a professional agency environment.",
     description:
       "Hands-on web design internship working on real client projects from day one with guidance from experienced designers.",
@@ -362,8 +361,8 @@ const opportunities = [
       "Portfolio or design samples",
       "Full-time availability",
     ],
-    applyLink: "https://example.com/apply/web-design-intern",
-    contactEmail: "hr@kandahardigital.af",
+    apply_link: "https://example.com/apply/web-design-intern",
+    contact_email: "hr@kandahardigital.af",
     tags: ["Design", "Web", "UI/UX", "Internship", "Kandahar"],
     featured: false,
     urgent: false,
@@ -381,9 +380,9 @@ const opportunities = [
     category: "Job",
     location: "Jalalabad",
     type: "On-site",
-    deadline: "2026-09-10",
-    postedDate: "2025-01-10",
-    shortDesc: "Join our finance team as a junior accountant in Jalalabad.",
+    deadline: "2027-10-10",
+    posted_date: "2025-01-10",
+    short_desc: "Join our finance team as a junior accountant in Jalalabad.",
     description:
       "Seeking a detail-oriented junior accountant for bookkeeping, financial reporting, and budget tracking.",
     requirements: [
@@ -393,8 +392,8 @@ const opportunities = [
       "Attention to detail",
       "1+ year experience preferred",
     ],
-    applyLink: "https://example.com/apply/accountant",
-    contactEmail: "jobs@nangarhargroup.af",
+    apply_link: "https://example.com/apply/accountant",
+    contact_email: "jobs@nangarhargroup.af",
     tags: ["Accounting", "Finance", "Jalalabad", "Business"],
     featured: false,
     urgent: false,
@@ -407,65 +406,49 @@ const opportunities = [
   },
 ];
 
-// SEED FUNCTION
+// SEED FUNCTION WITH UPSERT
 async function seed() {
-  console.log("\n Starting database seed...\n");
-  console.log(` Total opportunities to insert: ${opportunities.length}\n`);
+  console.log("\n🌱 Starting database seed...\n");
+  console.log(
+    `📊 Total opportunities to update/insert: ${opportunities.length}\n`,
+  );
 
   let successCount = 0;
   let failCount = 0;
 
   for (const opp of opportunities) {
     try {
-      const { error } = await supabase.from("opportunities").insert({
-        user_id: "seed_admin",
-        title: opp.title,
-        organization: opp.organization,
-        category: opp.category,
-        location: opp.location,
-        type: opp.type,
-        deadline: opp.deadline,
-        short_desc: opp.shortDesc,
-        description: opp.description,
-        requirements: opp.requirements,
-        apply_link: opp.applyLink,
-        tags: opp.tags,
-        contact_email: opp.contactEmail,
-        salary: opp.salary,
-        duration: opp.duration,
-        seats: opp.seats,
-        gender: opp.gender,
-        language: opp.language,
-        featured: opp.featured,
-        urgent: opp.urgent,
-        verified: opp.verified,
-        slug: opp.slug,
-        posted_date: opp.postedDate,
-      });
+      // Use UPSERT on constraint 'slug' so existing rows are updated with future dates!
+      const { error } = await supabase.from("opportunities").upsert(
+        {
+          user_id: "seed_admin",
+          ...opp,
+        },
+        { onConflict: "slug" },
+      );
 
       if (error) {
-        console.log(` Failed: ${opp.title}`);
+        console.log(`❌ Failed: ${opp.title}`);
         console.log(`   Error: ${error.message}`);
         failCount++;
       } else {
-        console.log(` Added: ${opp.title}`);
+        console.log(`✅ Updated/Inserted: ${opp.title}`);
         successCount++;
       }
     } catch (err) {
-      console.log(` Error inserting ${opp.title}:`, err.message);
+      console.log(`❌ Error processing ${opp.title}:`, err.message);
       failCount++;
     }
   }
 
   console.log("\n============================================");
-  console.log(` Seeding complete!`);
-  console.log(` Success: ${successCount}`);
-  console.log(` Failed: ${failCount}`);
+  console.log(`🎉 Seeding complete!`);
+  console.log(` SUCCESS: ${successCount}`);
+  console.log(` FAILED: ${failCount}`);
   console.log("============================================\n");
 }
 
-// Run the seed
 seed().catch((error) => {
-  console.error(" Seed failed:", error);
+  console.error("❌ Seed failed:", error);
   process.exit(1);
 });
