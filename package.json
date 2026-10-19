@@ -22,7 +22,7 @@
     "@clerk/themes": "^2.4.57",
     "@hookform/resolvers": "^5.4.0",
     "@supabase/supabase-js": "^2.112.0",
-    "@tanstack/react-query": "^5.101.2",
+    "@tanstack/react-query": "^5.104.3",
     "clsx": "^2.1.1",
     "date-fns": "^4.4.0",
     "framer-motion": "^12.43.0",
