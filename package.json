@@ -62,6 +62,6 @@
     "vitest": "^4.1.10"
   },
   "optionalDependencies": {
-    "@next/swc-win32-x64-msvc": "^16.4.0"
+    "@next/swc-win32-x64-msvc": "^16.4.2"
   }
 }
